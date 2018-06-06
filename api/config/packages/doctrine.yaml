@@ -17,6 +17,7 @@ doctrine:
 
         # With Symfony 3.3, remove the `resolve:` prefix
         # if the url option is specified, it will override the above config
+        # url: mysql://db_user:db_password@127.0.0.1:3306/db_name
         url: %env(DATABASE_URL)%
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
