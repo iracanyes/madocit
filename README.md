@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+# madocit
+API Platform application with Symfony API &amp; React
 <p align="center"><a href="https://api-platform.com"><img src="https://api-platform.com/logo-250x250.png" alt="API Platform"></a></p>
 
 API Platform is a next-generation web framework designed to easily create API-first projects without compromising extensibility
@@ -52,3 +55,6 @@ Credits
 -------
 
 Created by [Kévin Dunglas](https://dunglas.fr). Commercial support available at [Les-Tilleuls.coop](https://les-tilleuls.coop).
+=======
+
+>>>>>>> 171a1f390ffc60ef86880969285b515a65ef1d2e
