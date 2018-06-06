@@ -1,7 +1,14 @@
 /docker-compose.override.yaml
 /docker-compose.override.yml
+
 /shared
 /docs/
 
+# Variables d'environnement
+/api/.env
+/admin/.env
 /client/.env
 .env
+
+# fichiers locaux 
+/api/.web-server-pid
