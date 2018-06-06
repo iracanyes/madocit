@@ -3,22 +3,28 @@ parameters:
     # This allows you to run cache:warmup even if your
     # environment variables are not available yet.
     # You should not need to change this value.
-    env(DATABASE_URL): 'mysql://isl_tfe_iracanyes:Dc35YseP8yr7@db/madocit'
+    env(DATABASE_URL): 'mysql://root:kS03UNm0aDoc18dy20TI6N@mysql/madocit'
+    env(MYSQL_DATABASE): 'madocit'
+    env(MYSQL_HOST): 'db'
+    env(MYSQL_USER): "isl_tfe_iracanyes"
+    env(MYSQL_PASSWORD): "Dc35YseP8yr7"
+    env(MYSQL_PORT): '3306'
 
 doctrine:
     dbal:
         # configure these for your database server
         driver: 'pdo_mysql'
-        dbname: %env(MYQSL_DATABASE)%
-        host: %env(MYSQL_HOST)%
-        user: %env(MYSQL_USER)%
-        password: %env(MYSQL_PASSWORD)%
+        dbname: '%env(MYSQL_DATABASE)%'
+        host: '%env(MYSQL_HOST)%'
+        user: '%env(MYSQL_USER)%'
+        password: '%env(MYSQL_PASSWORD)%'
+        port: '%env(MYSQL_PORT)%'
         server_version: '8.0'
 
         # With Symfony 3.3, remove the `resolve:` prefix
         # if the url option is specified, it will override the above config
         # url: mysql://db_user:db_password@127.0.0.1:3306/db_name
-        url: %env(DATABASE_URL)%
+        #url: '%env(DATABASE_URL)%'
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore

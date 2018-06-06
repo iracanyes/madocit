@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ORM\Table(name="mdit_video")
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
  */
 class Video
