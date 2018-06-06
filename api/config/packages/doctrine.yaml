@@ -1,0 +1,31 @@
+parameters:
+    # Adds a fallback (default value) DATABASE_URL if the env var is not set.
+    # This allows you to run cache:warmup even if your
+    # environment variables are not available yet.
+    # You should not need to change this value.
+    env(DATABASE_URL): 'mysql://isl_tfe_iracanyes:Dc35YseP8yr7@db/madocit'
+
+doctrine:
+    dbal:
+        # configure these for your database server
+        driver: 'pdo_mysql'
+        dbname: %env(MYQSL_DATABASE)%
+        host: %env(MYSQL_HOST)%
+        user: %env(MYSQL_USER)%
+        password: %env(MYSQL_PASSWORD)%
+        server_version: '8.0'
+
+        # With Symfony 3.3, remove the `resolve:` prefix
+        # if the url option is specified, it will override the above config
+        url: %env(DATABASE_URL)%
+    orm:
+        auto_generate_proxy_classes: '%kernel.debug%'
+        naming_strategy: doctrine.orm.naming_strategy.underscore
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                type: annotation
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
