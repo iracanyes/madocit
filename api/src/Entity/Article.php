@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Article
 {
     /**
+     * @var integer ID of the article
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -22,36 +23,43 @@ class Article
     private $id;
 
     /**
+     * @var string Body of the article
      * @ORM\Column(type="text")
      */
     private $articleBody;
 
     /**
+     * @var Datetime Creation's date of the article
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;
 
     /**
+     * @var Datetime The last modification's date of the article
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateModified;
 
     /**
+     * @var Datetime Date of publication
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $datePublished;
 
     /**
+     * @var string Course prerequisites for a good understanding of the article
      * @ORM\Column(type="text", nullable=true)
      */
     private $coursePrerequisites;
 
     /**
+     * @var integer Aggregate rating received by other users.
      * @ORM\Column(type="integer")
      */
     private $aggregateRating;
 
     /**
+     * @var string URI for the pdf of the given article.
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $pdf;

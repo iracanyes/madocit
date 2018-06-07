@@ -15,6 +15,7 @@ use Doctrine\Common\Collections\Collection;
 class Chat
 {
     /**
+     * @var integer ID of the chatroom
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -22,31 +23,37 @@ class Chat
     private $id;
 
     /**
+     * @var string Title of the chatroom
      * @ORM\Column(type="string", unique=true, length=255)
      */
     private $title;
 
     /**
+     * @var string Status of the chatroom (active, open, ...)
      * @ORM\Column(type="string", length=255)
      */
     private $status;
 
     /**
+     * @var boolean The chatroom has been closed.
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $closed;
 
     /**
+     * @var integer Negative vote for the chatroom
      * @ORM\Column(name="downvote_count", type="integer")
      */
     private $downvoteCount;
 
     /**
+     * @var integer Positive vote for the chatroom
      * @ORM\Column(name="upvote_count", type="integer")
      */
     private $upvoteCount;
 
     /**
+     * @var integer Aggregate rating for the chatroom
      * @ORM\Column(name="aggregate_rating", type="integer", nullable=true)
      */
     private $aggregateRating;

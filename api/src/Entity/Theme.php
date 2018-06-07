@@ -9,11 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ORM\Table(name="mdit_theme")
  * @ORM\Entity(repositoryClass="App\Repository\ThemeRepository")
  */
 class Theme
 {
     /**
+     * @var integer ID of the theme
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -21,21 +23,25 @@ class Theme
     private $id;
 
     /**
+     * @var string Name of the theme
      * @ORM\Column(type="string", unique=true, length=255)
      */
     private $name;
 
     /**
+     * @var string Description of the theme
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
+     * @var boolean The theme has been validated
      * @ORM\Column(type="boolean")
      */
     private $isValid;
 
     /**
+     * @var \DateTime Date of the creation
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;

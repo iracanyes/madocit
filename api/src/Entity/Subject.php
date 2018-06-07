@@ -16,6 +16,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Subject
 {
     /**
+     * @var integer ID of the subject
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -23,26 +24,31 @@ class Subject
     private $id;
 
     /**
+     * @var string Title of the subject
      * @ORM\Column(type="string", unique=true, length=255)
      */
     private $title;
 
     /**
+     * @var string Description of the subject (optional)
      * @ORM\Column(type="text", nullable=true)
      */
     private $description;
 
     /**
+     * @var string Prerequisites needed to fulfill steps in article.
      * @ORM\Column(type="text", nullable=true)
      */
     private $dependencies;
 
     /**
+     * @var string Proficiency needed for this content; expected values: 'Beginner', 'Expert'.
      * @ORM\Column(type="text", nullable=true)
      */
     private $proficiencyLevel;
 
     /**
+     * @var boolean Subject has been validated
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isValid;
@@ -109,7 +115,7 @@ class Subject
      * @var Collection Chatroom of this subject
      *
      * @ORM\ManyToMany(targetEntity="Chat", cascade={"persist"}, inversedBy="subjects")
-     * @ORM\JoinTable(name="chat_subjects")
+     * @ORM\JoinTable(name="mdit_chat_subjects")
      */
     private $chatrooms;
 

@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Moderator extends Editor
 {
     /**
+     * @var integer ID of the moderator
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(name="id", type="integer")
@@ -19,21 +20,25 @@ class Moderator extends Editor
     private $id;
 
     /**
+     * @var integer Number of sanctions emitted by the moderator
      * @ORM\Column(name="nb_sanction_emitted", type="integer")
      */
     private $nbSanctionEmitted;
 
     /**
+     * @var integer Number of notes validated by the editor
      * @ORM\Column(name="nb_notes_validated", type="integer")
      */
     private $nbNotesValidated;
 
     /**
+     * @var integer Average rating for all the activities of moderation
      * @ORM\Column(name="rate_moderation", type="integer")
      */
     private $rateModeration;
 
     /**
+     * @var boolean The moderation is a global moderator
      * @ORM\Column(name="is_global_moderator", type="boolean")
      */
     private $isGlobalModerator;
@@ -55,6 +60,7 @@ class Moderator extends Editor
 
     public function __construct()
     {
+        parent::__construct();
         $this->sanctionsEmitted = new ArrayCollection();
     }
 

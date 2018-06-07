@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Sanction
 {
     /**
+     * @var integer ID of the sanction
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -19,23 +20,26 @@ class Sanction
     private $id;
 
     /**
+     * @var string Type of sanction ()
      * @ORM\Column(type="string", length=255)
      */
     private $type;
 
     /**
+     * @var \DateTime End date of the sanction
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $duration;
 
     /**
+     * @var string Status of the sanction (active, finished)
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $status;
 
     /**
      * Abuses sanctioned
-     * @var ArrayCollection
+     * @var ArrayCollection Abuses tackled by the sanction
      *
      * @ORM\OneToMany(targetEntity="Abuse", cascade={"persist"}, mappedBy="sanction")
      */
@@ -43,7 +47,7 @@ class Sanction
 
     /**
      * Moderator
-     * @var Moderator
+     * @var Moderator Moderator who made the sanction
      *
      * @ORM\ManyToOne(targetEntity="Moderator", cascade={"persist"}, inversedBy="sanctionsEmitted")
      * @ORM\JoinColumn(nullable=false)
@@ -52,7 +56,7 @@ class Sanction
 
     /**
      * Editor sanctioned
-     * @var Editor
+     * @var Editor Editor concerned by the sanction
      *
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist","remove"}, inversedBy="sanctionsReceived")
      * @ORM\JoinColumn(nullable=false)

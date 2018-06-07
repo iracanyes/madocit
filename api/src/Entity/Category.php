@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Category
 {
     /**
+     * @var integer ID of the category
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -21,21 +22,25 @@ class Category
     private $id;
 
     /**
+     * @var string Name of the category
      * @ORM\Column(type="string", unique=true, length=255)
      */
     private $name;
 
     /**
+     * @var string Description of the category
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
+     * @var boolean The category has been validated
      * @ORM\Column(type="boolean")
      */
     private $isValid;
 
     /**
+     * @var Datetime Date of the creation of the category
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;

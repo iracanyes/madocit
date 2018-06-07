@@ -8,11 +8,13 @@ use App\Entity\Editor;
 
 /**
  * @ApiResource()
+ * @ORM\Table(name="mdit_abuse")
  * @ORM\Entity(repositoryClass="App\Repository\AbuseRepository")
  */
 class Abuse
 {
     /**
+     * @var integer ID of the abuse
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,18 +22,19 @@ class Abuse
     private $id;
 
     /**
+     * @var string Description of the abuse
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
+     * @var Datetime Date of the creation of the abuse
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;
 
     /**
      * @var Editor Editor who identify
-     *
      *
      *
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="abusesIdentified")
@@ -41,7 +44,6 @@ class Abuse
 
     /**
      * @var Editor Charged person
-     *
      *
      *
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="abusesAccused")

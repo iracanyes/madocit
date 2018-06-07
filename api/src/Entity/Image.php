@@ -7,11 +7,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ORM\Table(name="mdit_image")
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  */
 class Image
 {
     /**
+     * @var integer ID of the image
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -19,26 +21,31 @@ class Image
     private $id;
 
     /**
+     * @var integer Place of the image (1-5).
      * @ORM\Column(type="integer")
      */
     private $place;
 
     /**
+     * @var string Title of the image (optional)
      * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
+     * @var string URL of the image
      * @ORM\Column(type="string", length=255)
      */
     private $url;
 
     /**
+     * @var string Alternative title for the image (optional)
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $alt;
 
     /**
+     * @var integer Size of the image
      * @ORM\Column(type="integer")
      */
     private $size;
