@@ -80,7 +80,7 @@ services:
       #- db-data:/var/lib/mysql/data:rw
       # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
       #- ./docker/db/data:/var/lib/mysql/data:rw
-      - ./shared/db/data:/var/lib/mysql:rw
+      - ./shared/mysql/db/data:/var/lib/mysql:rw
       - ./api/docker/db/conf.d/default.conf:/etc/mysql/conf.d/myConf.cnf
     ports:
       - "3306:3306"
@@ -92,6 +92,8 @@ services:
     restart: always
     ports:
       - "8083:80"
+    expose:
+      - "8083"
 
   client:
     # Use a static website hosting service in production

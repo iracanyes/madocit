@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Video
 {
     /**
+     * @var integer ID of the video
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,37 +21,45 @@ class Video
     private $id;
 
     /**
+     * @var string Title of the video
      * @ORM\Column(type="string", unique=true, length=255)
      */
     private $title;
 
     /**
+     * @var string Short description of the video
      * @ORM\Column(type="text")
      */
     private $caption;
 
     /**
+     * @var string URL of the video
      * @ORM\Column(type="string", length=255)
      */
     private $url;
 
     /**
+     * @var string External URL of the video
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $embedUrl;
 
     /**
+     * @var integer Size of the video
      * @ORM\Column(type="integer")
      */
     private $size;
 
     /**
+     * @var \DateTime Date of the upload on the server
      * @ORM\Column(type="datetime")
      */
     private $uploadDate;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @var Image Thumbnail image for the video
+     * @ORM\OneToOne(targetEntity="Image", cascade={"persist","remove"}, inversedBy="video")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $thumbnail;
 
@@ -75,16 +84,26 @@ class Video
      */
     private $associatedGrain;
 
-    public function getId()
+    /**
+     * @return integer
+     */
+    public function getId(): int
     {
         return $this->id;
     }
 
+    /**
+     * @return null|string
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * @param string $title
+     * @return Video
+     */
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -92,11 +111,18 @@ class Video
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getCaption(): ?string
     {
         return $this->caption;
     }
 
+    /**
+     * @param string $caption
+     * @return Video
+     */
     public function setCaption(string $caption): self
     {
         $this->caption = $caption;
@@ -104,11 +130,18 @@ class Video
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getUrl(): ?string
     {
         return $this->url;
     }
 
+    /**
+     * @param string $url
+     * @return Video
+     */
     public function setUrl(string $url): self
     {
         $this->url = $url;
@@ -116,11 +149,18 @@ class Video
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getEmbedUrl(): ?string
     {
         return $this->embedUrl;
     }
 
+    /**
+     * @param null|string $embedUrl
+     * @return Video
+     */
     public function setEmbedUrl(?string $embedUrl): self
     {
         $this->embedUrl = $embedUrl;
@@ -128,11 +168,18 @@ class Video
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getSize(): ?int
     {
         return $this->size;
     }
 
+    /**
+     * @param int $size
+     * @return Video
+     */
     public function setSize(int $size): self
     {
         $this->size = $size;
@@ -140,11 +187,18 @@ class Video
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getUploadDate(): ?\DateTimeInterface
     {
         return $this->uploadDate;
     }
 
+    /**
+     * @param \DateTimeInterface $uploadDate
+     * @return Video
+     */
     public function setUploadDate(\DateTimeInterface $uploadDate): self
     {
         $this->uploadDate = $uploadDate;
@@ -152,12 +206,20 @@ class Video
         return $this;
     }
 
-    public function getThumbnail(): ?string
+
+    /**
+     * @return Image|null
+     */
+    public function getThumbnail(): ?Image
     {
         return $this->thumbnail;
     }
 
-    public function setThumbnail(?string $thumbnail): self
+    /**
+     * @param Image|null $thumbnail
+     * @return Video
+     */
+    public function setThumbnail(?Image $thumbnail): self
     {
         $this->thumbnail = $thumbnail;
 

@@ -2,14 +2,19 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use iracanyes\DateTime;
 
 /**
+ * @ApiResource()
+ * @ORM\Table(name="mdit_contribution")
  * @ORM\Entity(repositoryClass="App\Repository\ContributionRepository")
  */
 class Contribution
 {
     /**
+     * @var integer ID of the contribution
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -17,21 +22,25 @@ class Contribution
     private $id;
 
     /**
+     * @var string Title of the contribution (optional).
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $title;
 
     /**
+     * @var string Content of the contribution.
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * @var Datetime Date of the contribution
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;
 
     /**
+     * @var DateTime Date of the last modification of the contribution
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateModified;

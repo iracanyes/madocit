@@ -9,11 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ORM\Table(name="mdit_grain")
  * @ORM\Entity(repositoryClass="App\Repository\GrainRepository")
  */
 class Grain
 {
     /**
+     * @var integer ID of the grain (piece of article)
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -21,26 +23,31 @@ class Grain
     private $id;
 
     /**
+     * @var string Content of the grain (piece of article)
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * @var \Datetime Date of the creation
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;
 
     /**
+     * @var \DateTime Date of the last modification
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateModified;
 
     /**
+     * @var \DateTime Date of the publication
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $datePublished;
 
     /**
+     * @var boolean The grain is a draft
      * @ORM\Column(type="boolean")
      */
     private $draft;

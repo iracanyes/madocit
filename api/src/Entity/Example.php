@@ -9,11 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ORM\Table(name="mdit_example")
  * @ORM\Entity(repositoryClass="App\Repository\ExampleRepository")
  */
 class Example
 {
     /**
+     * @var integer ID of the example
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -21,31 +23,37 @@ class Example
     private $id;
 
     /**
+     * @var string Title of the example
      * @ORM\Column(type="string", length=255)
      */
     private $title;
 
     /**
+     * @var string Content of the example
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * @var integer Average votes made by other users
      * @ORM\Column(type="integer")
      */
     private $rating;
 
     /**
+     * @var Datetime Date of creation
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;
 
     /**
+     * @var Datetime Date of the last modification
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateModified;
 
     /**
+     * @var string URL of the pdf
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $pdf;

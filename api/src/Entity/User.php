@@ -15,6 +15,7 @@ use Doctrine\ORM\Mapping as ORM;
 class User
 {
     /**
+     * @var integer ID of the user
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -22,41 +23,49 @@ class User
     private $id;
 
     /**
+     * @var string Email of the user
      * @ORM\Column(type="string", length=255, unique=true)
      */
     private $email;
 
     /**
+     * @var string Encrypted password
      * @ORM\Column(type="string", length=255)
      */
     private $password;
 
     /**
+     * @var string Plain password
      * @ORM\Column(type="string", length=255)
      */
     private $plainPassword;
 
     /**
+     * @var  integer Number of error on connection
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $nbErrorConnection;
 
     /**
+     * @var boolean User is banned
      * @ORM\Column(type="boolean")
      */
     private $banned;
 
     /**
+     * @var boolean User confirmed his signin
      * @ORM\Column(type="boolean")
      */
     private $signinConfirmed;
 
     /**
+     * @var \DateTime Date of the registration
      * @ORM\Column(type="datetime")
      */
     private $dateRegistration;
 
     /**
+     * @var string API Token of the user
      * @ORM\Column(type="string", length=255)
      */
     private $apiToken;

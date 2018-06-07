@@ -13,6 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Note
 {
     /**
+     * @var integer ID of the note
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -20,26 +21,31 @@ class Note
     private $id;
 
     /**
+     * @var string Content of the note
      * @ORM\Column(type="text")
      */
     private $content;
 
     /**
+     * @var \DateTime Date of creation
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;
 
     /**
+     * @var \DateTime Date of the last modification
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $dateModified;
 
     /**
+     * @var integer Average rating for the note
      * @ORM\Column(type="integer")
      */
     private $rating;
 
     /**
+     * @var boolean Note is validated
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $isValid;

@@ -20,6 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Editor extends User
 {
     /**
+     * @var integer ID of the editor
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -27,52 +28,61 @@ class Editor extends User
     private $id;
 
     /**
+     * @var string Email for contacting the editor (optional)
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $emailContact;
 
     /**
+     * @var string Nickname used in place of the real name
      * @ORM\Column(type="string", length=255, unique=true, nullable=true)
      */
     private $nickname;
 
     /**
+     * @var string Family name of the editor
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $familyName;
 
     /**
+     * @var string First name of the editor
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $givenName;
 
     /**
+     * @var string School or company where the editor is affiliated to
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $affiliation;
 
     /**
+     * @var string Last school of the editor
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $alumniOf;
 
     /**
+     * @var integer Global rate for all activities done on the platform
      * @ORM\Column(type="integer")
      */
     private $rateGlobal;
 
     /**
+     * @var integer Aggregate rating of all votes by users for all the contributions done by the editor
      * @ORM\Column(type="string", length=255)
      */
     private $rateContribution;
 
     /**
+     * @var boolean The editor is sanctioned
      * @ORM\Column(type="boolean", nullable=true)
      */
     private $sanctioned;
 
     /**
-     * @var Collection $subjectsCreated Subjects created
+     * @var Collection $subjectsCreated Subjects created by the editor
      * @ORM\OneToMany(targetEntity="Subject", mappedBy="author")
      */
     private $subjectsCreated;
@@ -134,6 +144,10 @@ class Editor extends User
      */
     public function __construct()
     {
+        // Appel du constructeur parent
+        parent::__construct();
+
+        // déclaration des collections de la classe
         $this->abusesIdentified =
             $this->abusesAccused  =
             $this->sanctionsReceived =

@@ -9,11 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ApiResource()
+ * @ORM\Table(name="mdit_version")
  * @ORM\Entity(repositoryClass="App\Repository\VersionRepository")
  */
 class Version
 {
     /**
+     * @var integer ID of the version
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -21,36 +23,43 @@ class Version
     private $id;
 
     /**
+     * @var string Associated product/technology version. e.g., .NET Framework 4.5.
      * @ORM\Column(type="string", unique=true, length=255)
      */
     private $assemblyVersion;
 
     /**
+     * @var string Library file name e.g., mscorlib.dll, system.web.dll. Supersedes assembly.
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $executableLibraryName;
 
     /**
+     * @var string Indicates whether API is managed or unmanaged.
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $programmingModel;
 
     /**
+     * @var string Type of app development: phone, Metro style, desktop, XBox, etc.
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $targetPlatform;
 
     /**
+     * @var boolean Version is validated
      * @ORM\Column(type="boolean")
      */
     private $isValid;
 
     /**
+     * @var \DateTime Date of creation
      * @ORM\Column(type="datetime")
      */
     private $dateCreated;
 
     /**
+     * @var string Author of the version (optional)
      * @ORM\Column(type="string", length=255)
      */
     private $author;
