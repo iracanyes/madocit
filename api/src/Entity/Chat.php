@@ -6,11 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource()
  * @ORM\Table(name="mdit_chat")
  * @ORM\Entity(repositoryClass="App\Repository\ChatRepository")
+ * @UniqueEntity("title")
  */
 class Chat
 {
@@ -19,42 +22,52 @@ class Chat
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var string Title of the chatroom
      * @ORM\Column(type="string", unique=true, length=255)
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @var string Status of the chatroom (active, open, ...)
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
      */
     private $status;
 
     /**
      * @var boolean The chatroom has been closed.
      * @ORM\Column(type="boolean", nullable=true)
+     * @Assert\Type("boolean")
+     * @Assert\NotBlank()
      */
     private $closed;
 
     /**
      * @var integer Negative vote for the chatroom
      * @ORM\Column(name="downvote_count", type="integer")
+     * @Assert\Type("integer")
      */
     private $downvoteCount;
 
     /**
      * @var integer Positive vote for the chatroom
      * @ORM\Column(name="upvote_count", type="integer")
+     * @Assert\Type("integer")
      */
     private $upvoteCount;
 
     /**
      * @var integer Aggregate rating for the chatroom
      * @ORM\Column(name="aggregate_rating", type="integer", nullable=true)
+     * @Assert\Type("integer")
      */
     private $aggregateRating;
 
@@ -62,12 +75,14 @@ class Chat
      * @var Editor $editor The creator of this chatroom
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="chatroomsCreated")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Editor")
      */
     private $creator;
 
     /**
      * @var Collection Subjects tackled in this chatroom
      * @ORM\ManyToMany(targetEntity="Subject", mappedBy="chatrooms")
+     * @Assert\Collection()
      */
     private $subjects;
 
@@ -75,6 +90,7 @@ class Chat
      * @var Collection $editorsInvolved Editors involved in this chatroom
      *
      * @ORM\ManyToMany(targetEntity="Editor", cascade={"persist"}, mappedBy="chatroomsInvolved")
+     * @Assert\Collection()
      */
     private $editorsInvolved;
 
@@ -84,6 +100,7 @@ class Chat
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Abuse", cascade={"persist"}, mappedBy="chat")
+     * @Assert\Collection()
      */
     private $abuses;
 

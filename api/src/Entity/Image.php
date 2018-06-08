@@ -4,11 +4,15 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource()
  * @ORM\Table(name="mdit_image")
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
+ * Validation des contraintes d'unicité des URL
+ * @UniqueEntity("url")
  */
 class Image
 {
@@ -17,54 +21,63 @@ class Image
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var integer Place of the image (1-5).
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $place;
 
     /**
      * @var string Title of the image (optional)
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
      */
     private $title;
 
     /**
      * @var string URL of the image
      * @ORM\Column(type="string", length=255)
+     * @Assert\Image()
      */
     private $url;
 
     /**
      * @var string Alternative title for the image (optional)
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
      */
     private $alt;
 
     /**
      * @var integer Size of the image
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $size;
 
     /**
      * @var User|null User represented by the image
      * @ORM\OneToOne(targetEntity="User", mappedBy="image")
+     * @Assert\Type("App\Entity\User")
      */
     private $user;
 
     /**
      * @var Category|null Category illustrated by the image
      * @ORM\OneToOne(targetEntity="Category",  mappedBy="image")
+     * @Assert\Type("App\Entity\Category")
      */
     private $category;
 
     /**
      * @var Theme|null Theme illustrated by the image
      * @ORM\OneToOne(targetEntity="Theme",  mappedBy="image")
+     * @Assert\Type("App\Entity\Theme")
      */
     private $theme;
 
@@ -72,6 +85,7 @@ class Image
      * @var Subject Subject illustrated bu the image
      * @ORM\ManyToOne(targetEntity="Subject", cascade={"persist","remove"}, inversedBy="images")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Subject")
      */
     private $subject;
 

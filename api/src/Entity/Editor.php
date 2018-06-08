@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource()
@@ -16,6 +18,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="editorType", type="string", length=255)
  * @ORM\DiscriminatorMap({"editor" = "Editor", "moderator" = "Moderator", "admin" = "Admin"})
+ * Contraintes d'unicité sur les surnoms des éditeurs (nickname)
+ * @UniqueEntity("nickname")
  */
 class Editor extends User
 {
@@ -24,78 +28,134 @@ class Editor extends User
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
+     * @Assert\NotBlank()
      */
     private $id;
 
     /**
      * @var string Email for contacting the editor (optional)
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Email()
      */
     private $emailContact;
 
     /**
      * @var string Nickname used in place of the real name
      * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *     min=5,
+     *     max=55,
+     *     minMessage="The minimumm set of character for the nickname is {{ limit }}. \n Your nickname length is {{ value }} characters!",
+     *     maxMessage="The maximumm set of character for the nickname is {{ limit }}. \n Your nickname length is {{ value }} characters!"
+     * )
      */
     private $nickname;
 
     /**
      * @var string Family name of the editor
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *     min=5,
+     *     max=55,
+     *     minMessage="The minimumm set of character for the family name is {{ limit }}. \n Your nickname length is {{ value }} characters!",
+     *     maxMessage="The maximumm set of character for the family name is {{ limit }}. \n Your nickname length is {{ value }} characters!"
+     * )
      */
     private $familyName;
 
     /**
      * @var string First name of the editor
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *     min=5,
+     *     max=55,
+     *     minMessage="The minimumm set of character for the given name is {{ limit }}. \n Your given name's length is {{ value }} characters!",
+     *     maxMessage="The maximumm set of character for the given name is {{ limit }}. \n Your given name's length is {{ value }} characters!"
+     * )
      */
     private $givenName;
 
     /**
      * @var string School or company where the editor is affiliated to
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *     min=10,
+     *     max=180,
+     *     minMessage="The minimumm set of character for the affiliation is {{ limit }}. \n Your affiliation's length is {{ value }} characters!",
+     *     maxMessage="The maximumm set of character for the affiliation is {{ limit }}. \n Your affiliation's length is {{ value }} characters!"
+     * )
      */
     private $affiliation;
 
     /**
      * @var string Last school of the editor
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
+     * @Assert\Length(
+     *     min=10,
+     *     max=180,
+     *     minMessage="The minimumm set of character for the 'alumni of' is {{ limit }}. \n Your 'alumni of' length is {{ value }} characters!",
+     *     maxMessage="The maximumm set of character for the 'alumni of' is {{ limit }}. \n Your 'alumni of' length is {{ value }} characters!"
+     * )
      */
     private $alumniOf;
 
     /**
      * @var integer Global rate for all activities done on the platform
      * @ORM\Column(type="integer")
+     * @Assert\Type("int")
+     * @Assert\Range(
+     *     min=0,
+     *     max=100,
+     *     minMessage="The minimumm global rate is {{ limit }}. \n Your global rate's value is {{ value }} !",
+     *     maxMessage="The maximumm global rate is {{ limit }}. \n Your global rate's value is {{ value }} !"
+     * )
      */
     private $rateGlobal;
 
     /**
      * @var integer Aggregate rating of all votes by users for all the contributions done by the editor
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("int")
+     * @Assert\Range(
+     *     min=0,
+     *     max=100,
+     *     minMessage="The minimumm contribution rate is {{ limit }}. \n Your contribution rate's value is {{ value }} !",
+     *     maxMessage="The maximumm contribution rate is {{ limit }}. \n Your contribution rate's value is {{ value }} !"
+     * )
      */
     private $rateContribution;
 
     /**
      * @var boolean The editor is sanctioned
      * @ORM\Column(type="boolean", nullable=true)
+     * @Assert\Type("boolean")
      */
     private $sanctioned;
 
     /**
      * @var Collection $subjectsCreated Subjects created by the editor
      * @ORM\OneToMany(targetEntity="Subject", mappedBy="author")
+     * @Assert\Collection()
      */
     private $subjectsCreated;
 
     /**
      * @var Collection $contributionsMade Contributions made by this editor
      * @ORM\OneToMany(targetEntity="Contribution", mappedBy="editor")
+     * @Assert\Collection()
      */
     private $contributionsMade;
 
     /**
      * @var Collection $chatroomsCreated Chatroom created by this editor
      * @ORM\OneToMany(targetEntity="Chat", mappedBy="creator")
+     * @Assert\Collection()
      */
     private $chatroomsCreated;
 
@@ -103,6 +163,7 @@ class Editor extends User
      * @var Collection $chatroomsInvolved Chatroom in which this editor is or has been involved
      * @ORM\ManyToMany(targetEntity="Chat", cascade={"persist"}, inversedBy="editorsInvolved")
      * @ORM\JoinTable(name="mdit_chat_editors")
+     * @Assert\Collection()
      */
     private $chatroomsInvolved;
 
@@ -112,6 +173,7 @@ class Editor extends User
      * @var Collection $notesSuggested Notes suggested by this editor
      *
      * @ORM\OneToMany(targetEntity="Note", mappedBy="editor")
+     * @Assert\Collection()
      */
     private $notesSuggested;
 
@@ -120,6 +182,7 @@ class Editor extends User
      * @var Collection $abusesIdentified Abuses identified
      *
      * @ORM\OneToMany(targetEntity="Abuse", cascade={"persist"}, mappedBy="accuser")
+     * @Assert\Collection()
      */
     private $abusesIdentified;
 
@@ -127,15 +190,17 @@ class Editor extends User
      * @var Collection $abusesAccused Abuses accused
      *
      * @ORM\OneToMany(targetEntity="Abuse", cascade={"persist"}, mappedBy="defendant")
+     * @Assert\Collection()
      */
     private $abusesAccused;
 
 
     /**
      * Sanctions received
-     * @var ArrayCollection
+     * @var Collection $sanctionsReceived Sanctions received for abuses
      *
      * @ORM\OneToMany(targetEntity="Sanction", cascade={"persist","remove"}, mappedBy="editor")
+     * @Assert\Collection()
      */
     private $sanctionsReceived;
 

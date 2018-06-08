@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -19,42 +20,57 @@ class Example
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
+     * @Assert\NotBlank()
      */
     private $id;
 
     /**
      * @var string Title of the example
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @var string Content of the example
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $content;
 
     /**
      * @var integer Average votes made by other users
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *     min=0,
+     *     max=5,
+     *     minMessage="The minimumm rate for vote is {{ limit }}. \n Your rate's value is {{ value }} !",
+     *     maxMessage="The maximumm rate for vote is {{ limit }}. \n Your rate's value is {{ value }} !"
+     * )
      */
     private $rating;
 
     /**
      * @var Datetime Date of creation
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $dateCreated;
 
     /**
      * @var Datetime Date of the last modification
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private $dateModified;
 
     /**
      * @var string URL of the pdf
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url()
      */
     private $pdf;
 
@@ -63,6 +79,7 @@ class Example
      *
      * @ORM\ManyToMany(targetEntity="Article", cascade={"persist"}, inversedBy="associatedExamples")
      * @ORM\JoinTable(name="mdit_article_examples")
+     * @Assert\Collection()
      */
     private $associatedArticles;
 
@@ -71,6 +88,7 @@ class Example
      *
      * @ORM\ManyToMany(targetEntity="Grain", cascade={"persist"}, inversedBy="associatedExamples")
      * @ORM\JoinTable(name="mdit_grain_examples")
+     * @Assert\Collection()
      */
     private $associatedGrains;
 
@@ -79,6 +97,7 @@ class Example
      *
      * @ORM\OneToOne(targetEntity="Video", mappedBy="associatedExample")
      * @ORM\JoinColumn(name="video_id", referencedColumnName="id", nullable=true)
+     * @Assert\Type("App\Entity\Video")
      */
     private $video;
 

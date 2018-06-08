@@ -3,6 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table(name="mdit_user")
@@ -11,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\InheritanceType("JOINED")
  * @ORM\DiscriminatorColumn(name="userType", type="string", length=255)
  * @ORM\DiscriminatorMap({"user" = "User", "editor" = "Editor"})
+ * @UniqueEntity("email")
  */
 class User
 {
@@ -19,54 +23,70 @@ class User
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var string Email of the user
      * @ORM\Column(type="string", length=255, unique=true)
+     * @Assert\Email()
+     * @Assert\NotBlank()
      */
     private $email;
 
     /**
      * @var string Encrypted password
      * @ORM\Column(type="string", length=255)
+     * @UserPassword()
      */
     private $password;
 
     /**
      * @var string Plain password
      * @ORM\Column(type="string", length=255)
+     * @UserPassword()
      */
     private $plainPassword;
 
     /**
      * @var  integer Number of error on connection
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *     min=0,
+     *     max=5,
+     *     minMessage="The minimumm number of errors on connection is {{ limit }}. \n The number's value is {{ value }} !",
+     *     maxMessage="The maximumm number of errors on connection is {{ limit }}. \n The number's value is {{ value }} !"
+     * )
      */
     private $nbErrorConnection;
 
     /**
      * @var boolean User is banned
      * @ORM\Column(type="boolean")
+     * @Assert\Type("boolean")
      */
     private $banned;
 
     /**
      * @var boolean User confirmed his signin
      * @ORM\Column(type="boolean")
+     * @Assert\Type("boolean")
      */
     private $signinConfirmed;
 
     /**
      * @var \DateTime Date of the registration
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $dateRegistration;
 
     /**
      * @var string API Token of the user
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
      */
     private $apiToken;
 
@@ -74,6 +94,7 @@ class User
      * @var Image Image representing the user
      * @ORM\OneToOne(targetEntity="Image", cascade={"persist","remove"}, inversedBy="user")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Image")
      */
     private $image;
 

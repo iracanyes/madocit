@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="mdit_admin")
@@ -15,12 +16,14 @@ class Admin extends Editor
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var integer Number of users banned by the admin
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Type("integer")
      */
     private $nbUsersBanned;
 

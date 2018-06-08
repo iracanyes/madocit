@@ -6,12 +6,16 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
  * @ApiResource()
  * @ORM\Table(name="mdit_subject")
  * @ORM\Entity(repositoryClass="App\Repository\SubjectRepository")
+ * Validation de la contrainte d'unicité des titres des sujets
+ * @UniqueEntity("title")
  */
 class Subject
 {
@@ -20,18 +24,22 @@ class Subject
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var string Title of the subject
      * @ORM\Column(type="string", unique=true, length=255)
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @var string Description of the subject (optional)
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\NotBlank()
      */
     private $description;
 
@@ -49,7 +57,8 @@ class Subject
 
     /**
      * @var boolean Subject has been validated
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean")
+     * @Assert\Type("boolean")
      */
     private $isValid;
 
@@ -58,6 +67,7 @@ class Subject
      *
      * @ORM\OneToOne(targetEntity="Article", cascade={"persist"},inversedBy="about")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Article")
      */
     private $article;
 
@@ -66,6 +76,7 @@ class Subject
      *
      * @ORM\OneToOne(targetEntity="Grain", cascade={"persist"}, inversedBy="about")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Grain")
      */
     private $grain;
 
@@ -74,6 +85,7 @@ class Subject
      *
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="subjectsCreated")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Editor")
      */
     private $author;
 
@@ -85,12 +97,14 @@ class Subject
      *     joinColumns={@ORM\JoinColumn(name="has_part", referencedColumnName="id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="is_part_of", referencedColumnName="id")}
      * )
+     * @Assert\Collection()
      */
     private $hasPart;
 
     /**
      * @var Collection Subjects which tackle this subjects
      * @ORM\ManyToMany(targetEntity="Subject", mappedBy="hasPart")
+     * @Assert\Collection()
      */
     private $isPartOf;
 
@@ -100,6 +114,7 @@ class Subject
      * @var Collection Notes on the subject
      *
      * @ORM\OneToMany(targetEntity="Note", mappedBy="subject")
+     * @Assert\Collection()
      */
     private $notes;
 
@@ -107,6 +122,7 @@ class Subject
      * @var Collection Contributions suggested on this subject
      *
      * @ORM\OneToMany(targetEntity="Contribution", mappedBy="subject")
+     * @Assert\Collection()
      */
     private $contributionsSuggested;
 
@@ -116,6 +132,7 @@ class Subject
      *
      * @ORM\ManyToMany(targetEntity="Chat", cascade={"persist"}, inversedBy="subjects")
      * @ORM\JoinTable(name="mdit_chat_subjects")
+     * @Assert\Collection()
      */
     private $chatrooms;
 
@@ -124,12 +141,14 @@ class Subject
      *
      * @ORM\ManyToOne(targetEntity="Version", cascade={"persist"}, inversedBy="subjects")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Version")
      */
     private $version;
 
     /**
      * @var Collection Images illustrating the subject
      * @ORM\OneToMany(targetEntity="Image", mappedBy="subject")
+     * @Assert\Collection()
      */
     private $images;
 

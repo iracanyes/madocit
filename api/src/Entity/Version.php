@@ -6,11 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource()
  * @ORM\Table(name="mdit_version")
  * @ORM\Entity(repositoryClass="App\Repository\VersionRepository")
+ * @UniqueEntity("assemblyVersion")
  */
 class Version
 {
@@ -19,48 +22,57 @@ class Version
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var string Associated product/technology version. e.g., .NET Framework 4.5.
      * @ORM\Column(type="string", unique=true, length=255)
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
      */
     private $assemblyVersion;
 
     /**
      * @var string Library file name e.g., mscorlib.dll, system.web.dll. Supersedes assembly.
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
      */
     private $executableLibraryName;
 
     /**
      * @var string Indicates whether API is managed or unmanaged.
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
      */
     private $programmingModel;
 
     /**
      * @var string Type of app development: phone, Metro style, desktop, XBox, etc.
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
      */
     private $targetPlatform;
 
     /**
      * @var boolean Version is validated
      * @ORM\Column(type="boolean")
+     * @Assert\Type("boolean")
      */
     private $isValid;
 
     /**
      * @var \DateTime Date of creation
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $dateCreated;
 
     /**
      * @var string Author of the version (optional)
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
      */
     private $author;
 
@@ -68,12 +80,14 @@ class Version
      * @var Theme Theme associated with this version
      * @ORM\ManyToOne(targetEntity="Theme", cascade={"persist", "remove"}, inversedBy="versions")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Theme")
      */
     private $theme;
 
     /**
      * @var Collection Subjects tackling this version of the theme
      * @ORM\OneToMany(targetEntity="Subject", cascade={"persist"}, mappedBy="version")
+     * @Assert\Collection()
      */
     private $subjects;
 

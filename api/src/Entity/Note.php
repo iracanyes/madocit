@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -17,36 +18,42 @@ class Note
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var string Content of the note
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $content;
 
     /**
      * @var \DateTime Date of creation
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $dateCreated;
 
     /**
      * @var \DateTime Date of the last modification
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private $dateModified;
 
     /**
      * @var integer Average rating for the note
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $rating;
 
     /**
      * @var boolean Note is validated
      * @ORM\Column(type="boolean", nullable=true)
+     * @Assert\Type("boolean")
      */
     private $isValid;
 
@@ -56,6 +63,8 @@ class Note
      * @var Editor $editor Editor who created the note
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="notesSuggested")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Editor")
+     *
      */
     private $editor;
 
@@ -64,6 +73,8 @@ class Note
      *
      * @ORM\ManyToOne(targetEntity="Moderator", cascade={"persist"}, inversedBy="notesValidated")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Moderator")
+     *
      */
     private $moderator;
 
@@ -72,6 +83,7 @@ class Note
      *
      * @ORM\ManyToOne(targetEntity="Subject", cascade={"persist"}, inversedBy="notes")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Subject")
      */
     private $subject;
 
