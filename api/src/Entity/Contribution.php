@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use iracanyes\DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -18,30 +19,37 @@ class Contribution
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
+     * @Assert\NotBlank()
      */
     private $id;
 
     /**
      * @var string Title of the contribution (optional).
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
      */
     private $title;
 
     /**
      * @var string Content of the contribution.
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $content;
 
     /**
      * @var Datetime Date of the contribution
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $dateCreated;
 
     /**
      * @var DateTime Date of the last modification of the contribution
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private $dateModified;
 
@@ -49,6 +57,8 @@ class Contribution
      * @var Editor $editor Editor who made this contribution
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="contributionsMade")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Editor")
+     * @Assert\NotBlank()
      */
     private $editor;
 
@@ -56,6 +66,8 @@ class Contribution
      * @var Subject $subject Subject which is concerned by this contribution
      * @ORM\ManyToOne(targetEntity="Subject", cascade={"persist"}, inversedBy="contributionsSuggested")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Editor")
+     * @Assert\NotBlank()
      */
     private $subject;
 

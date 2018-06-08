@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="mdit_sanction")
@@ -16,32 +18,39 @@ class Sanction
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var string Type of sanction ()
      * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
      */
     private $type;
 
     /**
      * @var \DateTime End date of the sanction
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private $duration;
 
     /**
      * @var string Status of the sanction (active, finished)
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
      */
     private $status;
 
     /**
      * Abuses sanctioned
-     * @var ArrayCollection Abuses tackled by the sanction
+     * @var Collection Abuses tackled by the sanction
      *
      * @ORM\OneToMany(targetEntity="Abuse", cascade={"persist"}, mappedBy="sanction")
+     * @Assert\Collection()
      */
     private $abuses;
 
@@ -51,6 +60,7 @@ class Sanction
      *
      * @ORM\ManyToOne(targetEntity="Moderator", cascade={"persist"}, inversedBy="sanctionsEmitted")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Moderator")
      */
     private $moderator;
 
@@ -60,6 +70,7 @@ class Sanction
      *
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist","remove"}, inversedBy="sanctionsReceived")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Type("App\Entity\Editor")
      */
     private $editor;
 

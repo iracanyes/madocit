@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -19,38 +20,58 @@ class Grain
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
+     *
      */
     private $id;
 
     /**
      * @var string Content of the grain (piece of article)
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $content;
 
     /**
      * @var \Datetime Date of the creation
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $dateCreated;
 
     /**
      * @var \DateTime Date of the last modification
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private $dateModified;
 
     /**
      * @var \DateTime Date of the publication
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private $datePublished;
 
     /**
      * @var boolean The grain is a draft
      * @ORM\Column(type="boolean")
+     * @Assert\Type("boolean")
      */
     private $draft;
+
+    /**
+     * @var integer Average votes made by other users
+     * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
+     * @Assert\Range(
+     *     min=0,
+     *     max=5,
+     *     minMessage="The minimumm rate for vote is {{ limit }}. \n Your rate's value is {{ value }} !",
+     *     maxMessage="The maximumm rate for vote is {{ limit }}. \n Your rate's value is {{ value }} !"
+     * )
+     */
+    private $rating;
 
     /**
      * @var Subject Subject matter of the content
@@ -147,6 +168,24 @@ class Grain
 
         return $this;
     }
+
+    /**
+     * @return int
+     */
+    public function getRating(): int
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param int $rating
+     */
+    public function setRating(int $rating): void
+    {
+        $this->rating = $rating;
+    }
+
+
 
     /**
      * @return Subject

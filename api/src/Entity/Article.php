@@ -6,6 +6,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -19,48 +20,62 @@ class Article
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var string Body of the article
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $articleBody;
 
     /**
      * @var Datetime Creation's date of the article
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $dateCreated;
 
     /**
      * @var Datetime The last modification's date of the article
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private $dateModified;
 
     /**
      * @var Datetime Date of publication
      * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
      */
     private $datePublished;
 
     /**
      * @var string Course prerequisites for a good understanding of the article
      * @ORM\Column(type="text", nullable=true)
+     * @Assert\Type("string")
      */
     private $coursePrerequisites;
 
     /**
      * @var integer Aggregate rating received by other users.
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $aggregateRating;
 
     /**
      * @var string URI for the pdf of the given article.
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\File(
+     *     maxSize = "20M",
+     *     binaryFormat = {"application/pdf", "application/x-pdf"},
+     *     mimeTypes = "Please upload a valid PDF",
+     *     maxSizeMessage="The file is too large ({{ size }} {{ suffix }}). Allowed maximum size is {{ limit }} {{ suffix }}",
+     *     mimeTypesMessage="The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}"
+     * )
      */
     private $pdf;
 
@@ -69,6 +84,8 @@ class Article
      *
      * @ORM\OneToOne(targetEntity="Subject", mappedBy="article")
      * @ORM\JoinColumn(name="subject_id", referencedColumnName="id")
+     * @Assert\Type("App\Entity\Subject")
+     * @Assert\NotNull()
      */
     private $about;
 
@@ -77,12 +94,14 @@ class Article
      *
      * @ORM\OneToOne(targetEntity="Video", mappedBy="associatedArticle")
      * @ORM\JoinColumn(name="video_id", referencedColumnName="id", nullable=true)
+     * @Assert\Type("App\Entity\Video")
      */
     private $video;
 
     /**
      * @var Collection Examples associated to the article
      * @ORM\ManyToMany(targetEntity="Example", mappedBy="associatedArticles")
+     * @Assert\Collection()
      */
     private $associatedExamples;
 

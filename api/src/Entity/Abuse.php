@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-use App\Entity\Editor;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -18,6 +18,10 @@ class Abuse
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type(
+     *     type="integer",
+     *     message="The value '{{ value }}' is not a valid type. Type : {{ type }} needed!"
+     * )
      */
     private $id;
 
@@ -30,6 +34,7 @@ class Abuse
     /**
      * @var Datetime Date of the creation of the abuse
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $dateCreated;
 
@@ -39,6 +44,8 @@ class Abuse
      *
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="abusesIdentified")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull()
+     * @Assert\Type("App\Entity\Editor")
      */
     private $accuser;
 
@@ -48,6 +55,8 @@ class Abuse
      *
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="abusesAccused")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull()
+     * @Assert\Type("App\Entity\Editor")
      */
     private $defendant;
 
@@ -56,6 +65,8 @@ class Abuse
      *
      * @ORM\ManyToOne(targetEntity="Chat", cascade={"persist"}, inversedBy="abuses")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotNull()
+     * @Assert\Type("App\Entity\Chat")
      */
     private $chat;
 

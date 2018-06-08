@@ -4,11 +4,18 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource()
  * @ORM\Table(name="mdit_video")
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
+ *
+ * @UniqueEntity(
+ *     fields={"title","url"},
+ *     message="This value '{{ value }}' is already used!"
+ * )
  */
 class Video
 {
@@ -17,42 +24,49 @@ class Video
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var string Title of the video
      * @ORM\Column(type="string", unique=true, length=255)
+     * @Assert\Type("string")
      */
     private $title;
 
     /**
      * @var string Short description of the video
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $caption;
 
     /**
      * @var string URL of the video
      * @ORM\Column(type="string", length=255)
+     * @Assert\Url()
      */
     private $url;
 
     /**
      * @var string External URL of the video
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Url()
      */
     private $embedUrl;
 
     /**
      * @var integer Size of the video
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $size;
 
     /**
      * @var \DateTime Date of the upload on the server
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $uploadDate;
 
@@ -60,6 +74,7 @@ class Video
      * @var Image Thumbnail image for the video
      * @ORM\OneToOne(targetEntity="Image", cascade={"persist","remove"}, inversedBy="video")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Image")
      */
     private $thumbnail;
 
@@ -67,6 +82,7 @@ class Video
      * @var Article Article associated to the video
      * @ORM\OneToOne(targetEntity="Article", cascade={"persist"}, inversedBy="video")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Article")
      */
     private $associatedArticle;
 
@@ -74,6 +90,7 @@ class Video
      * @var Example Example associated to the video
      * @ORM\OneToOne(targetEntity="Example", cascade={"persist"}, inversedBy="video")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Example")
      */
     private $associatedExample;
 
@@ -81,6 +98,7 @@ class Video
      * @var Grain Grain associated to the video
      * @ORM\OneToOne(targetEntity="Grain", cascade={"persist"}, inversedBy="video")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Grain")
      */
     private $associatedGrain;
 

@@ -6,11 +6,14 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource()
  * @ORM\Table(name="mdit_theme")
  * @ORM\Entity(repositoryClass="App\Repository\ThemeRepository")
+ * @UniqueEntity("name")
  */
 class Theme
 {
@@ -19,30 +22,35 @@ class Theme
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var string Name of the theme
      * @ORM\Column(type="string", unique=true, length=255)
+     * @Assert\Type("string")
      */
     private $name;
 
     /**
      * @var string Description of the theme
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $description;
 
     /**
      * @var boolean The theme has been validated
      * @ORM\Column(type="boolean")
+     * @Assert\Type("boolean")
      */
     private $isValid;
 
     /**
      * @var \DateTime Date of the creation
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $dateCreated;
 
@@ -50,18 +58,21 @@ class Theme
      * @var Image|null Image illustrating the category
      * @ORM\OneToOne(targetEntity="Image", cascade={"persist","remove"}, inversedBy="theme")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Image")
      */
     private $image;
 
     /**
      * @var Collection Categories of the theme
      * @ORM\ManyToMany(targetEntity="Category", mappedBy="themes")
+     * @Assert\Collection()
      */
     private $categories;
 
     /**
      * @var Collection Versions of the theme
-     * @ORM\OneToMany(targetEntity="Version", mappedBy="theme")
+     * @ORM\OneToMany(targetEntity="Version", mappedBy="theme")     *
+     * @Assert\Collection()
      */
     private $versions;
 

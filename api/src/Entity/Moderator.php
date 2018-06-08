@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="mdit_moderator")
@@ -16,30 +17,35 @@ class Moderator extends Editor
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(name="id", type="integer")
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var integer Number of sanctions emitted by the moderator
      * @ORM\Column(name="nb_sanction_emitted", type="integer")
+     * @Assert\Type("integer")
      */
     private $nbSanctionEmitted;
 
     /**
      * @var integer Number of notes validated by the editor
      * @ORM\Column(name="nb_notes_validated", type="integer")
+     * @Assert\Type("integer")
      */
     private $nbNotesValidated;
 
     /**
      * @var integer Average rating for all the activities of moderation
      * @ORM\Column(name="rate_moderation", type="integer")
+     * @Assert\Type("integer")
      */
     private $rateModeration;
 
     /**
      * @var boolean The moderation is a global moderator
      * @ORM\Column(name="is_global_moderator", type="boolean")
+     * @Assert\Type("integer")
      */
     private $isGlobalModerator;
 
@@ -47,6 +53,7 @@ class Moderator extends Editor
      * @var ArrayCollection Notes validated
      *
      * @ORM\OneToMany(targetEntity="Note", mappedBy="moderator")
+     * @Assert\Collection()
      */
     private $notesValidated;
 
@@ -55,6 +62,7 @@ class Moderator extends Editor
      * @var ArrayCollection
      *
      * @ORM\OneToMany(targetEntity="Sanction", mappedBy="moderator")
+     * @Assert\Collection()
      */
     private $sanctionsEmitted;
 

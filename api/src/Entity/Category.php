@@ -5,11 +5,15 @@ namespace App\Entity;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource()
  * @ORM\Table(name="mdit_category")
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
+ * Contraintes d'unicité des noms de catégorie
+ * @UniqueEntity("name")
  */
 class Category
 {
@@ -18,30 +22,38 @@ class Category
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var string Name of the category
      * @ORM\Column(type="string", unique=true, length=255)
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
      */
     private $name;
 
     /**
      * @var string Description of the category
      * @ORM\Column(type="text")
+     * @Assert\Type("string")
+     * @Assert\NotBlank()
      */
     private $description;
 
     /**
      * @var boolean The category has been validated
      * @ORM\Column(type="boolean")
+     * @Assert\Type("boolean")
      */
     private $isValid;
 
     /**
      * @var Datetime Date of the creation of the category
      * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
      */
     private $dateCreated;
 
@@ -49,6 +61,7 @@ class Category
      * @var Image|null Image illustrating the category
      * @ORM\OneToOne(targetEntity="Image", cascade={"persist","remove"}, inversedBy="category")
      * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Image")
      */
     private $image;
 
@@ -60,11 +73,13 @@ class Category
      *     joinColumns={@ORM\JoinColumn(name="category_id")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="theme_id", nullable=false)}
      * )
+     * @Assert\Collection()
      */
     private $themes;
 
     public function __construct()
     {
+        $this->isValid = false;
         $this->themes = new ArrayCollection();
     }
 
