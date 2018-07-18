@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # madocit
 
 Install
