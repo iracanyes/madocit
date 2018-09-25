@@ -12,7 +12,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="mdit_video")
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
  *
- * @UniqueEntity(
+ * @ UniqueEntity(
  *     fields={"title","url"},
  *     message="This value '{{ value }}' is already used!"
  * )
@@ -29,8 +29,9 @@ class Video
     private $id;
 
     /**
+     * ATTENTION: Avant la mise en production remettre la contrainte d'unicité
      * @var string Title of the video
-     * @ORM\Column(type="string", unique=true, length=255)
+     * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
      */
     private $title;
@@ -80,7 +81,7 @@ class Video
 
     /**
      * @var Subject $subject
-     * @ORM\OneToOne(targetEntity="Subject", mappedBy="video")
+     * @ORM\OneToOne(targetEntity="Subject", cascade={"persist"}, mappedBy="video")     *
      * @Assert\Type("App\Entity\Subject")
      */
     private $subject;

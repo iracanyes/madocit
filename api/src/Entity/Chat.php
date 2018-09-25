@@ -29,7 +29,7 @@ class Chat
     /**
      * ATTENTION: Avant la mise en production remettre la contrainte d'unicité
      * @var string Title of the chatroom
-     * @ORM\Column(type="string", unique=true, length=255)
+     * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
      * @Assert\NotBlank()
      */

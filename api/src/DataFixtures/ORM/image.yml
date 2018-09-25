@@ -1,7 +1,0 @@
-App\Entity\Image:
-    image{1..90}:
-        place: '<numberBetween(1, 5)>'
-        title: '<fr_FR:sentence(7)>'
-        url: '<imageUrl(1200, 900)>'
-        alt: '<fr_FR:sentence(7)>'
-        size:  '<numberBetween(100, 1000)>'

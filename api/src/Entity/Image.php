@@ -189,9 +189,9 @@ class Image
 
 
     /**
-     * @return Collection
+     * @return Collection|null
      */
-    public function getCategories(): Collection
+    public function getCategories(): ?Collection
     {
         return $this->categories;
     }

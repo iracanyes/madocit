@@ -56,6 +56,7 @@ class GrainFixtures extends Fixture implements DependentFixtureInterface
         $grain->setAuthor($this->getReference(EditorFixtures::EDITOR_REFERENCE))
             ->addCategory($this->getReference(CategoryFixtures::CATEGORY_REFERENCE))
             ->addTheme($this->getReference(ThemeFixtures::THEME_REFERENCE))
+            ->addVersion($this->getReference(VersionFixtures::VERSION_REFERENCE))
             ->addImage($this->getReference(ImageFixtures::IMAGE_REFERENCE));
 
 
@@ -63,7 +64,7 @@ class GrainFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($grain);
 
-        //$manager->flush();
+        $manager->flush();
 
         // Reference used by other fixture. Ex: ImageFixtures::IMAGE_REFERENCE
         $this->addReference(self::GRAIN_REFERENCE, $grain);

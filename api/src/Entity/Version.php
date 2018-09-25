@@ -81,7 +81,7 @@ class Version
 
     /**
      * @var Collection Subjects tackling this version
-     * @ORM\OneToMany(targetEntity="Subject", mappedBy="version")
+     * @ORM\ManyToMany(targetEntity="Subject", mappedBy="versions")
      * @Assert\Collection()
      */
     private $subjects;
@@ -244,9 +244,9 @@ class Version
     }
 
     /**
-     * @return Collection
+     * @return Collection|null
      */
-    public function getSubjects(): Collection
+    public function getSubjects(): ?Collection
     {
         return $this->subjects;
     }
@@ -262,9 +262,9 @@ class Version
             // Add a subject
             $this->subjects->add($subject);
 
-            if($subject->getVersion() !== $this){
+            if(!$subject->getVersions()->contains($this)){
                 //Add a reference to this version in the Subject instance
-                $subject->setVersion($this);
+                $subject->addVersion($this);
             }
         }
 
@@ -283,9 +283,9 @@ class Version
             // Remove a subject
             $this->subjects->removeElement($subject);
 
-            if($subject->getVersion() === $this){
+            if($subject->getVersions()->contains($this)){
                 // Remove a reference to this version in the Subject instance
-                $subject->setVersion(null);
+                $subject->removeVersion($this);
             }
         }
 
@@ -293,9 +293,9 @@ class Version
     }
 
     /**
-     * @return Collection
+     * @return Collection|null
      */
-    public function getChatrooms(): Collection
+    public function getChatrooms(): ?Collection
     {
         return $this->chatrooms;
     }

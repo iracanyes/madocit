@@ -34,9 +34,9 @@ class ImageFixtures extends Fixture
 
         //hydratation
         $image->setPlace(mt_rand(1,5))
-            ->setTitle($this->faker->title)
+            ->setTitle($this->faker->sentence)
             ->setUrl($this->faker->imageUrl(1200,900))
-            ->setAlt($this->faker->title)
+            ->setAlt($this->faker->sentence)
             ->setSize(mt_rand(1000,10000));
 
         $manager->persist($image);

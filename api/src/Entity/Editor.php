@@ -157,7 +157,7 @@ class Editor extends User
 
     /**
      * @var Collection $subjectsCreated Subjects created by the editor
-     * @ORM\OneToMany(targetEntity="Subject", mappedBy="author")
+     * @ORM\OneToMany(targetEntity="Subject", cascade={"persist","remove"}, mappedBy="author")
      * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
     protected $subjectsCreated;
@@ -171,7 +171,7 @@ class Editor extends User
 
     /**
      * @var Collection $chatroomsCreated Chatroom created by this editor
-     * @ORM\OneToMany(targetEntity="Chat", mappedBy="creator")
+     * @ORM\OneToMany(targetEntity="Chat", cascade={"persist"}, mappedBy="creator")
      * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
     protected $chatroomsCreated;
@@ -187,7 +187,7 @@ class Editor extends User
     /**
      * @var Collection $messagesWritten Messages written by the editor
      * @ORM\OneToMany(targetEntity="Message", mappedBy="editor")
-     * @Assert\Type("Doctrine\Common\Collections\Collection")
+     * @Assert\Collection()
      */
     protected $messagesWritten;
 
@@ -197,7 +197,7 @@ class Editor extends User
      * @var Collection $notesSuggested Notes suggested by this editor
      *
      * @ORM\OneToMany(targetEntity="Note", mappedBy="editor")
-     * @Assert\Type("Doctrine\Common\Collections\Collection")
+     * @Assert\Collection()
      */
     protected $notesSuggested;
 
@@ -206,7 +206,7 @@ class Editor extends User
      * @var Collection $abusesIdentified Abuses identified
      *
      * @ORM\OneToMany(targetEntity="Abuse", cascade={"persist"}, mappedBy="accuser")
-     * @Assert\Type("Doctrine\Common\Collections\Collection")
+     * @Assert\Collection()
      */
     protected $abusesIdentified;
 
@@ -214,7 +214,7 @@ class Editor extends User
      * @var Collection $abusesAccused Abuses accused
      *
      * @ORM\OneToMany(targetEntity="Abuse", cascade={"persist"}, mappedBy="defendant")
-     * @Assert\Type("Doctrine\Common\Collections\Collection")
+     * @Assert\Collection()
      */
     protected $abusesAccused;
 
@@ -224,7 +224,7 @@ class Editor extends User
      * @var Collection $sanctionsReceived Sanctions received for abuses
      *
      * @ORM\OneToMany(targetEntity="Sanction", cascade={"persist","remove"}, mappedBy="editor")
-     * @Assert\Type("Doctrine\Common\Collections\Collection")
+     * @Assert\Collection()
      */
     protected $sanctionsReceived;
 

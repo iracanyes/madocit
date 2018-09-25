@@ -105,7 +105,7 @@ class Subject
     /**
      * @var Collection Notes on the subject
      *
-     * @ORM\OneToMany(targetEntity="Note", mappedBy="subject")
+     * @ORM\OneToMany(targetEntity="Note", cascade={"persist"}, mappedBy="subject")
      * @Assert\Collection()
      */
     protected $notes;
@@ -137,13 +137,13 @@ class Subject
     protected $chatrooms;
 
     /**
-     * @var Version $version Subject's version
+     * @var Collection $versions Subject's versions
      *
-     * @ORM\ManyToOne(targetEntity="Version", cascade={"persist"}, inversedBy="subjects")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity="Version", cascade={"persist"}, inversedBy="subjects")
+     * @ORM\JoinTable(name="mdit_subjects_versions")
      * @Assert\Type("App\Entity\Version")
      */
-    protected $version;
+    protected $versions;
 
     /**
      * @var Collection Images illustrating the subject
@@ -167,6 +167,7 @@ class Subject
     {
         $this->categories = new ArrayCollection();
         $this->themes = new ArrayCollection();
+        $this->versions = new ArrayCollection();
         $this->privileges = new ArrayCollection();
         $this->notes = new ArrayCollection();
         $this->examples = new ArrayCollection();
@@ -340,9 +341,9 @@ class Subject
     }
 
     /**
-     * @return Collection
+     * @return Collection|null
      */
-    public function getCategories(): Collection
+    public function getCategories(): ?Collection
     {
         return $this->categories;
     }
@@ -397,9 +398,9 @@ class Subject
 
 
     /**
-     * @return Collection
+     * @return Collection|null
      */
-    public function getThemes(): Collection
+    public function getThemes(): ?Collection
     {
         return $this->themes;
     }
@@ -443,9 +444,9 @@ class Subject
 
 
     /**
-     * @return Collection
+     * @return Collection|null
      */
-    public function getPrivileges(): Collection
+    public function getPrivileges(): ?Collection
     {
         return $this->privileges;
     }
@@ -491,9 +492,9 @@ class Subject
 
     /**
      * Get notes
-     * @return Collection
+     * @return Collection|null
      */
-    public function getNotes(): Collection
+    public function getNotes(): ?Collection
     {
         return $this->notes;
     }
@@ -537,9 +538,9 @@ class Subject
     }
 
     /**
-     * @return Collection
+     * @return Collection|null
      */
-    public function getExamples(): Collection
+    public function getExamples(): ?Collection
     {
         return $this->examples;
     }
@@ -583,9 +584,9 @@ class Subject
     /**
      * Get contributions suggested
      *
-     * @return Collection
+     * @return Collection|null
      */
-    public function getContributionsSuggested(): Collection
+    public function getContributionsSuggested(): ?Collection
     {
         return $this->contributionsSuggested;
     }
@@ -680,20 +681,43 @@ class Subject
     }
 
     /**
-     * @return Version
+     * @return Collection|null
      */
-    public function getVersion(): ?Version
+    public function getVersions(): ?Collection
     {
-        return $this->version;
+        return $this->versions;
     }
 
     /**
      * @param Version $version
      * @return Subject
      */
-    public function setVersion(Version $version): self
+    public function addVersion(Version $version): self
     {
-        $this->version = $version;
+        if(!$this->versions->contains($version)){
+            $this->versions->add($version);
+
+            if(!$version->getSubjects()->contains($this)){
+                $version->addSubject($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Version $version
+     * @return Subject
+     */
+    public function removeVersion(Version $version): self
+    {
+        if($this->versions->contains($version)){
+            $this->versions->removeElement($version);
+
+            if($version->getSubjects()->contains($this)){
+                $version->removeSubject($this);
+            }
+        }
 
         return $this;
     }
@@ -701,9 +725,9 @@ class Subject
 
     /**
      * Get Images
-     * @return Collection
+     * @return Collection|null
      */
-    public function getImages(): Collection
+    public function getImages(): ?Collection
     {
         return $this->images;
     }

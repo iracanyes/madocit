@@ -1,7 +1,0 @@
-App\Entity\Note:
-    note{1..166}:
-        content: '<fr_FR:realText(200)>'
-        dateCreated: '<dateTimeBetween("-2 years", "now")>'
-        dateModified: '<dateTimeBetween("-1 years", "now")>'
-        rating: '<numberBetween(1,10)>'
-        isValid: '<boolean(50)>'

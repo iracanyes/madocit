@@ -1,4 +1,0 @@
-#App\Entity\Privilege:
-#    privilege{1..90}:
-#        type: '<fr_FR:sentence(7)>'
-
