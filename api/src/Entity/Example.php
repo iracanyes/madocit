@@ -101,7 +101,8 @@ class Example
      */
     public function __construct()
     {
-        $this->subjects = $this->images = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
 

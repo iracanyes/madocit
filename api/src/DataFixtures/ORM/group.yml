@@ -1,8 +1,0 @@
-App\Entity\Group:
-    group{1..15}:
-        name:  '<fr_FR:sentence(7)>'
-        description: '<fr_FR:realText(100)>'
-        # Relations
-        # members: '2x @editor<numberBetween(1,120)>'
-        #privileges (unique): '1x @privilege*'
-        contributions (unique): '1x @contribution*'

@@ -14,6 +14,7 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use \Faker\Factory;
 use App\Entity\Article;
 use App\Entity\Category;
+use App\Entity\Image;
 
 class ArticleFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -58,18 +59,15 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
         // Subject's relations
         $article->setAuthor($this->getReference(EditorFixtures::EDITOR_REFERENCE));
 
-        /* Category's relation
-        $category= $this->createCategory();
-        $category->setSubCategories(new ArrayCollection());
-        $category->addSubCategory($this->getReference(CategoryFixtures::CATEGORY_REFERENCE));
+        $article->addVersion($this->getReference(VersionFixtures::VERSION_REFERENCE))
+            ->addCategory($this->getReference(CategoryFixtures::CATEGORY_REFERENCE))
+            ->addTheme($this->getReference(ThemeFixtures::THEME_REFERENCE));
 
-        $manager->persist($category);
-        */
+        // Image
+        $image = $this->createImage();
+        $manager->persist($image);
 
-         $article->addCategory($this->getReference(CategoryFixtures::CATEGORY_REFERENCE));
-         $article->setVersion($this->getReference(VersionFixtures::VERSION_REFERENCE));
-         $article->addTheme($this->getReference(ThemeFixtures::THEME_REFERENCE))
-            ->addImage($this->getReference(ImageFixtures::IMAGE_REFERENCE));
+        $article->addImage($image);
 
 
         // Article's relation
@@ -107,11 +105,20 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             ->setDateCreated($this->faker->dateTimeBetween('-2years', 'now'));
 
 
-        /* HYDRATATION : RELATIONS REFERENCES */
-        //$category->addSubjects($this->getReference(ArticleFixtures::ARTICLE_REFERENCE));
-        //   ->addImage($this->getReference(ImageFixtures::IMAGE_REFERENCE));
-
         return $category;
+    }
+
+    public function createImage(){
+        $image = new Image();
+
+        //hydratation
+        $image->setPlace(mt_rand(1,5))
+            ->setTitle($this->faker->title)
+            ->setUrl($this->faker->imageUrl(1200,900))
+            ->setAlt($this->faker->title)
+            ->setSize(mt_rand(1000,10000));
+
+        return $image;
     }
 
     /**

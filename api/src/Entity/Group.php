@@ -71,8 +71,8 @@ class Group
      */
     public function __construct()
     {
-        $this->members =
-        $this->privileges =
+        $this->members = new ArrayCollection();
+        $this->privileges = new ArrayCollection();
         $this->contributions = new ArrayCollection();
     }
 

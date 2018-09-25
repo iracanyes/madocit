@@ -8,45 +8,51 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Chat;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use \Faker\Factory;
-use App\Entity\Version;
+use App\Entity\EditorsChats;
 
-class VersionFixtures extends Fixture //implements DependentFixtureInterface
+class EditorsChatsFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
      * @var \Faker\Generator
      */
     private $faker;
 
-    public const VERSION_REFERENCE = 'version';
+    public const EDITORS_CHATS_REFERENCE = 'editorsChats';
 
     public function __construct()
     {
-        $this->faker = \Faker\Factory::create('fr_FR');
+        $this->faker = Factory::create('fr_FR');
     }
 
     public function load(ObjectManager $manager)
     {
-        $version = new Version();
+        $editorsChats = new EditorsChats();
 
         /* hydratation */
-        $version->setAssemblyVersion($this->faker->domainName)
-            ->setExecutableLibraryName($this->faker->company)
-            ->setProgrammingModel($this->faker->sentence)
-            ->setTargetPlatform($this->faker->sentence)
-            ->setIsValid(true)
-            ->setDateCreated($this->faker->dateTimeBetween('-2 years','now'))
-            ->setAuthor($this->faker->name);
+        $editorsChats->setNbUnreadMessages(random_int(1,10));
 
-        $manager->persist($version);
+        /* Editor's chats relations */
+        $editorsChats->setEditor($this->getReference(EditorFixtures::EDITOR_REFERENCE))
+            ->setChatroom($this->getReference(ChatFixtures::CHAT_REFERENCE));
+
+
+
+        $manager->persist($editorsChats);
 
         $manager->flush();
 
         // Reference used by other fixture. Ex: ImageFixtures::IMAGE_REFERENCE
-        $this->addReference(self::VERSION_REFERENCE, $version);
+        $this->addReference(self::EDITORS_CHATS_REFERENCE, $editorsChats);
+
+    }
+
+    public function createChatroom(): Chat
+    {
 
     }
 
@@ -54,16 +60,13 @@ class VersionFixtures extends Fixture //implements DependentFixtureInterface
      * Permet de définir un ordre de chargement des fixtures ainsi les dépendances sont chargés avant
      * @return array
      */
-    /*
+
     public function getDependencies()
     {
         return array(
-            //ArticleFixtures::class,
-            //GrainFixtures::class,
+            EditorFixtures::class,
             ChatFixtures::class,
-
         );
     }
-    */
 
 }

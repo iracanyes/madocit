@@ -45,11 +45,6 @@ class ThemeFixtures extends Fixture
             ->setIsValid(false)
             ->setDateCreated($this->faker->dateTimeBetween("-2 years", "now"));
 
-        /* HYDRATATION : RELATIONS REFERENCES */
-
-
-
-
 
         $manager->persist($theme);
 

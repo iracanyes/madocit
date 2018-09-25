@@ -186,9 +186,9 @@ class Article extends Subject
     }
 
     /**
-     * @return Collection
+     * @return Collection|null
      */
-    public function getHasParts(): Collection
+    public function getHasParts(): ?Collection
     {
         return $this->hasParts;
     }
