@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="mdit_grain")
  * @ORM\Entity(repositoryClass="App\Repository\GrainRepository")
  */
-class Grain
+class Grain extends Subject
 {
     /**
      * @var integer ID of the grain (piece of article)
@@ -23,7 +23,7 @@ class Grain
      * @Assert\Type("integer")
      *
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string Content of the grain (piece of article)
@@ -73,32 +73,18 @@ class Grain
      */
     private $rating;
 
-    /**
-     * @var Subject Subject matter of the content
-     *
-     * @ORM\OneToOne(targetEntity="Subject", mappedBy="grain")
-     * @ORM\JoinColumn(name="subject_id", referencedColumnName="id", nullable=true)
-     */
-    private $about;
 
     /**
-     * @var Collection Associated examples
-     *
-     * @ORM\ManyToMany(targetEntity="Example", mappedBy="associatedGrains")
+     * @var Collection $isPartOf Article in which this grain is included
+     * @ORM\ManyToMany(targetEntity="Article", mappedBy="hasParts")
+     * @Assert\Collection()
      */
-    private $associatedExamples;
-
-    /**
-     * @var Video Video associated to the grain
-     *
-     * @ORM\OneToOne(targetEntity="Video", cascade={"persist"}, mappedBy="associatedGrain")
-     * @ORM\JoinColumn(name="video_id", referencedColumnName="id", nullable=true)
-     */
-    private $video;
+    private $isPartOf;
 
     public function __construct()
     {
-        $this->associatedExamples = new ArrayCollection();
+        Subject::__construct();
+        $this->isPartOf = new ArrayCollection();
     }
 
     /**
@@ -185,91 +171,51 @@ class Grain
         $this->rating = $rating;
     }
 
-
-
     /**
-     * @return Subject
-     */
-    public function getAbout(): Subject
-    {
-        return $this->about;
-    }
-
-    /**
-     * @param Subject $about
-     */
-    public function setAbout(Subject $about): void
-    {
-        $this->about = $about;
-    }
-
-    /**
-     * Get associated examples
-     *
      * @return Collection
      */
-    public function getAssociatedExamples(): Collection
+    public function getIsPartOf(): Collection
     {
-        return $this->associatedExamples;
+        return $this->isPartOf;
     }
 
     /**
-     * Add an associated example
-     *
-     * @param Example $example
-     * @return Grain
+     * @param Article $article
+     * @return self
      */
-    public function addAssociatedExample(Example $example): self
+    public function addIsPartOf(Article $article): self
     {
-        if(!$this->associatedExamples->contains($example)){
-            // Add an example
-            $this->associatedExamples->add($example);
+        if(!$this->isPartOf->contains($article)){
+            // Add the article
+            $this->isPartOf->add($article);
 
-            if(!$example->getAssociatedGrains()->contains($this)){
-                // Add the reference to this editor in the Example instance
-                $example->getAssociatedGrains()->add($this);
+            /* Add a reference to this Grain in the Article instance
+            if(!$article->getHasPart()->contains($this)){
+                $article->addHasPart($this);
             }
+            */
         }
 
         return $this;
     }
 
     /**
-     * Remove an associated example
-     *
-     * @param Example $example
-     * @return void
+     * @param Article $article
+     * @return self
      */
-    public function removeAssociatedExample(Example $example): void
+    public function removeIsPartOf(Article $article): self
     {
-        if($this->associatedExamples->contains($example)){
-            // Remove an associated example
-            $this->associatedExamples->removeElement($example);
+        if($this->isPartOf->contains($article)){
+            // Remove the article
+            $this->isPartOf->removeElement($article);
 
-            if($example->getAssociatedGrains()->contains($this)){
-                // Remove the reference
-                $example->getAssociatedGrains()->removeElement($this);
+            /* Remove the reference to this grain in the Article instance
+            if($article->getHasPart()->contains($this)){
+                $article->getHasPart()->removeElement($this);
             }
+            */
         }
+
+        return $this;
     }
-
-    /**
-     * @return Video
-     */
-    public function getVideo(): Video
-    {
-        return $this->video;
-    }
-
-    /**
-     * @param Video $video
-     */
-    public function setVideo(Video $video): void
-    {
-        $this->video = $video;
-    }
-
-
-
-
 }

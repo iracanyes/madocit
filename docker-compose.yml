@@ -26,6 +26,8 @@ services:
         - ${CONTAINER_REGISTRY_BASE}/nginx
     depends_on:
       - php
+    env_file:
+    - ./api/.env
     volumes:
       - ./api/public:/srv/api/public:ro
     ports:

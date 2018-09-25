@@ -63,8 +63,7 @@ class Note
      * @var Editor $editor Editor who created the note
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="notesSuggested")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Type("App\Entity\Editor")
-     *
+     * @Assert\NotNull()
      */
     private $editor;
 
@@ -149,6 +148,10 @@ class Note
         return $this->isValid;
     }
 
+    /**
+     * @param bool|null $isValid
+     * @return Note
+     */
     public function setIsValid(?bool $isValid): self
     {
         $this->isValid = $isValid;
@@ -165,43 +168,64 @@ class Note
     }
 
     /**
-     * @param Editor $editor
+     * @param Editor|null $editor
+     * @return Note
      */
-    public function setEditor(Editor $editor): void
+    public function setEditor(?Editor $editor): self
     {
         $this->editor = $editor;
+
+        if(!is_null($editor) && !$editor->getNotesSuggested()->contains($this)){
+            $editor->addNoteSuggested($this);
+        }
+
+        return $this;
     }
 
     /**
-     * @return Moderator
+     * @return Moderator|null
      */
-    public function getModerator(): Moderator
+    public function getModerator(): ?Moderator
     {
         return $this->moderator;
     }
 
     /**
-     * @param Moderator $moderator
+     * @param Moderator|null $moderator
+     * @return Note
      */
-    public function setModerator(Moderator $moderator): void
+    public function setModerator(?Moderator $moderator): self
     {
         $this->moderator = $moderator;
+
+        if(!is_null($moderator) && !$moderator->getNotesValidated()->contains($this)){
+            $moderator->addNotesValidated($this);
+        }
+
+        return $this;
     }
 
     /**
-     * @return Subject
+     * @return Subject|null
      */
-    public function getSubject(): Subject
+    public function getSubject(): ?Subject
     {
         return $this->subject;
     }
 
     /**
-     * @param Subject $subject
+     * @param Subject|null $subject
+     * @return Note
      */
-    public function setSubject(Subject $subject): void
+    public function setSubject(?Subject $subject): self
     {
         $this->subject = $subject;
+
+        if(($subject !== null) && !$subject->getNotes()->contains($this)){
+            $subject->addNote($this);
+        }
+
+        return $this;
     }
 
 

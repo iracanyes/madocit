@@ -4,9 +4,11 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+
 
 /**
  * @ApiResource()
@@ -22,22 +24,28 @@ class Category
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @Assert\NotBlank()
      * @Assert\Type("integer")
      */
     private $id;
 
     /**
      * @var string Name of the category
-     * @ORM\Column(type="string", unique=true, length=255)
+     * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
      * @Assert\NotBlank()
      */
     private $name;
 
     /**
+     * @var string $resume Resume of the category's description
+     * @ORM\Column(name="resume", type="text")
+     * @Assert\Type("string")
+     */
+    private $resume;
+
+    /**
      * @var string Description of the category
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="description", type="text")
      * @Assert\Type("string")
      * @Assert\NotBlank()
      */
@@ -51,36 +59,75 @@ class Category
     private $isValid;
 
     /**
-     * @var Datetime Date of the creation of the category
+     *
+     * @var \DateTime Date of the creation of the category
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      */
     private $dateCreated;
 
     /**
-     * @var Image|null Image illustrating the category
-     * @ORM\OneToOne(targetEntity="Image", cascade={"persist","remove"}, inversedBy="category")
-     * @ORM\JoinColumn(nullable=true)
-     * @Assert\Type("App\Entity\Image")
+     * @var Category|null $parentCategory Parent category of this category
+     * @ORM\ManyToOne(targetEntity="Category", inversedBy="subCategories")
+     * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true)
+     *
      */
-    private $image;
+    private $parentCategory;
 
     /**
-     * @var Collection Theme classified in the Category instance
-     * @ORM\ManyToMany(targetEntity="Theme", cascade={"persist", "remove"}, inversedBy="categories")
-     * @ORM\JoinTable(
-     *     name="mdit_categories_themes",
-     *     joinColumns={@ORM\JoinColumn(name="category_id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="theme_id", nullable=false)}
-     * )
+     * @var ArrayCollection $subCategories SubCategories related to the category
+     * @ORM\OneToMany(targetEntity="Category", mappedBy="parentCategory")
      * @Assert\Collection()
      */
-    private $themes;
+    private $subCategories;
 
+
+
+    /**
+     * @var Collection $subjects Subjects classified in this category
+     * @ORM\ManyToMany(targetEntity="Subject", cascade={"persist"} ,inversedBy="categories")
+     * @ORM\JoinTable(name="mdit_category_subjects")
+     * @Assert\Collection()
+     */
+    private $subjects;
+
+
+    /**
+     * @var Collection $images Images illustrating the category
+     * @ORM\ManyToMany(targetEntity="Image", cascade={"persist"}, inversedBy="categories")
+     * @ORM\JoinTable(name="mdit_categories_images")
+     *
+     * @Assert\Collection()
+     */
+    private $images;
+
+
+    /**
+     * @var Video $video Video that describe the category
+     * @ORM\OneToOne(targetEntity="Video", cascade={"persist","remove"}, inversedBy="associatedCategory")
+     * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Video")
+     */
+    private $video;
+
+    /**
+     * @var Collection $chatrooms Chatrooms related to the category
+     * @ORM\OneToMany(targetEntity="Chat", mappedBy="category")
+     * @Assert\Collection()
+     */
+    private $chatrooms;
+
+    /**
+     * Category constructor.
+     */
     public function __construct()
     {
+
         $this->isValid = false;
-        $this->themes = new ArrayCollection();
+        $this->subCategories = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
+        $this->images = new ArrayCollection();
+        $this->chatrooms = new ArrayCollection();
     }
 
 
@@ -92,11 +139,18 @@ class Category
         return $this->id;
     }
 
+    /**
+     * @return null|string
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return Category
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -104,11 +158,38 @@ class Category
         return $this;
     }
 
+    /**
+     * @return string
+     */
+    public function getResume(): ?string
+    {
+        return $this->resume;
+    }
+
+    /**
+     * @param string $resume
+     * @return Category
+     */
+    public function setResume(string $resume): self
+    {
+        $this->resume = $resume;
+
+        return $this;
+    }
+
+
+    /**
+     * @return null|string
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     * @return Category
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -116,11 +197,18 @@ class Category
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getIsValid(): ?bool
     {
         return $this->isValid;
     }
 
+    /**
+     * @param bool $isValid
+     * @return Category
+     */
     public function setIsValid(bool $isValid): self
     {
         $this->isValid = $isValid;
@@ -128,11 +216,18 @@ class Category
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getDateCreated(): ?\DateTimeInterface
     {
         return $this->dateCreated;
     }
 
+    /**
+     * @param \DateTimeInterface $dateCreated
+     * @return Category
+     */
     public function setDateCreated(\DateTimeInterface $dateCreated): self
     {
         $this->dateCreated = $dateCreated;
@@ -141,47 +236,54 @@ class Category
     }
 
     /**
-     * @return Image|null
+     * @return Category|null
      */
-    public function getImage(): ?Image
+    public function getParentCategory(): ?Category
     {
-        return $this->image;
+        return $this->parentCategory;
     }
 
     /**
-     * @param Image|null $image
-     */
-    public function setImage(?Image $image): void
-    {
-        $this->image = $image;
-    }
-
-
-
-    /**
-     * Get themes
-     * @return Collection|null
-     */
-    public function getThemes(): ?Collection
-    {
-        return $this->themes;
-    }
-
-    /**
-     * Add a theme
-     * @param Theme $theme
+     * @param Category|null $parentCategory
      * @return Category
      */
-    public function addTheme(Theme $theme): self
+    public function setParentCategory(?Category $parentCategory): self
     {
-        if(!$this->themes->contains($theme)){
-            // Add a theme
-            $this->themes->add($theme);
+        $this->parentCategory = $parentCategory;
 
-            if(!$theme->getCategories()->contains($this)){
-                // Add a reference to the category
-                $theme->addCategory($this);
+        if(($parentCategory !== null) && !$parentCategory->getSubCategories()->contains($this)){
+            $parentCategory->addSubCategories($this);
+        }
 
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getSubCategories(): ?Collection
+    {
+        return $this->subCategories;
+    }
+
+    public function setSubCategories(ArrayCollection $collection): self
+    {
+        $this->subCategories = $collection;
+
+        return $this;
+    }
+
+    /**
+     * @param Category|null $category
+     * @return Category
+     */
+    public function addSubCategory(?Category $category = null): self
+    {
+        if(!$this->subCategories->contains($category)){
+            $this->subCategories->add($category);
+
+            if($category->getParentCategory() !== $this){
+                $category->setParentCategory($this);
             }
         }
 
@@ -189,20 +291,198 @@ class Category
     }
 
     /**
-     * Remove a theme
-     * @param Theme $theme
-     * @return void
+     * Remove a sub-category
+     * @param Category $category
+     * @return Category
      */
-    public function removeTheme(Theme $theme): void
+    public function removeSubCategory(Category $category): self
     {
-        if($this->themes->contains($theme)){
-            // Remove the theme
-            $this->themes->removeElement($theme);
+        if($this->subCategories->contains($category)){
+            $this->subCategories->removeElement($category);
 
-            // Remove the reference to the category
-            if($theme->getCategories()->contains($this)){
-                $theme->getCategories()->removeElement($this);
+            if($category->getParentCategory() === $this){
+                $category->setParentCategory(null);
             }
         }
+
+        return $this;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getSubjects(): Collection
+    {
+        return $this->subjects;
+    }
+
+    /**
+     * @param Collection $collection
+     * @return Category
+     */
+    public function setSubjects(Collection $collection): self
+    {
+        $this->subjects = $collection;
+
+        return $this;
+    }
+
+    /**
+     * @param Subject $subject
+     * @return Category
+     */
+    public function addSubjects(Subject $subject): self
+    {
+        if(!$this->subjects->contains($subject)) {
+            // Add a subject
+            $this->subjects->add($subject);
+
+            if($subject->getCategories()->contains($this)){
+                $subject->getCategories()->removeElement($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a subject
+     *
+     * @param Subject $subject
+     * @return Category
+     */
+    public function removeSubjects(Subject $subject): self
+    {
+        if($this->subjects->contains($subject)){
+            // Remove the subject
+            $this->subjects->removeElement($subject);
+
+            if($subject->getCategories()->contains($this)){
+                $subject->getCategories()->removeElement($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getImages(): ?Collection
+    {
+        return $this->images;
+    }
+
+    /**
+     * @param Image $image
+     * @return Category
+     */
+    public function addImage(Image $image): self
+    {
+        if(!$this->images->contains($image)){
+            $this->images->add($image);
+
+            if(!$image->getCategories()->contains($this)){
+                $image->addCategory($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove an image
+     * @param Image $image
+     * @return Category
+     */
+    public function removeImage(Image $image): self
+    {
+        if($this->images->contains($image)){
+            $this->images->removeElement($image);
+
+            if($image->getCategories()->contains($this)){
+                $image->removeCategory($this);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Video
+     */
+    public function getVideo(): ?Video
+    {
+        return $this->video;
+    }
+
+    /**
+     * @param Video $video
+     * @return Category
+     */
+    public function setVideo(?Video $video): self
+    {
+        $this->video = $video;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getChatrooms(): Collection
+    {
+        return $this->chatrooms;
+    }
+
+    /**
+     * @param Collection $collection
+     * @return Category
+     */
+    public function setChatrooms(Collection $collection): self
+    {
+        $this->chatrooms = $collection;
+
+        return $this;
+    }
+
+    /**
+     * Add a chatroom
+     * @param Chat $chatroom
+     * @return Category
+     */
+    public function addChatroom(Chat $chatroom): self
+    {
+        if(!$this->chatrooms->contains($chatroom)){
+            $this->chatrooms->add($chatroom);
+
+            if($chatroom->getCategory() !== $this){
+                $chatroom->setCategory($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a chatroom
+     * @param Chat $chatroom
+     * @return Category
+     */
+    public function removeChatroom(Chat $chatroom): self
+    {
+        if($this->chatrooms->contains($chatroom)){
+            // Remove a chatroom
+            $this->chatrooms->removeElement($chatroom);
+
+            // Remove the reference
+            if($chatroom->getCategory() === $this){
+                $chatroom->setCategory(null);
+            }
+        }
+
+        return $this;
+    }
+
 }

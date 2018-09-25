@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="mdit_article")
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */
-class Article
+class Article extends Subject
 {
     /**
      * @var integer ID of the article
@@ -22,7 +22,7 @@ class Article
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string Body of the article
@@ -32,21 +32,21 @@ class Article
     private $articleBody;
 
     /**
-     * @var Datetime Creation's date of the article
+     * @var \Datetime Date of creation
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      */
     private $dateCreated;
 
     /**
-     * @var Datetime The last modification's date of the article
+     * @var \Datetime The last modification's date of the article
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
      */
     private $dateModified;
 
     /**
-     * @var Datetime Date of publication
+     * @var \Datetime Date of publication
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
      */
@@ -69,41 +69,26 @@ class Article
     /**
      * @var string URI for the pdf of the given article.
      * @ORM\Column(type="string", length=255, nullable=true)
-     * @Assert\File(
-     *     maxSize = "20M",
-     *     binaryFormat = {"application/pdf", "application/x-pdf"},
-     *     mimeTypes = "Please upload a valid PDF",
-     *     maxSizeMessage="The file is too large ({{ size }} {{ suffix }}). Allowed maximum size is {{ limit }} {{ suffix }}",
-     *     mimeTypesMessage="The mime type of the file is invalid ({{ type }}). Allowed mime types are {{ types }}"
-     * )
+     * @Assert\Url()
      */
     private $pdf;
 
     /**
-     * @var Subject Subject matter of this article
-     *
-     * @ORM\OneToOne(targetEntity="Subject", mappedBy="article")
-     * @ORM\JoinColumn(name="subject_id", referencedColumnName="id")
-     * @Assert\Type("App\Entity\Subject")
-     * @Assert\NotNull()
-     */
-    private $about;
-
-    /**
-     * @var Video Video associated to the article
-     *
-     * @ORM\OneToOne(targetEntity="Video", mappedBy="associatedArticle")
-     * @ORM\JoinColumn(name="video_id", referencedColumnName="id", nullable=true)
-     * @Assert\Type("App\Entity\Video")
-     */
-    private $video;
-
-    /**
-     * @var Collection Examples associated to the article
-     * @ORM\ManyToMany(targetEntity="Example", mappedBy="associatedArticles")
+     * @var Collection $hasParts Grain included in this article
+     * @ORM\ManyToMany(targetEntity="Grain", cascade={"persist"}, inversedBy="isPartOf")
+     * @ORM\JoinTable(name="mdit_article_grains")
      * @Assert\Collection()
      */
-    private $associatedExamples;
+    private $hasParts;
+
+
+
+
+    public function __construct()
+    {
+        Subject::__construct();
+        $this->hasParts = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -125,36 +110,39 @@ class Article
         return $this;
     }
 
-    public function getDateCreated(): ?\DateTimeInterface
+    /**
+     * @return \DateTime|null
+     */
+    public function getDateCreated(): ?\DateTime
     {
         return $this->dateCreated;
     }
 
-    public function setDateCreated(\DateTimeInterface $dateCreated): self
+    public function setDateCreated(\DateTime $dateCreated): self
     {
         $this->dateCreated = $dateCreated;
 
         return $this;
     }
 
-    public function getDateModified(): ?\DateTimeInterface
+    public function getDateModified(): ?\DateTime
     {
         return $this->dateModified;
     }
 
-    public function setDateModified(?\DateTimeInterface $dateModified): self
+    public function setDateModified(?\DateTime $dateModified): self
     {
         $this->dateModified = $dateModified;
 
         return $this;
     }
 
-    public function getDatePublished(): ?\DateTimeInterface
+    public function getDatePublished(): ?\DateTime
     {
         return $this->datePublished;
     }
 
-    public function setDatePublished(?\DateTimeInterface $datePublished): self
+    public function setDatePublished(?\DateTime $datePublished): self
     {
         $this->datePublished = $datePublished;
 
@@ -198,86 +186,49 @@ class Article
     }
 
     /**
-     * @return Subject
-     */
-    public function getAbout(): Subject
-    {
-        return $this->about;
-    }
-
-    /**
-     * @param Subject $about
-     */
-    public function setAbout(Subject $about): void
-    {
-        $this->about = $about;
-    }
-
-    /**
-     * Get associated examples
-     *
      * @return Collection
      */
-    public function getAssociatedExamples(): Collection
+    public function getHasParts(): Collection
     {
-        return $this->associatedExamples;
+        return $this->hasParts;
     }
 
     /**
-     * Add an associated example
-     *
-     * @param Example $example
+     * @param Grain $grain
      * @return Article
      */
-    public function addAssociatedExample(Example $example): self
+    public function addHasPart(Grain $grain): Article
     {
-        if(!$this->associatedExamples->contains($example)){
-            // Add an example
-            $this->associatedExamples->add($example);
+        if(!$this->hasParts->contains($grain)){
+            // Add the grain
+            $this->hasParts->add($grain);
 
-            if(!$example->getAssociatedArticles()->contains($this)){
-                // Add the reference to this editor in the Example instance
-                $example->getAssociatedArticles()->add($this);
+            // Add a reference to this article in the Grain entity
+            if(!$grain->getIsPartOf()->contains($this)){
+
+                $grain->getIsPartOf()->add($this);
+            }
+
+        }
+        return $this;
+    }
+
+    /**
+     * @param Grain $grain
+     * @return self
+     */
+    public function removeHasPart(Grain $grain): self
+    {
+        if($this->hasParts->contains($grain)){
+            // Remove the grain
+            $this->hasParts->removeElement($grain);
+
+            // Remove the reference to this Article in the Grain entity
+            if($grain->getIsPartOf()->contains($this)){
+                $grain->getIsPartOf()->removeElement($this);
             }
         }
 
         return $this;
     }
-
-    /**
-     * Remove an associated example
-     *
-     * @param Example $example
-     * @return void
-     */
-    public function removeAssociatedExample(Example $example): void
-    {
-        if($this->associatedExamples->contains($example)){
-            // Remove an associated example
-            $this->associatedExamples->removeElement($example);
-
-            if($example->getAssociatedArticles()->contains($this)){
-                // Remove the reference
-                $example->getAssociatedArticles()->removeElement($this);
-            }
-        }
-    }
-
-    /**
-     * @return Video|null
-     */
-    public function getVideo(): ?Video
-    {
-        return $this->video;
-    }
-
-    /**
-     * @param Video $video
-     */
-    public function setVideo(Video $video): void
-    {
-        $this->video = $video;
-    }
-
-
 }

@@ -45,6 +45,13 @@ import note from './reducers/note/';
 //import routes for notes
 import noteRoutes from './routes/note';
 
+// import reducers
+import message from './reducers/message/';
+
+//import routes
+import messageRoutes from './routes/message';
+
+
 // import reducers for images
 import image from './reducers/image/';
 
@@ -109,7 +116,7 @@ const store = createStore(
     form,
     },
     /* Add your reducers here */
-    combineReducers(abuse,{/* ... */}),
+    combineReducers(abuse,{/* ... */ routing, form,}),
     combineReducers(article,{/* ... */}),
     combineReducers(category,{/* ... */}),
     combineReducers(chat,{/* ... */}),
@@ -123,6 +130,8 @@ const store = createStore(
     combineReducers(theme,{/* ... */}),
     combineReducers(version,{/* ... */}),
     combineReducers(video,{/* ... */}),),
+    // Add the reducer
+    combineReducers(message,{/* ... */}),
 
     applyMiddleware(thunk),
   );
@@ -149,6 +158,7 @@ ReactDom.render(
         { themeRoutes },
         { versionRoutes },
         { videoRoutes },
+          { messageRoutes }
         <Route render={() => <h1>Not Found</h1>}/>
       </Switch>
     </Router>

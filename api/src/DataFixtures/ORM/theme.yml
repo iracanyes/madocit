@@ -1,0 +1,9 @@
+App\Entity\Theme:
+    theme{1..15}:
+        name: '<fr_FR:sentence(7)>'
+        description: '<fr_FR:realText(100)>'
+        isValid: '<boolean(50)>'
+        dateCreated: '<dateTimeBetween("-2 years", "now")>'
+        # Relations
+        subjects: '1x @subject*'
+        #chatrooms: '1x @chat*'

@@ -1,0 +1,15 @@
+App\Entity\Abuse:
+    abuse{1..30}:
+        description: '<fr_FR:realText(80)>'
+        dateCreated: '<dateTimeBetween("-2 years", "now")>'
+        # Relations
+        accuser: '@editor<numberBetween(1,5)>'
+        defendant: '@editor<numberBetween(6,10)>'
+        message: '@message<current()>'
+    abuse{31..55}:
+        description: '<fr_FR:realText(80)>'
+        dateCreated: '<dateTimeBetween("-2 years", "now")>'
+        # Relations
+        accuser: '@editor<numberBetween(1,5)>'
+        defendant: '@editor<numberBetween(6,10)>'
+        contribution: '@contribution<current()>'

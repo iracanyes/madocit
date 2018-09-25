@@ -1,0 +1,8 @@
+App\Entity\Sanction:
+    sanction{1..55}:
+        type: '<sanctionType()>'
+        duration: '<dateTimeBetween("now", "+1 years")>'
+        status: '<sanctionStatus()>'
+        dateCreated: '<dateTimeBetween( "-1 years", "now")>'
+        # Relations
+        abuses: '@abuse<current()>'

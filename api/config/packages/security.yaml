@@ -1,17 +1,28 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
     providers:
-        in_memory: { memory: ~ }
+        #in_memory: { memory: ~ }
+        ma_db:
+            entity:
+                class: App\Entity\User
+                property: email
+    encoders:
+        App\Entity\User:
+            algorithm: bcrypt
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
+            pattern: ^/
+            http_basic: ~
+            provider: ma_db
             anonymous: ~
 
             # activate different ways to authenticate
 
-            # http_basic: ~
+            # Basic HTTP authentication
+            #http_basic: ~
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
 
             # form_login: ~

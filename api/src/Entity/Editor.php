@@ -15,9 +15,9 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="mdit_editor")
  * @ORM\Entity(repositoryClass="App\Repository\EditorRepository")
  * Héritage de cette classe : Chaque modérateur et/ou admin est un éditeur de contenu
- * @ORM\InheritanceType("JOINED")
- * @ORM\DiscriminatorColumn(name="editorType", type="string", length=255)
- * @ORM\DiscriminatorMap({"editor" = "Editor", "moderator" = "Moderator", "admin" = "Admin"})
+ * @ ORM\InheritanceType("JOINED")
+ * @ ORM\DiscriminatorColumn(name="editorType", type="string")
+ * @ ORM\DiscriminatorMap({"editor" = "Editor", "moderator" = "Moderator", "admin" = "Admin"})
  * Contraintes d'unicité sur les surnoms des éditeurs (nickname)
  * @UniqueEntity("nickname")
  */
@@ -31,18 +31,19 @@ class Editor extends User
      * @Assert\Type("integer")
      * @Assert\NotBlank()
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string Email for contacting the editor (optional)
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Email()
      */
-    private $emailContact;
+    protected $emailContact;
 
     /**
+     * ATTENTION: Avant la mise en production remettre la contrainte d'unicité
      * @var string Nickname used in place of the real name
-     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Type("string")
      * @Assert\Length(
      *     min=5,
@@ -51,7 +52,7 @@ class Editor extends User
      *     maxMessage="The maximumm set of character for the nickname is {{ limit }}. \n Your nickname length is {{ value }} characters!"
      * )
      */
-    private $nickname;
+    protected $nickname;
 
     /**
      * @var string Family name of the editor
@@ -64,7 +65,7 @@ class Editor extends User
      *     maxMessage="The maximumm set of character for the family name is {{ limit }}. \n Your nickname length is {{ value }} characters!"
      * )
      */
-    private $familyName;
+    protected $familyName;
 
     /**
      * @var string First name of the editor
@@ -77,7 +78,7 @@ class Editor extends User
      *     maxMessage="The maximumm set of character for the given name is {{ limit }}. \n Your given name's length is {{ value }} characters!"
      * )
      */
-    private $givenName;
+    protected $givenName;
 
     /**
      * @var string School or company where the editor is affiliated to
@@ -90,7 +91,7 @@ class Editor extends User
      *     maxMessage="The maximumm set of character for the affiliation is {{ limit }}. \n Your affiliation's length is {{ value }} characters!"
      * )
      */
-    private $affiliation;
+    protected $affiliation;
 
     /**
      * @var string Last school of the editor
@@ -103,7 +104,7 @@ class Editor extends User
      *     maxMessage="The maximumm set of character for the 'alumni of' is {{ limit }}. \n Your 'alumni of' length is {{ value }} characters!"
      * )
      */
-    private $alumniOf;
+    protected $alumniOf;
 
     /**
      * @var integer Global rate for all activities done on the platform
@@ -116,7 +117,7 @@ class Editor extends User
      *     maxMessage="The maximumm global rate is {{ limit }}. \n Your global rate's value is {{ value }} !"
      * )
      */
-    private $rateGlobal;
+    protected $rateGlobal;
 
     /**
      * @var integer Aggregate rating of all votes by users for all the contributions done by the editor
@@ -129,43 +130,66 @@ class Editor extends User
      *     maxMessage="The maximumm contribution rate is {{ limit }}. \n Your contribution rate's value is {{ value }} !"
      * )
      */
-    private $rateContribution;
+    protected $rateContribution;
 
     /**
      * @var boolean The editor is sanctioned
      * @ORM\Column(type="boolean", nullable=true)
      * @Assert\Type("boolean")
      */
-    private $sanctioned;
+    protected $sanctioned;
+
+    /**
+     * @var Collection $groupsOwned Groups owned by this editor
+     * @ORM\OneToMany(targetEntity="Group", mappedBy="owner")
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
+     */
+    protected $groupsOwned;
+
+    /**
+     * @var Collection $groupsMember Groups where this editor is member
+     * @ORM\ManyToMany(targetEntity="Group", mappedBy="members")
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
+     */
+    protected $groupsMember;
+
+
 
     /**
      * @var Collection $subjectsCreated Subjects created by the editor
      * @ORM\OneToMany(targetEntity="Subject", mappedBy="author")
-     * @Assert\Collection()
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
-    private $subjectsCreated;
+    protected $subjectsCreated;
 
     /**
      * @var Collection $contributionsMade Contributions made by this editor
      * @ORM\OneToMany(targetEntity="Contribution", mappedBy="editor")
-     * @Assert\Collection()
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
-    private $contributionsMade;
+    protected $contributionsMade;
 
     /**
      * @var Collection $chatroomsCreated Chatroom created by this editor
      * @ORM\OneToMany(targetEntity="Chat", mappedBy="creator")
-     * @Assert\Collection()
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
-    private $chatroomsCreated;
+    protected $chatroomsCreated;
 
     /**
-     * @var Collection $chatroomsInvolved Chatroom in which this editor is or has been involved
-     * @ORM\ManyToMany(targetEntity="Chat", cascade={"persist"}, inversedBy="editorsInvolved")
-     * @ORM\JoinTable(name="mdit_chat_editors")
-     * @Assert\Collection()
+     * @var Collection $chatroomsInvolved Chatrooms in which the editor is involved
+     * @ORM\OneToMany(targetEntity="App\Entity\EditorsChats", mappedBy="editor")
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
-    private $chatroomsInvolved;
+    protected $chatroomsInvolved;
+
+
+    /**
+     * @var Collection $messagesWritten Messages written by the editor
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="editor")
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
+     */
+    protected $messagesWritten;
 
 
     /**
@@ -173,26 +197,26 @@ class Editor extends User
      * @var Collection $notesSuggested Notes suggested by this editor
      *
      * @ORM\OneToMany(targetEntity="Note", mappedBy="editor")
-     * @Assert\Collection()
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
-    private $notesSuggested;
+    protected $notesSuggested;
 
 
     /**
      * @var Collection $abusesIdentified Abuses identified
      *
      * @ORM\OneToMany(targetEntity="Abuse", cascade={"persist"}, mappedBy="accuser")
-     * @Assert\Collection()
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
-    private $abusesIdentified;
+    protected $abusesIdentified;
 
     /**
      * @var Collection $abusesAccused Abuses accused
      *
      * @ORM\OneToMany(targetEntity="Abuse", cascade={"persist"}, mappedBy="defendant")
-     * @Assert\Collection()
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
-    private $abusesAccused;
+    protected $abusesAccused;
 
 
     /**
@@ -200,9 +224,9 @@ class Editor extends User
      * @var Collection $sanctionsReceived Sanctions received for abuses
      *
      * @ORM\OneToMany(targetEntity="Sanction", cascade={"persist","remove"}, mappedBy="editor")
-     * @Assert\Collection()
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
-    private $sanctionsReceived;
+    protected $sanctionsReceived;
 
     /**
      * Editor constructor.
@@ -212,13 +236,21 @@ class Editor extends User
         // Appel du constructeur parent
         parent::__construct();
 
+        // Initialisation des variables de types number
+        $this->rateGlobal = $this->rateContribution = 0;
+
         // déclaration des collections de la classe
-        $this->abusesIdentified =
-            $this->abusesAccused  =
-            $this->sanctionsReceived =
-            $this->notesSuggested =
-            $this->chatroomsInvolved =
-            $this->contributionsMade = new ArrayCollection();
+        $this->abusesIdentified = new ArrayCollection();
+        $this->abusesAccused  = new ArrayCollection();
+        $this->sanctionsReceived = new ArrayCollection();
+        $this->groupsOwned = new ArrayCollection();
+        $this->groupsMember = new ArrayCollection();
+        $this->subjectsCreated = new ArrayCollection();
+        $this->notesSuggested = new ArrayCollection();
+        $this->chatroomsCreated = new ArrayCollection();
+        $this->chatroomsInvolved = new ArrayCollection();
+        $this->messagesWritten = new ArrayCollection();
+        $this->contributionsMade = new ArrayCollection();
     }
 
     /**
@@ -389,6 +421,23 @@ class Editor extends User
         return $this;
     }
 
+    public function getEditorType(): ?string
+    {
+        return $this->editorType;
+    }
+
+    /**
+     * @param null|string $editorType
+     * @return Editor
+     */
+    public function setEditorType(?string $editorType): self
+    {
+        $this->editorType = $editorType;
+
+        return $this;
+    }
+
+
     /**
      * Get chatrooms created
      *
@@ -403,11 +452,11 @@ class Editor extends User
      * Add a chatroom created
      *
      * @param Chat $chat
-     * @return self
+     * @return Editor
      */
-    public function addChatroomCreated(Chat $chat): self
+    public function addChatroomsCreated(Chat $chat): self
     {
-        if(!$this->subjectsCreated->contains($chat)){
+        if(!$this->chatroomsCreated->contains($chat)){
 
             // Add a chatroom
             $this->chatroomsCreated->add($chat);
@@ -426,9 +475,9 @@ class Editor extends User
      * Remove a chatroom created
      *
      * @param Chat $chat
-     * @return void
+     * @return self
      */
-    public function removeChatroomCreated(Chat $chat): void
+    public function removeChatroomsCreated(Chat $chat): self
     {
         if($this->chatroomsCreated->contains($chat)){
             // Remove the chat created
@@ -440,33 +489,80 @@ class Editor extends User
 
             }
         }
+
+        return $this;
     }
 
     /**
-     * Get chatrooms involved
-     *
-     * @return Collection|null
+     * @return Collection
      */
-    public function getChatroomsInvolved(): ?Collection
+    public function getChatroomsInvolved(): Collection
     {
         return $this->chatroomsInvolved;
     }
 
     /**
-     * Add a chatroom involved
-     *
-     * @param Chat $chat
-     * @return self
+     * @param EditorsChats $editorChat
+     * @return Editor
      */
-    public function addChatroomInvolved(Chat $chatroom): self
+    public function addChatroomsInvolved(EditorsChats $editorChat): self
     {
-        if(!$this->chatroomsInvolved->contains($chatroom)){
-            // Add a chatroom
-            $this->chatroomsInvolved->add($chatroom);
+        if(!$this->chatroomsInvolved->contains($editorChat)){
+            // Add
+            $this->chatroomsInvolved->add($editorChat);
 
-            if($chatroom->getEditorsInvolved()->contains($this)){
-                // Add a reference to this editor in the chatroom
-                $chatroom->getEditorsInvolved()->add($this);
+            // Add a reference
+            if($editorChat->getEditor() !== $this){
+
+                $editorChat->setEditor($this);
+            }
+
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param EditorsChats $editorChat
+     * @return Editor
+     */
+    public function removeChatroomsInvolved(EditorsChats $editorChat): self
+    {
+        if($this->chatroomsInvolved->contains($editorChat)){
+            // Remove
+            $this->chatroomsInvolved->removeElement($editorChat);
+
+            if($editorChat->getEditor() === $this){
+                $editorChat->setEditor(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
+    /**
+     * @return Collection
+     */
+    public function getGroupsOwned(): Collection
+    {
+        return $this->groupsOwned;
+    }
+
+    /**
+     * @param Group $group
+     * @return Editor
+     */
+    public function addGroupsOwned(Group $group): self
+    {
+        if(!$this->groupsOwned->contains($group)){
+            // Add group
+            $this->groupsOwned->add($group);
+
+            // Add a reference in the group object
+            if($group->getOwner() !== $this){
+                $group->setOwner($this);
             }
         }
 
@@ -474,30 +570,74 @@ class Editor extends User
     }
 
     /**
-     * Remove a chatroom involved
-     *
-     * @param Chat $chatroom
-     * @return void
+     * Remove a group
+     * @param Group $group
+     * @return Editor
      */
-    public function removeChatroomInvolved(Chat $chatroom): void
+    public function removeGroupsOwned(Group $group): self
     {
-        if($this->chatroomsInvolved->contains($chatroom)){
-            // Remove a chat involved
-            $this->chatroomsInvolved->removeElement($chatroom);
 
-            if($chatroom->getEditorsInvolved()->contains($this)){
-                // Remove a reference to this editor in the chatroom
-                $chatroom->getEditorsInvolved()->removeElement($chatroom);
+        if($this->groupsOwned->contains($group)){
+            // Remove the group
+            $this->groupsOwned->removeElement($group);
+
+            // Remove the reference
+            if($group->getOwner() === $this){
+                $group->setOwner(null);
             }
         }
+
+        return $this;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getGroupsMember(): Collection
+    {
+        return $this->groupsMember;
+    }
+
+    /**
+     * @param Group $group
+     * @return Editor
+     */
+    public function addGroupsMember(Group $group): self
+    {
+        if(!$this->groupsMember->contains($group)){
+            // Add group
+            $this->groupsMember->add($group);
+
+
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a group where this editor is member
+     * @param Group $group
+     * @return Editor
+     */
+    public function removeGroupsMember(Group $group): self
+    {
+        if($this->groupsMember->contains($group)){
+            // Remove the group
+            $this->groupsMember->removeElement($group);
+
+
+        }
+
+        return $this;
+    }
+
 
     /**
      * Get subjects created
      *
-     * @return Collection|null
+     * @return Collection
      */
-    public function getSubjectsCreated(): ?Collection
+    public function getSubjectsCreated(): Collection
     {
         return $this->subjectsCreated;
     }
@@ -506,9 +646,9 @@ class Editor extends User
      * Add a subject created
      *
      * @param Subject $subject
-     * @return self
+     * @return Editor
      */
-    public function addSubjectCreated(Subject $subject): self
+    public function addSubjectsCreated(Subject $subject): self
     {
         if(!$this->subjectsCreated->contains($subject)){
 
@@ -528,9 +668,9 @@ class Editor extends User
      * Remove a subject created
      *
      * @param Subject $subject
-     * @return void
+     * @return Editor
      */
-    public function removeSubjectCreated(Subject $subject): void
+    public function removeSubjectsCreated(Subject $subject): self
     {
         if($this->subjectsCreated->contains($subject)){
             // Remove a subject created
@@ -541,6 +681,8 @@ class Editor extends User
                 $subject->setAuthor(null);
             }
         }
+
+        return $this;
     }
 
     /**
@@ -557,7 +699,7 @@ class Editor extends User
      * Add a note suggested by this editor
      *
      * @param Note $note
-     * @return self
+     * @return Editor
      */
     public function addNoteSuggested(Note $note): self
     {
@@ -606,7 +748,7 @@ class Editor extends User
      * Add a contribution made
      *
      * @param Contribution $contribution
-     * @return self
+     * @return Editor
      */
     public function addContributionMade(Contribution $contribution): self
     {
@@ -627,9 +769,9 @@ class Editor extends User
      * Remove a contribution made
      *
      * @param Contribution $contribution
-     * @return void
+     * @return Editor
      */
-    public function removeContributionMade(Contribution $contribution): void
+    public function removeContributionMade(Contribution $contribution): self
     {
         if($this->contributionsMade->contains($contribution)){
             //Remove the contribution
@@ -639,6 +781,8 @@ class Editor extends User
                 $contribution->setEditor(null);
             }
         }
+
+        return $this;
     }
 
     /**
@@ -754,7 +898,7 @@ class Editor extends User
      * Add sanction received to Editor
      *
      * @param Sanction $sanction
-     * @return self
+     * @return Editor
      */
     public function addSanctionReceived(Sanction $sanction): self
     {
@@ -777,9 +921,9 @@ class Editor extends User
      * Remove sanction received to Editor
      *
      * @param Sanction $sanction
-     * @return void
+     * @return Editor
      */
-    public function removeSanctionReceived(Sanction $sanction): void
+    public function removeSanctionReceived(Sanction $sanction): self
     {
         if($this->sanctionsReceived->contains($sanction)){
             // Remove a sanction received
@@ -790,8 +934,52 @@ class Editor extends User
                 $sanction->setEditor(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getMessagesWritten(): Collection
+    {
+        return $this->messagesWritten;
+    }
+
+    /**
+     * @param Message $message
+     * @return Editor
+     */
+    public function addMessageWritten(Message $message): self
+    {
+        if(!$this->messagesWritten->contains($message)){
+            // Add the message
+            $this->messagesWritten->add($message);
+
+            // Add a reference to this Editor in the Message instance
+            if($message->getEditor() !== $this ){
+                $message->setEditor($this);
+            }
+        }
+
+        return $this;
     }
 
 
+    /**
+     * @param Message $message
+     * @return void
+     */
+    public function removeMessageWritten(Message $message): void
+    {
+        if($this->messagesWritten->contains($message)){
+            // Remove the message
+            $this->messagesWritten->removeElement($message);
 
+            // Remove the reference to the Editor in the Message instance
+            if($message->getEditor() === $this){
+                $message->setEditor(null);
+            }
+        }
+    }
 }

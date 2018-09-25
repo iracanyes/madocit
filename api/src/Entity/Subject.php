@@ -15,7 +15,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Table(name="mdit_subject")
  * @ORM\Entity(repositoryClass="App\Repository\SubjectRepository")
  * Validation de la contrainte d'unicité des titres des sujets
- * @UniqueEntity("title")
+ * @ UniqueEntity("title")
+ * Héritage
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="subjectType", type="string", length=255)
+ * @ORM\DiscriminatorMap({"subject" = "Subject", "article" = "Article", "grain" = "Grain"})
  */
 class Subject
 {
@@ -26,87 +30,75 @@ class Subject
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      */
-    private $id;
+    protected $id;
 
     /**
+     * ATTENTION: Avant la mise en production remettre la contrainte d'unicité
      * @var string Title of the subject
-     * @ORM\Column(type="string", unique=true, length=255)
+     * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
      * @Assert\NotBlank()
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string Description of the subject (optional)
      * @ORM\Column(type="text", nullable=true)
      * @Assert\NotBlank()
      */
-    private $description;
+    protected $description;
 
     /**
-     * @var string Prerequisites needed to fulfill steps in article.
+     * @var string Prerequisites needed to fulfill steps in article. (optional)
      * @ORM\Column(type="text", nullable=true)
      */
-    private $dependencies;
+    protected $dependencies;
 
     /**
-     * @var string Proficiency needed for this content; expected values: 'Beginner', 'Expert'.
+     * @var string Proficiency needed for this content; expected values: 'Beginner', 'Expert'. (optional)
      * @ORM\Column(type="text", nullable=true)
      */
-    private $proficiencyLevel;
+    protected $proficiencyLevel;
 
     /**
      * @var boolean Subject has been validated
      * @ORM\Column(type="boolean")
      * @Assert\Type("boolean")
      */
-    private $isValid;
+    protected $isValid;
+
 
     /**
-     * @var Article Article associated to this subject
-     *
-     * @ORM\OneToOne(targetEntity="Article", cascade={"persist"},inversedBy="about")
-     * @ORM\JoinColumn(nullable=true)
-     * @Assert\Type("App\Entity\Article")
+     * @var Collection $categories Categories in which this subject belongs
+     * @ORM\ManyToMany(targetEntity="Category", mappedBy="subjects")
+     * @Assert\Collection()
      */
-    private $article;
+    protected $categories;
 
     /**
-     * @var Grain Grain associated to this subject
+     * @var Collection $themes Theme that are evoked in the subject
+     * @ORM\ManyToMany(targetEntity="Theme", cascade={"persist"}, inversedBy="subjects")
+     * @ORM\JoinTable(name="mdit_themes_subjects")
+     * @Assert\Collection()
      *
-     * @ORM\OneToOne(targetEntity="Grain", cascade={"persist"}, inversedBy="about")
-     * @ORM\JoinColumn(nullable=true)
-     * @Assert\Type("App\Entity\Grain")
      */
-    private $grain;
+    protected $themes;
+
 
     /**
      * @var Editor $editor Editor who create this subject
      *
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="subjectsCreated")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Type("App\Entity\Editor")
+     * @Assert\NotBlank()
      */
-    private $author;
+    protected $author;
 
     /**
-     * @var Collection Subjects tackled by this subject
-     * @ORM\ManyToMany(targetEntity="Subject", inversedBy="isPartOf" )
-     * @ORM\JoinTable(
-     *     name="mdit_purposes",
-     *     joinColumns={@ORM\JoinColumn(name="has_part", referencedColumnName="id")},
-     *     inverseJoinColumns={@ORM\JoinColumn(name="is_part_of", referencedColumnName="id")}
-     * )
-     * @Assert\Collection()
+     * @var Collection $privileges Privileges on this subject
+     * @ORM\OneToMany(targetEntity="Privilege", mappedBy="subject")
      */
-    private $hasPart;
-
-    /**
-     * @var Collection Subjects which tackle this subjects
-     * @ORM\ManyToMany(targetEntity="Subject", mappedBy="hasPart")
-     * @Assert\Collection()
-     */
-    private $isPartOf;
+    protected $privileges;
 
 
 
@@ -116,7 +108,16 @@ class Subject
      * @ORM\OneToMany(targetEntity="Note", mappedBy="subject")
      * @Assert\Collection()
      */
-    private $notes;
+    protected $notes;
+
+    /**
+     * @var Collection $examples Examples explaining this subject
+     * @ORM\ManyToMany(targetEntity="Example", cascade={"persist"}, inversedBy="subjects")
+     * @ORM\JoinTable(name="mdit_subjects_examples")
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
+     */
+    protected $examples;
+
 
     /**
      * @var Collection Contributions suggested on this subject
@@ -124,44 +125,53 @@ class Subject
      * @ORM\OneToMany(targetEntity="Contribution", mappedBy="subject")
      * @Assert\Collection()
      */
-    private $contributionsSuggested;
+    protected $contributionsSuggested;
 
 
     /**
      * @var Collection Chatroom of this subject
      *
-     * @ORM\ManyToMany(targetEntity="Chat", cascade={"persist"}, inversedBy="subjects")
-     * @ORM\JoinTable(name="mdit_chat_subjects")
+     * @ORM\OneToMany(targetEntity="Chat", mappedBy="subject")
      * @Assert\Collection()
      */
-    private $chatrooms;
+    protected $chatrooms;
 
     /**
-     * @var Version Theme's version which tackle the subject
+     * @var Version $version Subject's version
      *
      * @ORM\ManyToOne(targetEntity="Version", cascade={"persist"}, inversedBy="subjects")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\Type("App\Entity\Version")
      */
-    private $version;
+    protected $version;
 
     /**
      * @var Collection Images illustrating the subject
      * @ORM\OneToMany(targetEntity="Image", mappedBy="subject")
      * @Assert\Collection()
      */
-    private $images;
+    protected $images;
+
+    /**
+     * @var Video|null $video
+     * @ORM\OneToOne(targetEntity="Video", cascade={"persist","remove"}, inversedBy="associatedSubject")
+     * @ORM\JoinColumn(name="video_id", referencedColumnName="id", nullable=true)
+     * @Assert\Type("App\Entity\Video")
+     */
+    protected $video;
 
     /**
      * Subject constructor.
      */
     public function __construct()
     {
-        $this->notes =
-        $this->hasPart =
-        $this->isPartOf =
-        $this->contributionsSuggested =
-        $this->chatrooms =
+        $this->categories = new ArrayCollection();
+        $this->themes = new ArrayCollection();
+        $this->privileges = new ArrayCollection();
+        $this->notes = new ArrayCollection();
+        $this->examples = new ArrayCollection();
+        $this->contributionsSuggested = new ArrayCollection();
+        $this->chatrooms = new ArrayCollection();
         $this->images  = new ArrayCollection();
 
 
@@ -175,11 +185,18 @@ class Subject
         return $this->id;
     }
 
+    /**
+     * @return null|string
+     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
+    /**
+     * @param string $title
+     * @return Subject
+     */
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -187,11 +204,18 @@ class Subject
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param null|string $description
+     * @return Subject
+     */
     public function setDescription(?string $description): self
     {
         $this->description = $description;
@@ -199,11 +223,18 @@ class Subject
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getDependencies(): ?string
     {
         return $this->dependencies;
     }
 
+    /**
+     * @param null|string $dependencies
+     * @return Subject
+     */
     public function setDependencies(?string $dependencies): self
     {
         $this->dependencies = $dependencies;
@@ -211,11 +242,18 @@ class Subject
         return $this;
     }
 
+    /**
+     * @return null|string
+     */
     public function getProficiencyLevel(): ?string
     {
         return $this->proficiencyLevel;
     }
 
+    /**
+     * @param null|string $proficiencyLevel
+     * @return Subject
+     */
     public function setProficiencyLevel(?string $proficiencyLevel): self
     {
         $this->proficiencyLevel = $proficiencyLevel;
@@ -223,11 +261,18 @@ class Subject
         return $this;
     }
 
+    /**
+     * @return bool|null
+     */
     public function getIsValid(): ?bool
     {
         return $this->isValid;
     }
 
+    /**
+     * @param bool|null $isValid
+     * @return Subject
+     */
     public function setIsValid(?bool $isValid): self
     {
         $this->isValid = $isValid;
@@ -236,81 +281,92 @@ class Subject
     }
 
     /**
-     * @return Article|null
+     * @return string
      */
-    public function getArticle(): ?Article
+    public function getSubjectType(): ?string
     {
-        return $this->article;
+        return $this->subjectType;
     }
 
     /**
-     * @param Article $article
+     * @param string $subjectType
+     * @return Subject
      */
-    public function setArticle(Article $article): void
+    public function setSubjectType(string $subjectType): self
     {
-        $this->article = $article;
+        $this->subjectType = $subjectType;
+
+        return $this;
     }
 
     /**
-     * @return Grain|null
+     * @return Video|nul
      */
-    public function getGrain(): ?Grain
+    public function getVideo(): ?Video
     {
-        return $this->grain;
+        return $this->video;
     }
 
     /**
-     * @param Grain $grain
+     * @param Video $video
      */
-    public function setGrain(Grain $grain): void
+    public function setVideo(Video $video): void
     {
-        $this->grain = $grain;
+        $this->video = $video;
     }
 
 
-
     /**
-     * @return Editor
+     * @return Editor|null
      */
-    public function getAuthor(): Editor
+    public function getAuthor(): ?Editor
     {
         return $this->author;
     }
 
     /**
-     * @param Editor $editor
-     */
-    public function setAuthor(Editor $editor): void
-    {
-        $this->author = $editor;
-    }
-
-
-
-    /**
-     * @return Collection|null
-     */
-    public function getHasPart(): ?Collection
-    {
-        return $this->hasPart;
-    }
-
-    /**
-     * Add a subject tackled
-     *
-     * @param Subject $subject
+     * @param Editor|null $editor
      * @return Subject
      */
-    public function addHasPart(Subject $subject): self
+    public function setAuthor(?Editor $editor): self
     {
-        if(!$this->hasPart->contains($subject)){
+        $this->author = $editor;
 
-            // Add the subject tackled
-            $this->hasPart->add($subject);
+        if($editor !== null){
+            $editor->addSubjectsCreated($this);
+        }
 
-            if(!$subject->isPartOf->contains($this)){
-                $subject->isPartOf->add($this);
+        return $this;
+    }
 
+    /**
+     * @return Collection
+     */
+    public function getCategories(): Collection
+    {
+        return $this->categories;
+    }
+
+    /**
+     * @param Collection $collection
+     * @return Subject
+     */
+    public function setCategories(Collection $collection): self
+    {
+        $this->categories = $collection;
+    }
+
+    /**
+     * @param Category $category
+     * @return Subject
+     */
+    public function addCategory(Category $category): self
+    {
+        if(!$this->categories->contains($category)){
+            $this->categories->add($category);
+
+            if(!$category->getSubjects()->contains($this)){
+                $category->addSubjects($this);
             }
         }
 
@@ -318,48 +374,47 @@ class Subject
     }
 
     /**
-     * Remove a subject tackled
+     * Remove a subject
      *
-     * @param Subject $subject
-     * @return void
+     * @param Category $category
+     * @return Subject
      */
-    public function removeHasPart(Subject $subject): void
+    public function removeCategory(Category $category): self
     {
-        if($this->hasPart->contains($subject)){
-            $this->hasPart->removeElement($subject);
+        if($this->categories->contains($category)){
+            // Remove a category
+            $this->categories->removeElement($category);
 
-            if($subject->isPartOf->contains($this)){
-                $subject->isPartOf->removeElement($this);
+            // Remove a reference
+            if($category->getSubjects()->contains($this)){
+                $category->getSubjects()->removeElement($this);
             }
-
         }
 
+        return $this;
+    }
 
+
+
+    /**
+     * @return Collection
+     */
+    public function getThemes(): Collection
+    {
+        return $this->themes;
     }
 
     /**
-     * Get Subjects tackling this one
-     * @return Collection|null
+     * @param Theme $theme
+     * @return Subject
      */
-    public function getIsPartOf(): ?Collection
+    public function addTheme(Theme $theme): self
     {
-        return $this->isPartOf;
-    }
+        if(!$this->themes->contains($theme)){
+            $this->themes->add($theme);
 
-    /**
-     * Add a Subject tackling this one
-     * @param Subject $subject
-     * @return self
-     */
-    public function addIsPartOf(Subject $subject): self
-    {
-        if(!$this->isPartOf->contains($subject)){
-
-            // Add a Subject tackling this one
-            $this->isPartOf->add($subject);
-
-            if($subject->hasPart->contains($this)){
-                $subject->hasPart->add($this);
+            if(!$theme->getSubjects()->contains($this)){
+                $theme->addSubject($this);
             }
         }
 
@@ -367,30 +422,78 @@ class Subject
     }
 
     /**
-     * Remove a Subject tackling this one
-     * @param Subject $subject
-     * @return void
+     * Remove a theme
+     *
+     * @param Theme $theme
+     * @return Subject
      */
-    public function removeIsPartOf(Subject $subject):void
+    public function removeTheme(Theme $theme): self
     {
-        if($this->isPartOf->contains($subject)){
+        if($this->themes->contains($theme)){
+            $this->themes->removeElement($theme);
 
-            // Remove a subject tackling this one
-            $this->isPartOf->removeElement($subject);
+            if($theme->getSubjects()->contains($this)){
 
-            if($subject->hasPart->contains($this)){
-
-                // Remove the reference to this one
-                $subject->hasPart->removeElement($this);
+                $theme->getSubjects()->removeElement($this);
             }
         }
+
+        return $this;
     }
+
+
+    /**
+     * @return Collection
+     */
+    public function getPrivileges(): Collection
+    {
+        return $this->privileges;
+    }
+
+    /**
+     * @param Privilege $privilege
+     * @return Subject
+     */
+    public function addPrivilege(Privilege $privilege): self
+    {
+        if(!$this->privileges->contains($privilege)){
+            // Add the privilege
+            $this->privileges->add($privilege);
+
+            // Add a reference to this subject in the Privilege Object
+            if($privilege->getSubject() !== $this){
+                $privilege->setSubject($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Privilege $privilege
+     * @return Subject
+     */
+    public function removePrivilege(Privilege $privilege): self
+    {
+        if($this->privileges->contains($privilege)){
+            $this->privileges->removeElement($privilege);
+
+            if($privilege->getSubject() === $this){
+                $privilege->setSubject(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+
 
     /**
      * Get notes
-     * @return Collection|null
+     * @return Collection
      */
-    public function getNotes(): ?Collection
+    public function getNotes(): Collection
     {
         return $this->notes;
     }
@@ -418,9 +521,9 @@ class Subject
      * Remove note on a subject
      *
      * @param Subject $subject
-     * @return void
+     * @return self
      */
-    public function removeNote(Note $note): void
+    public function removeNote(Note $note): self
     {
         if($this->notes->contains($note)){
             $this->notes->removeElement($note);
@@ -429,7 +532,53 @@ class Subject
                 $note->setSubject(null);
             }
         }
+
+        return $this;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getExamples(): Collection
+    {
+        return $this->examples;
+    }
+
+    /**
+     * @param Example $example
+     * @return Subject
+     */
+    public function addExample(Example $example): self
+    {
+        if(!$this->examples->contains($example)){
+            // Add
+            $this->examples->add($example);
+
+            // Add a reference
+            if(!$example->getSubjects()->contains($this)){
+                $example->getSubjects()->add($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove an example
+     * @param Example $example
+     * @return Subject
+     */
+    public function removeExample(Example $example): self
+    {
+        if($this->examples->contains($example)){
+            $this->examples->removeElement($example);
+
+            if($example->getSubjects()->contains($this)){
+                $example->getSubjects()->removeElement($this);
+            }
+        }
+    }
+
 
     /**
      * Get contributions suggested
@@ -447,13 +596,13 @@ class Subject
      * @param Contribution $contribution
      * @return self
      */
-    public function addContributionSuggested(Contribution $contribution): self
+    public function addContributionsSuggested(Contribution $contribution): self
     {
         if(!$this->contributionsSuggested->contains($contribution)){
             // Add a contribution
             $this->contributionsSuggested->add($contribution);
 
-            if($contribution->getSubject() === $this){
+            if($contribution->getSubject() !== $this){
                 // Add a reference to this subject in contribution instance
                 $contribution->setSubject($this);
             }
@@ -466,19 +615,21 @@ class Subject
      * Remove a contribution made
      *
      * @param Contribution $contribution
-     * @return void
+     * @return self
      */
-    public function removeContributionSuggested(Contribution $contribution): void
+    public function removeContributionsSuggested(Contribution $contribution): self
     {
         if($this->contributionsSuggested->contains($contribution)){
             // Remove a contribution
-            $this->contributionsSuggested->add($contribution);
+            $this->contributionsSuggested->removeElement($contribution);
 
             if($contribution->getSubject() === $this){
                 // Remove the reference to this subject
                 $contribution->setSubject(null);
             }
         }
+
+        return $this;
     }
 
     /**
@@ -501,9 +652,9 @@ class Subject
             // Add a chatroom
             $this->chatrooms->add($chatroom);
 
-            if($chatroom->getSubjects()->contains($this)){
+            if($chatroom->getSubject() !== $this){
                 // Add a reference to this subject as tackled in the chatroom
-                $chatroom->addSubject($this);
+                $chatroom->setSubject($this);
             }
         }
 
@@ -521,9 +672,9 @@ class Subject
             // Remove the chatroom
             $this->chatrooms->removeElement($chatroom);
 
-            if($this !== null && $chatroom->getSubjects()->contains($this)){
+            if($chatroom->getSubject() === $this){
                 // Remove the reference to this subject in the chatroom instance
-                $chatroom->getSubjects()->removeElement($this);
+                $chatroom->setSubject(null);
             }
         }
     }
@@ -531,17 +682,20 @@ class Subject
     /**
      * @return Version
      */
-    public function getVersion(): Version
+    public function getVersion(): ?Version
     {
         return $this->version;
     }
 
     /**
      * @param Version $version
+     * @return Subject
      */
-    public function setVersion(Version $version): void
+    public function setVersion(Version $version): self
     {
         $this->version = $version;
+
+        return $this;
     }
 
 
@@ -577,9 +731,9 @@ class Subject
     /**
      * Remove an image
      * @param Image $image
-     * @return void
+     * @return Subject
      */
-    public function removeImage(Image $image): void
+    public function removeImage(Image $image): self
     {
         if($this->images->contains($image)){
             // Remove an image
@@ -591,5 +745,7 @@ class Subject
                 $image->setSubject(null);
             }
         }
+
+        return $this;
     }
 }

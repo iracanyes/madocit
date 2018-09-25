@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -19,7 +20,7 @@ class Moderator extends Editor
      * @ORM\Column(name="id", type="integer")
      * @Assert\Type("integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var integer Number of sanctions emitted by the moderator
@@ -50,7 +51,7 @@ class Moderator extends Editor
     private $isGlobalModerator;
 
     /**
-     * @var ArrayCollection Notes validated
+     * @var Collection Notes validated
      *
      * @ORM\OneToMany(targetEntity="Note", mappedBy="moderator")
      * @Assert\Collection()
@@ -59,7 +60,7 @@ class Moderator extends Editor
 
     /**
      * Sanctions emitted
-     * @var ArrayCollection
+     * @var Collection
      *
      * @ORM\OneToMany(targetEntity="Sanction", mappedBy="moderator")
      * @Assert\Collection()
@@ -69,7 +70,7 @@ class Moderator extends Editor
     public function __construct()
     {
         parent::__construct();
-        $this->sanctionsEmitted = new ArrayCollection();
+        $this->notesValidated = $this->sanctionsEmitted = new ArrayCollection();
     }
 
     /**
@@ -129,17 +130,32 @@ class Moderator extends Editor
     }
 
     /**
+     * @return Collection
+     */
+    public function getSanctionsEmitted(): Collection
+    {
+        return $this->sanctionsEmitted;
+    }
+
+
+
+    /**
      * Add a sanction emitted
      *
      * @param Sanction $sanction
-     * @return self
+     * @return Note
      */
-    public function addSanctionEmitted(Sanction $sanction): self
+    public function addSanctionsEmitted(Sanction $sanction): self
     {
         if(!$this->sanctionsEmitted->contains($sanction)){
             $this->sanctionsEmitted->add($sanction);
 
-            $sanction->setModerator($this);
+            // Add a reference to this moderator in the sanction's object
+            if($sanction->getModerator() !== $this){
+                $sanction->setModerator($this);
+            }
+
+
         }
 
 
@@ -150,9 +166,9 @@ class Moderator extends Editor
      * Remove a sanction emitted
      *
      * @param Sanction $sanction
-     * @return void
+     * @return Note
      */
-    public function removeSanctionEmitted(Sanction $sanction): void
+    public function removeSanctionsEmitted(Sanction $sanction): self
     {
         if($this->sanctionsEmitted->contains($sanction)){
             $this->sanctionsEmitted->removeElement($sanction);
@@ -162,19 +178,35 @@ class Moderator extends Editor
             }
 
         }
+
+        return $this;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getNotesValidated(): Collection
+    {
+        return $this->notesValidated;
+    }
+
+
 
     /**
      * Add a note validated by a moderator
      * @param Note $note
-     * @return self
+     * @return Note
      */
-    public function addNoteValidated(Note $note): self
+    public function addNotesValidated(Note $note): self
     {
         if(!$this->notesValidated->contains($note)){
+
             $this->notesValidated->add($note);
 
-            $note->setModerator($this);
+            if($note->getModerator() !== $this){
+                $note->setModerator($this);
+            }
+
         }
 
         return $this;
@@ -184,9 +216,9 @@ class Moderator extends Editor
      * Remove a note validator by a moderator
      *
      * @param Note $note
-     * @return void
+     * @return Note
      */
-    public function removeNoteValidated(Note $note): void
+    public function removeNotesValidated(Note $note): self
     {
         if($this->notesValidated->contains($note)){
             $this->notesValidated->removeElement($note);
@@ -195,5 +227,7 @@ class Moderator extends Editor
                 $note->setModerator(null);
             }
         }
+
+        return $this;
     }
 }

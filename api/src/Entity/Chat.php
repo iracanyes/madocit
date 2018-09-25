@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ApiResource()
  * @ORM\Table(name="mdit_chat")
  * @ORM\Entity(repositoryClass="App\Repository\ChatRepository")
- * @UniqueEntity("title")
+ * @ UniqueEntity("title")
  */
 class Chat
 {
@@ -27,6 +27,7 @@ class Chat
     private $id;
 
     /**
+     * ATTENTION: Avant la mise en production remettre la contrainte d'unicité
      * @var string Title of the chatroom
      * @ORM\Column(type="string", unique=true, length=255)
      * @Assert\Type("string")
@@ -75,38 +76,64 @@ class Chat
      * @var Editor $editor The creator of this chatroom
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="chatroomsCreated")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Type("App\Entity\Editor")
+     * @Assert\NotNull()
      */
     private $creator;
 
     /**
-     * @var Collection Subjects tackled in this chatroom
-     * @ORM\ManyToMany(targetEntity="Subject", mappedBy="chatrooms")
+     * @var Collection $chatEditors Chat's editors
+     * @ORM\OneToMany(targetEntity="App\Entity\EditorsChats", mappedBy="chatroom")
      * @Assert\Collection()
      */
-    private $subjects;
+    private $chatEditors;
 
     /**
-     * @var Collection $editorsInvolved Editors involved in this chatroom
-     *
-     * @ORM\ManyToMany(targetEntity="Editor", cascade={"persist"}, mappedBy="chatroomsInvolved")
-     * @Assert\Collection()
+     * @var Subject $subject Subjects tackled in this chatroom
+     * @ORM\ManyToOne(targetEntity="Subject", cascade={"persist"}, inversedBy="chatrooms")
+     * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Subject")
      */
-    private $editorsInvolved;
+    private $subject;
+
+    /**
+     * @var Version|null $version Version tackled in this chatroom
+     * @ORM\ManyToOne(targetEntity="Version", cascade={"persist"}, inversedBy="chatrooms")
+     * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Version")
+     */
+    private $version;
+
+    /**
+     * @var Theme $theme Theme tackled in this chatroom
+     * @ORM\ManyToOne(targetEntity="Theme", cascade={"persist"}, inversedBy="chatrooms")
+     * @ORM\JoinColumn(nullable=true)
+     * @Assert\Type("App\Entity\Theme")
+     */
+    private $theme;
+
 
 
     /**
-     * Abuses on this chat
-     * @var ArrayCollection
+     * @var Category $category Category tackled in this chatroom
+     * @ORM\ManyToOne(targetEntity="Category", cascade={"persist"}, inversedBy="chatrooms")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $category;
+
+
+    /**
+     * @var Collection $messages
+     * @ORM\OneToMany(targetEntity="Message", mappedBy="chatroom")
      *
-     * @ORM\OneToMany(targetEntity="Abuse", cascade={"persist"}, mappedBy="chat")
      * @Assert\Collection()
      */
-    private $abuses;
+    private $messages;
+
 
     public function __construct()
     {
-        $this->abuses = $this->subjects = $this->editorsInvolved = new ArrayCollection();
+        $this->chatEditors = new ArrayCollection();
+        $this->messages = new ArrayCollection();
     }
 
     /**
@@ -190,97 +217,48 @@ class Chat
     }
 
     /**
-     * @return Editor
+     * @return Editor|null
      */
-    public function getCreator(): Editor
+    public function getCreator(): ?Editor
     {
         return $this->creator;
     }
 
     /**
-     * @param Editor $creator
+     * @param Editor|null $creator
+     * @return Chat
      */
-    public function setCreator(Editor $creator): void
+    public function setCreator(?Editor $creator): self
     {
         $this->creator = $creator;
-    }
 
-    /**
-     * Get subjects tackled in this chatroom
-     *
-     * @return Collection|null
-     */
-    public function getSubjects(): ?Collection
-    {
-        return $this->subjects;
-    }
-
-    /**
-     * Add a subjects tackled in this chatroom
-     *
-     * @param Subject $subject
-     * @return self
-     */
-    public function addSubject(Subject $subject): self
-    {
-        if(!$this->subjects->contains($subject)){
-            // Add a subject
-            $this->subjects->add($subject);
-
-            if($subject->getChatrooms()->contains($this)){
-                // Add a reference to this chatroom
-                $subject->getChatrooms()->add($this);
-            }
-
+        if(!is_null($creator) && !$creator->getChatroomsCreated()->contains($this)){
+            $creator->addChatroomsCreated($this);
         }
 
         return $this;
     }
 
     /**
-     * Remove a subject tackled in this chatroom
-     *
-     * @param Subject $subject
-     * @return void
+     * @return Collection
      */
-    public function removeSubject(Subject $subject): void
+    public function getChatEditors(): Collection
     {
-        if($this->subjects->contains($subject)){
-            // Remove a subject
-            $this->subjects->removeElement($subject);
-
-            if($subject->getChatrooms()->contains($this)){
-                // Remove the reference to this chat
-                $subject->getChatrooms()->removeElement($this);
-            }
-        }
+        return $this->chatEditors;
     }
 
     /**
-     * Get editors involved
-     *
-     * @return Collection|null
-     */
-    public function getEditorsInvolved(): ?Collection
-    {
-        return $this->editorsInvolved;
-    }
-
-    /**
-     * Add an editor involved
-     *
-     * @param Editor $editor
+     * @param EditorsChats $chatEditor
      * @return self
      */
-    public function addEditorInvolved(Editor $editor): self
+    public function addChatEditors(EditorsChats $chatEditor): self
     {
-        if(!$this->editorsInvolved->contains($editor)){
-            // Add an editor
-            $this->editorsInvolved->add($editor);
+        if(!$this->chatEditors->contains($chatEditor)){
+            // Add a chat's editor
+            $this->chatEditors->add($chatEditor);
 
-            if(!$editor->getChatroomsInvolved()->contains($this)){
-                // Add a reference as involved in this chatroom to the editor
-                $editor->getChatroomsInvolved()->add($this);
+            if($chatEditor->getChatroom() !== $this){
+                $chatEditor->setChatroom($this);
             }
         }
 
@@ -288,70 +266,154 @@ class Chat
     }
 
     /**
-     * Remove an editor involved
+     * Remove a chat's editor
      *
-     * @param Editor $editor
-     * @return void
+     * @param EditorsChats $chatEditor
+     * @return Chat
      */
-    public function removeEditorInvolved(Editor $editor): void
+    public function removeChatEditors(EditorsChats $chatEditor): self
     {
-        if($this->editorsInvolved->contains($editor)){
-            // Remove an editor involved
-            $this->editorsInvolved->removeElement($editor);
+        if($this->chatEditors->contains($chatEditor)){
+            // Remove
+            $this->chatEditors->removeElement($chatEditor);
 
-            if($editor->getChatroomsInvolved()->contains($this)){
-                //Remove the reference to this chatroom in the editor instance
-                $editor->getChatroomsInvolved()->removeElement($this);
+            // Remove the reference to this chat
+            if($chatEditor->getChatroom() === $this){
+                $chatEditor->setChatroom(null);
             }
         }
+
+        return $this;
+    }
+
+
+    /**
+     * @return Subject|null
+     */
+    public function getSubject(): ?Subject
+    {
+        return $this->subject;
     }
 
     /**
-     * Get abuses
-     *
-     * @return Collection|null
+     * @param Subject|null $subject
+     * @return Chat
      */
-    public function getAbuses(): ?Collection
+    public function setSubject(?Subject $subject): self
     {
-        return $this->abuses;
-    }
-
-    /**
-     * Add an abuse on the chatroom
-     *
-     * @param Abuse $abuse
-     * @return self
-     */
-    public function addAbuse(Abuse $abuse): self
-    {
-        if(!$this->abuses->contains($abuse)){
-            $this->abuses->add($abuse);
-
-            $abuse->setChat($this);
-        }
-
+        $this->subject = $subject;
 
         return $this;
     }
 
     /**
-     * Remove an abuse
-     *
-     * @param Abuse $abuse
-     * @return void
+     * @return Version|null
      */
-    public function removeAbuse(Abuse $abuse): void
+    public function getVersion(): ?Version
     {
-        if($this->abuses->contains($abuse)){
-            $this->abuses->removeElement($abuse);
+        return $this->version;
+    }
 
-            if($abuse->getChat() === $this){
-                $abuse->setChat(null);
-            }
+    /**
+     * @param Version|null $version
+     * @return Chat
+     */
+    public function setVersion(?Version $version): self
+    {
+        $this->version = $version;
+
+        return $this;
+    }
+
+    /**
+     * @return Theme|null
+     */
+    public function getTheme(): ?Theme
+    {
+        return $this->theme;
+    }
+
+    /**
+     * @param Theme|null $theme
+     * @return Chat
+     */
+    public function setTheme(?Theme $theme): self
+    {
+        $this->theme = $theme;
+
+        return $this;
+    }
+
+    /**
+     * @return Category|null
+     */
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    /**
+     * @param Category|null $category
+     * @return Chat
+     */
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        if(!is_null($category) && !$category->getChatrooms()->contains($this)){
+            $category->addChatroom($this);
         }
 
+        return $this;
     }
 
 
+    /**
+     * Get messages
+     *
+     * @return Collection
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    /**
+     * Add a message
+     * @param Message $message
+     * @return Chat
+     */
+    public function addMessage(Message $message): self
+    {
+        if(!$this->messages->contains($message)){
+            // Add the message
+            $this->messages->add($message);
+
+            // Add a reference to this chat in the Message instance
+            if($message->getChatroom() !== $this){
+                $message->setChatroom($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a message
+     * @param Message $message
+     * @return void
+     */
+    public function removeMessage(Message $message): void
+    {
+        if($this->messages->contains($message)){
+            // Remove the message
+            $this->messages->removeElement($message);
+
+            // Remove the reference to this Chat in the Message instance
+            if($message->getChatroom() === $this){
+                $message->setChatroom(null);
+            }
+        }
+    }
 
 }

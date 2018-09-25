@@ -1,0 +1,13 @@
+App\Entity\Video:
+    video{1..15}:
+        title: '<fr_FR:sentence(7)>'
+        caption: '<fr_FR:realText(100)>'
+        url: '<url()>'
+        embedUrl: '<url()>'
+        size: '<numberBetween(1000,10000)>'
+        uploadDate: '<dateTimeBetween("-2 years", "now")>'
+        # Relations
+        thumbnail (unique): '@image*'
+        associatedArticle: '@article*'
+        associatedExample: '@example*'
+        associatedGrain: '@grain*'

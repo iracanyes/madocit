@@ -1,0 +1,12 @@
+App\Entity\Article:
+    article{1..55} (extends subject_article):
+        articleBody: '<fr_FR:realText(200)>'
+        dateCreated: '<dateTimeBetween("-2 years", "-1 years")>'
+        dateModified: '<dateTimeBetween("-1 years", "now")>'
+        datePublished: '<dateTimeBetween("-2 years", "now")>'
+        coursePrerequisites: '<fr_FR:realText(200)>'
+        aggregateRating: '<numberBetween(1,10)>'
+        pdf: '<url()>'
+        # Relations
+        images (unique): '1x @image<numberBetween(166,220)>'
+        hasPart: '1x @grain<current()>'

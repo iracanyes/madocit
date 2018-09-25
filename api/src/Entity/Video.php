@@ -79,28 +79,27 @@ class Video
     private $thumbnail;
 
     /**
-     * @var Article Article associated to the video
-     * @ORM\OneToOne(targetEntity="Article", cascade={"persist"}, inversedBy="video")
-     * @ORM\JoinColumn(nullable=true)
-     * @Assert\Type("App\Entity\Article")
+     * @var Subject $subject
+     * @ORM\OneToOne(targetEntity="Subject", mappedBy="video")
+     * @Assert\Type("App\Entity\Subject")
      */
-    private $associatedArticle;
+    private $subject;
 
     /**
      * @var Example Example associated to the video
-     * @ORM\OneToOne(targetEntity="Example", cascade={"persist"}, inversedBy="video")
-     * @ORM\JoinColumn(nullable=true)
+     * @ORM\OneToOne(targetEntity="Example", mappedBy="video")
+     * @ORM\JoinColumn(name="example_id", referencedColumnName="id", nullable=true)
+     *
      * @Assert\Type("App\Entity\Example")
      */
     private $associatedExample;
 
     /**
-     * @var Grain Grain associated to the video
-     * @ORM\OneToOne(targetEntity="Grain", cascade={"persist"}, inversedBy="video")
-     * @ORM\JoinColumn(nullable=true)
-     * @Assert\Type("App\Entity\Grain")
+     * @var Category $category Category associated to the video
+     * @ORM\OneToOne(targetEntity="Category", mappedBy="video")
+     * @Assert\Type("App\Entity\Category")
      */
-    private $associatedGrain;
+    private $associatedCategory;
 
     /**
      * @return integer
@@ -245,20 +244,22 @@ class Video
     }
 
     /**
-     * @return Article|null
+     * @return Subject
      */
-    public function getAssociatedArticle(): ?Article
+    public function getSubject(): Subject
     {
-        return $this->associatedArticle;
+        return $this->subject;
     }
 
     /**
-     * @param Article $associatedArticle
+     * @param Subject $subject
      */
-    public function setAssociatedArticle(Article $associatedArticle): void
+    public function setSubject(Subject $subject): void
     {
-        $this->associatedArticle = $associatedArticle;
+        $this->subject = $subject;
     }
+
+
 
     /**
      * @return Example|null
@@ -269,27 +270,35 @@ class Video
     }
 
     /**
-     * @param Example $associatedExample
+     * @param Example|null $associatedExample
+     * @return Video
      */
-    public function setAssociatedExample(Example $associatedExample): void
+    public function setAssociatedExample(?Example $associatedExample): self
     {
         $this->associatedExample = $associatedExample;
+
+        return $this;
+    }
+
+
+
+    /**
+     * @return Category|null
+     */
+    public function getAssociatedCategory(): ?Category
+    {
+        return $this->associatedCategory;
     }
 
     /**
-     * @return Grain|null
+     * @param Category|null $associatedCategory
+     * @return Video
      */
-    public function getAssociatedGrain(): ?Grain
+    public function setAssociatedCategory(?Category $associatedCategory): self
     {
-        return $this->associatedGrain;
-    }
+        $this->associatedCategory = $associatedCategory;
 
-    /**
-     * @param Grain $associatedGrain
-     */
-    public function setAssociatedGrain(Grain $associatedGrain): void
-    {
-        $this->associatedGrain = $associatedGrain;
+        return $this;
     }
 
 

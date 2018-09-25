@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -18,7 +20,7 @@ class Admin extends Editor
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var integer Number of users banned by the admin
@@ -27,9 +29,29 @@ class Admin extends Editor
      */
     private $nbUsersBanned;
 
+    /**
+     * @var Collection Editors banned by this admin
+     *
+     * From Doctrine's point of view, it is simply mapped as a unidirectional many-to-many whereby a unique constraint on one of the join columns enforces the one-to-many cardinality. https://www.doctrine-project.org/projects/doctrine-orm/en/2.6/reference/association-mapping.html#one-to-many-unidirectional-with-join-table
+     *
+     * @ORM\ManyToMany(targetEntity="User", cascade={"persist"})
+     * @ORM\JoinTable(
+     *     name="mdit_users_banned",
+     *     joinColumns={@ORM\JoinColumn(name="admin_id", referencedColumnName="id")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", unique=true)}
+     *
+     * )
+     * @Assert\Collection()
+     */
+    private $usersBanned;
+
+    /**
+     * Admin constructor.
+     */
     public function __construct()
     {
         parent::__construct();
+        $this->usersBanned = new ArrayCollection();
     }
 
     public function getId()
@@ -48,4 +70,53 @@ class Admin extends Editor
 
         return $this;
     }
+
+    /**
+     * @return Collection
+     */
+    public function getUsersBanned(): Collection
+    {
+        return $this->usersBanned;
+    }
+
+    /**
+     * @param User $user
+     * @return self
+     */
+    public function addUsersBanned(User $user): self
+    {
+        if(!$this->usersBanned->contains($user)){
+            // Add the user
+            $this->usersBanned->add($user);
+
+            // Mark the user as banned
+            if($user->isBanned() !== true){
+                $user->setBanned(true);
+            }
+
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove the user as banned
+     * @param User $user
+     * @return self
+     */
+    public function removeUsersBanned(User $user): self
+    {
+        if($this->usersBanned->contains($user)){
+            // Remove the user from the banned users
+            $this->usersBanned->removeElement($user);
+
+            // Remove the user's mark as banned
+            if($user->isBanned() === true){
+                $user->setBanned(false);
+            }
+        }
+
+        return $this;
+    }
+
 }

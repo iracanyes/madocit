@@ -1,0 +1,22 @@
+App\Entity\Category:
+    category{1..7}:
+        name (unique) : '<fr_FR:sentence(7)>'
+        resume: '<fr_FR:realText(50)>'
+        description: '<fr_FR:realText(100)>'
+        isValid: '<boolean(50)>'
+        dateCreated: '<dateTimeBetween("-2 years", "now")>'
+        # Relations
+        #subCategories (unique): '1x @category<numberBetween(8,15)>'
+        subCategories (unique): '1x @category*'
+        images: '@image*'
+        #chatrooms: '1x @chat*'
+
+    category{8..15}:
+        name (unique): '<fr_FR:sentence(7)>'
+        resume: '<fr_FR:realText(50)>'
+        description: '<fr_FR:realText(100)>'
+        isValid: '<boolean(50)>'
+        dateCreated: '<dateTimeBetween("-2 years", "now")>'
+        # Relations
+        images: '1x @image*'
+        #chatrooms: '1x @chat*'
