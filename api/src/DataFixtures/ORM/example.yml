@@ -1,0 +1,12 @@
+App\Entity\Example:
+    example{1..15}:
+        title: '<fr_FR:sentence(7)>'
+        content: '<fr_FR:realText(200)>'
+        rating: '<numberBetween(1,10)>'
+        dateCreated: '<dateTimeBetween("-2 years", "now")>'
+        dateModified: '<dateTimeBetween("-1 years", "now")>'
+        pdf: '<url()>'
+        # Relations
+        subjects: '1x @subject*'
+        images (unique): '1x @image*'
+        video: '@video*'

@@ -1,0 +1,3 @@
+App\Entity\EditorsChats:
+    editorsChats{1..330}:
+        nbUnreadMessages: '<numberBetween(1,10)>'

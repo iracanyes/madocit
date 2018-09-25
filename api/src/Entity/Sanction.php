@@ -46,10 +46,17 @@ class Sanction
     private $status;
 
     /**
+     * @var \Datetime $dateCreated Date of the message's creation
+     * @ORM\Column(type="datetime")
+     * @Assert\DateTime()
+     */
+    private $dateCreated;
+
+    /**
      * Abuses sanctioned
      * @var Collection Abuses tackled by the sanction
      *
-     * @ORM\OneToMany(targetEntity="Abuse", cascade={"persist"}, mappedBy="sanction")
+     * @ORM\OneToMany(targetEntity="Abuse", mappedBy="sanction")
      * @Assert\Collection()
      */
     private $abuses;
@@ -70,10 +77,18 @@ class Sanction
      *
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist","remove"}, inversedBy="sanctionsReceived")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Type("App\Entity\Editor")
+     * @Assert\NotNull()
      */
     private $editor;
 
+
+    /**
+     * Sanction constructor.
+     */
+    public function __construct()
+    {
+        $this->abuses = new ArrayCollection();
+    }
 
 
     /**
@@ -131,17 +146,51 @@ class Sanction
     }
 
     /**
+     * @return \Datetime
+     */
+    public function getDateCreated(): \Datetime
+    {
+        return $this->dateCreated;
+    }
+
+    /**
+     * Get date created
+     * @param \Datetime $dateCreated
+     * @return Sanction
+     */
+    public function setDateCreated(\Datetime $dateCreated): self
+    {
+        $this->dateCreated = $dateCreated;
+
+        return $this;
+    }
+
+
+
+    /**
+     * @return Collection
+     */
+    public function getAbuses(): Collection
+    {
+        return $this->abuses;
+    }
+
+
+    /**
      * Add an abuse
      *
-     * @param Abuse|null $abuse
-     * @return self
+     * @param Abuse $abuse
+     * @return Sanction
      */
-    public function addAbuse(?Abuse $abuse): self
+    public function addAbuse(Abuse $abuse): self
     {
         if(!$this->abuses->contains($abuse)){
             $this->abuses->add($abuse);
 
-            $abuse->setSanction($this);
+            if($abuse->getSanction() !== $this){
+                $abuse->setSanction($this);
+            }
+
         }
 
 
@@ -151,10 +200,10 @@ class Sanction
     /**
      * Remove an abuse
      *
-     * @param Abuse|null $abuse
-     * @return void
+     * @param Abuse $abuse
+     * @return Sanction
      */
-    public function removeAbuse(?Abuse $abuse): void
+    public function removeAbuse(Abuse $abuse): self
     {
         if($this->abuses->contains($abuse)){
             $this->abuses->removeElement($abuse);
@@ -164,38 +213,46 @@ class Sanction
             }
         }
 
+        return $this;
+
     }
 
     /**
-     * @return Moderator
+     * @return Moderator|null
      */
-    public function getModerator(): Moderator
+    public function getModerator(): ?Moderator
     {
         return $this->moderator;
     }
 
     /**
      * @param Moderator|null $moderator
+     * @return Sanction
      */
-    public function setModerator(?Moderator $moderator): void
+    public function setModerator(?Moderator $moderator): self
     {
         $this->moderator = $moderator;
+
+        return $this;
     }
 
     /**
-     * @return Editor
+     * @return Editor|null
      */
-    public function getEditor(): Editor
+    public function getEditor(): ?Editor
     {
         return $this->editor;
     }
 
     /**
      * @param Editor|null $editor
+     * @return Sanction
      */
-    public function setEditor(?Editor $editor): void
+    public function setEditor(?Editor $editor): self
     {
         $this->editor = $editor;
+
+        return $this;
     }
 
 

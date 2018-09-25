@@ -4,7 +4,9 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-use iracanyes\DateTime;
+use \DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -40,6 +42,13 @@ class Contribution
     private $content;
 
     /**
+     * @var int $rating Rating of the contribution
+     * @ORM\Column(type="integer")
+     * @Assert\Type("integer")
+     */
+    private $rating;
+
+    /**
      * @var Datetime Date of the contribution
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
@@ -57,19 +66,39 @@ class Contribution
      * @var Editor $editor Editor who made this contribution
      * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="contributionsMade")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Type("App\Entity\Editor")
-     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $editor;
+
+    /**
+     * @var Group $group Group in which the editor has the privileges to access this subject
+     * @ORM\ManyToOne(targetEntity="Group", cascade={"persist"}, inversedBy="contributions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $group;
 
     /**
      * @var Subject $subject Subject which is concerned by this contribution
      * @ORM\ManyToOne(targetEntity="Subject", cascade={"persist"}, inversedBy="contributionsSuggested")
      * @ORM\JoinColumn(nullable=false)
-     * @Assert\Type("App\Entity\Editor")
-     * @Assert\NotBlank()
+     * @Assert\NotNull()
      */
     private $subject;
+
+    /**
+     * @var Collection $abuses Reported abuses on this contribution
+     * @ORM\OneToMany(targetEntity="Abuse", mappedBy="contribution")
+     * @Assert\Collection()
+     */
+    private $abuses;
+
+    /**
+     * Contribution constructor.
+     */
+    public function __construct()
+    {
+        $this->abuses = new ArrayCollection();
+    }
 
     /**
      * @return int|null
@@ -118,6 +147,27 @@ class Contribution
     }
 
     /**
+     * @return int
+     */
+    public function getRating(): int
+    {
+        return $this->rating;
+    }
+
+    /**
+     * @param int $rating
+     * @return self
+     */
+    public function setRating(int $rating): self
+    {
+        $this->rating = $rating;
+
+        return $this;
+    }
+
+
+
+    /**
      * @return \DateTimeInterface|null
      */
     public function getDateCreated(): ?\DateTimeInterface
@@ -156,36 +206,128 @@ class Contribution
     }
 
     /**
-     * @return Editor
+     * Get Editor
+     * @return Editor|null
      */
-    public function getEditor(): Editor
+    public function getEditor(): ?Editor
     {
         return $this->editor;
     }
 
     /**
-     * @param Editor $editor
+     * Set Editor
+     *
+     * @param Editor|null $editor
+     * @return Contribution
      */
-    public function setEditor(Editor $editor): void
+    public function setEditor(?Editor $editor): self
     {
         $this->editor = $editor;
+
+        if($editor !== null){
+            $editor->addContributionMade($this);
+        }
+        return $this;
     }
 
     /**
-     * @return Subject
+     * @return Group|null
      */
-    public function getSubject(): Subject
+    public function getGroup(): ?Group
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param Group|null $group
+     * @return Contribution
+     */
+    public function setGroup(?Group $group): self
+    {
+        $this->group = $group;
+
+        if(!is_null($group) && !$group->getContributions()->contains($this)){
+            $group->addContribution($this);
+        }
+
+        return $this;
+    }
+
+
+
+    /**
+     * Get the subject
+     * @return Subject|null
+     */
+    public function getSubject(): ?Subject
     {
         return $this->subject;
     }
 
     /**
-     * @param Subject $subject
+     * Set the subject
+     * @param Subject|null $subject
+     * @return Contribution
      */
-    public function setSubject(Subject $subject): void
+    public function setSubject(?Subject $subject): self
     {
         $this->subject = $subject;
+
+        if(!is_null($subject) && !$subject->getContributionsSuggested()->contains($this)){
+            $subject->addContributionsSuggested($this);
+        }
+
+        return $this;
     }
+
+    /**
+     * Get abuses
+     * @return Collection
+     */
+    public function getAbuses(): Collection
+    {
+        return $this->abuses;
+    }
+
+    /**
+     * Add an abuse
+     * @param Abuse $abuse
+     * @return Contribution
+     */
+    public function addAbuse(Abuse $abuse): self
+    {
+        if(!$this->abuses->contains($abuse)){
+            $this->abuses->add($abuse);
+
+            // Add a reference to this contribution on this abuse object
+            if($abuse->getContribution() !== $this){
+                $abuse->setContribution($this);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove an abuse
+     * @param Abuse $abuse
+     * @return Contribution
+     */
+    public function removeAbuse(Abuse $abuse): self
+    {
+        if($this->abuses->contains($abuse)){
+            // remove the abuse
+            $this->abuses->removeElement($abuse);
+
+            // remove the reference
+            if($abuse->getContribution() === $this){
+                $abuse->setContribution(null);
+            }
+        }
+
+        return $this;
+    }
+
 
 
 }

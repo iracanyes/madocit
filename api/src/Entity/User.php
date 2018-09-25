@@ -6,17 +6,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Table(name="mdit_user")
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * Héritage de cette classe : Chaque éditeur est un utilisateur
  * @ORM\InheritanceType("JOINED")
- * @ORM\DiscriminatorColumn(name="userType", type="string", length=255)
- * @ORM\DiscriminatorMap({"user" = "User", "editor" = "Editor"})
- * @UniqueEntity("email")
+ * @ORM\DiscriminatorColumn(name="userType", type="string")
+ * @ORM\DiscriminatorMap({"user" = "User", "editor" = "Editor", "moderator"="Moderator", "admin"="Admin"})
+ * @ UniqueEntity("email")
  */
-class User
+class User implements UserInterface, \Serializable
 {
     /**
      * @var integer ID of the user
@@ -25,29 +26,29 @@ class User
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      */
-    private $id;
+    protected $id;
 
     /**
+     * ATTENTION: Avant la mise en production remettre la contrainte d'unicité
      * @var string Email of the user
-     * @ORM\Column(type="string", length=255, unique=true)
+     * @ORM\Column(type="string", length=255)
      * @Assert\Email()
      * @Assert\NotBlank()
      */
-    private $email;
+    protected $email;
 
     /**
      * @var string Encrypted password
      * @ORM\Column(type="string", length=255)
      * @UserPassword()
      */
-    private $password;
+    protected $password;
 
     /**
      * @var string Plain password
-     * @ORM\Column(type="string", length=255)
      * @UserPassword()
      */
-    private $plainPassword;
+    protected $plainPassword;
 
     /**
      * @var  integer Number of error on connection
@@ -55,48 +56,64 @@ class User
      * @Assert\Type("integer")
      * @Assert\Range(
      *     min=0,
-     *     max=5,
+     *     max=6,
      *     minMessage="The minimumm number of errors on connection is {{ limit }}. \n The number's value is {{ value }} !",
      *     maxMessage="The maximumm number of errors on connection is {{ limit }}. \n The number's value is {{ value }} !"
      * )
      */
-    private $nbErrorConnection;
+    protected $nbErrorConnection;
 
     /**
      * @var boolean User is banned
      * @ORM\Column(type="boolean")
      * @Assert\Type("boolean")
      */
-    private $banned;
+    protected $banned;
 
     /**
      * @var boolean User confirmed his signin
      * @ORM\Column(type="boolean")
      * @Assert\Type("boolean")
      */
-    private $signinConfirmed;
+    protected $signinConfirmed;
 
     /**
      * @var \DateTime Date of the registration
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      */
-    private $dateRegistration;
+    protected $dateRegistration;
+
 
     /**
      * @var string API Token of the user
      * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
      */
-    private $apiToken;
+    protected $apiToken;
+
+    /**
+     * @var array $roles Role of the user in the platform
+     * @ORM\Column(type="json_array")
+     */
+    protected $roles;
+
 
     /**
      * @var Image Image representing the user
      * @ORM\OneToOne(targetEntity="Image", cascade={"persist","remove"}, inversedBy="user")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      * @Assert\Type("App\Entity\Image")
      */
-    private $image;
+    protected $image;
+
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->roles  = array("ROLE_MEMBER");
+    }
 
     /**
      * @return int|null
@@ -142,6 +159,45 @@ class User
         return $this;
     }
 
+    public function getUsername()
+    {
+        return $this->email;
+    }
+
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
+
+    /** @see \Serializable::serialize() */
+    public function serialize()
+    {
+        return serialize(array(
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt,
+        ));
+    }
+
+    /** @see \Serializable::unserialize() */
+    public function unserialize($serialized)
+    {
+        list (
+            $this->id,
+            $this->username,
+            $this->password,
+            // see section on salt below
+            // $this->salt
+            ) = unserialize($serialized, array('allowed_classes' => false));
+    }
+
     public function getUserType(): ?string
     {
         return $this->userType;
@@ -166,7 +222,7 @@ class User
         return $this;
     }
 
-    public function getBanned(): ?bool
+    public function isBanned(): ?bool
     {
         return $this->banned;
     }
@@ -215,20 +271,55 @@ class User
     }
 
     /**
-     * @return Image
+     * @return Image|null
      */
-    public function getImage(): Image
+    public function getImage(): ?Image
     {
         return $this->image;
     }
 
     /**
-     * @param Image $image
+     * @param Image|null $image
      */
-    public function setImage(Image $image): void
+    public function setImage(?Image $image): void
     {
         $this->image = $image;
     }
+
+    /**
+     * Get Roles
+     * @return array
+     */
+    public function getRoles(){
+
+        $roles = $this->roles;
+
+        // Ajout du rôle "ROLE_MEMBER"
+        // Eviter les erreurs de $this->roles null
+        //$roles[] = 'ROLE_MEMBER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * Set Roles
+     * @param array $roles
+     * @return self
+     */
+    public function setRoles(array $roles): self
+    {
+
+        $this->roles = $roles;
+
+        return $this;
+
+    }
+
+    /**
+     * Add Roles
+     * @param array $role
+     * @return User
+     */
 
 
 }

@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ApiResource()
  * @ORM\Table(name="mdit_theme")
  * @ORM\Entity(repositoryClass="App\Repository\ThemeRepository")
- * @UniqueEntity("name")
+ * @ UniqueEntity("name")
  */
 class Theme
 {
@@ -27,8 +27,9 @@ class Theme
     private $id;
 
     /**
+     * ATTENTION: Avant la mise en production remettre la contrainte d'unicité
      * @var string Name of the theme
-     * @ORM\Column(type="string", unique=true, length=255)
+     * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
      */
     private $name;
@@ -55,32 +56,25 @@ class Theme
     private $dateCreated;
 
     /**
-     * @var Image|null Image illustrating the category
-     * @ORM\OneToOne(targetEntity="Image", cascade={"persist","remove"}, inversedBy="theme")
-     * @ORM\JoinColumn(nullable=true)
-     * @Assert\Type("App\Entity\Image")
+     * @var Collection $subjects Subjects evoking this theme
+     * @ORM\ManyToMany(targetEntity="Subject", mappedBy="themes")
      */
-    private $image;
+    private $subjects;
 
     /**
-     * @var Collection Categories of the theme
-     * @ORM\ManyToMany(targetEntity="Category", mappedBy="themes")
+     * @var Collection $chatrooms Chatrooms related to the theme
+     * @ORM\OneToMany(targetEntity="Chat", mappedBy="theme")
      * @Assert\Collection()
      */
-    private $categories;
+    private $chatrooms;
 
     /**
-     * @var Collection Versions of the theme
-     * @ORM\OneToMany(targetEntity="Version", mappedBy="theme")     *
-     * @Assert\Collection()
+     * Theme constructor.
      */
-    private $versions;
-
-
-
     public function __construct()
     {
-        $this->categories = $this->versions = new ArrayCollection();
+        $this->subjects = new ArrayCollection();
+        $this->chatrooms = new ArrayCollection();
     }
 
     /**
@@ -140,47 +134,63 @@ class Theme
     }
 
     /**
-     * @return Image|null
-     */
-    public function getImage(): ?Image
-    {
-        return $this->image;
-    }
-
-    /**
-     * @param Image|null $image
-     */
-    public function setImage(?Image $image): void
-    {
-        $this->image = $image;
-    }
-
-
-
-    /**
-     * Get categories
      * @return Collection
      */
-    public function getCategories(): Collection
+    public function getSubjects(): Collection
     {
-        return $this->categories;
+        return $this->subjects;
     }
 
     /**
-     * Add a category
-     * @param Category $category
+     * @param Subject $subject
      * @return Theme
      */
-    public function addCategory(Category $category): self
+    public function addSubject(Subject $subject): self
     {
-        if(!$this->categories->contains($category)){
-            // Add a version
-            $this->categories->add($category);
+        if(!$this->subjects->contains($subject)){
+            $this->subjects->add($subject);
 
-            // Add a reference to this theme in the Version instance
-            if(!$category->getThemes()->contains($this)){
+        }
 
-                $category->getThemes()->add($this);
+        return $this;
+    }
+
+    /**
+     * Remove a subject
+     * @param Subject $subject
+     * @return Theme
+     */
+    public function removeSubject(Subject $subject): self
+    {
+        if($this->subjects->contains($subject)){
+            // remove
+            $this->subjects->removeElement($subject);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Get chatrooms
+     * @return Collection
+     */
+    public function getChatrooms(): Collection
+    {
+        return $this->chatrooms;
+    }
+
+    /**
+     * Add a chatroom
+     * @param Collection $chatrooms
+     */
+    public function addChatrooms(Chat $chatroom): self
+    {
+        if(!$this->chatrooms->contains($chatroom)){
+            $this->chatrooms->add($chatroom);
+
+            if($chatroom->getTheme() !== $this){
+                $chatroom->setTheme($this);
             }
         }
 
@@ -188,69 +198,24 @@ class Theme
     }
 
     /**
-     * Remove a category
-     * @param Category $category
-     * @return void
-     */
-    public function removeCategory(Category $category): void
-    {
-        if($this->categories->contains($category)){
-            // Remove a version
-            $this->categories->removeElement($category);
-
-            // Remove a reference to this theme in the Version instance
-            if($category->getThemes()->contains($this)){
-
-                $category->getThemes()->removeElement($this);
-            }
-        }
-    }
-
-    /**
-     * Get all versions of this theme
-     * @return Collection
-     */
-    public function getVersions(): Collection
-    {
-        return $this->versions;
-    }
-
-    /**
-     * Add a version of this theme
-     * @param Version $version
+     * Remove a chatroom
+     * @param Chat $chatroom
      * @return Theme
      */
-    public function addVersion(Version $version): self
+    public function removeChatrooms(Chat $chatroom): self
     {
-        if(!$this->versions->contains($version)){
-            // Add a version
-            $this->versions->add($version);
+        if($this->chatrooms->contains($chatroom)){
 
-            // Add a reference to this theme in the Version instance
-            if($version->getTheme() !== $this){
+            $this->chatrooms->removeElement($chatroom);
 
-                $version->setTheme($this);
+            if($chatroom->getTheme() === $this){
+
+                $chatroom->setTheme(null);
             }
         }
 
         return $this;
     }
 
-    /**
-     * Remove a version of this theme
-     * @param Version $version
-     * @return void
-     */
-    public function removeVersion(Version $version): void
-    {
-        if($this->versions->contains($version)){
-            // Remove a version
-            $this->versions->removeElement($version);
 
-            if($version->getTheme() === $this){
-                // Remove the referene to this Theme instance in the Version instance
-                $version->setTheme(null);
-            }
-        }
-    }
 }

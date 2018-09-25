@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ApiResource()
  * @ORM\Table(name="mdit_version")
  * @ORM\Entity(repositoryClass="App\Repository\VersionRepository")
- * @UniqueEntity("assemblyVersion")
+ * @ UniqueEntity("assemblyVersion")
  */
 class Version
 {
@@ -27,8 +27,9 @@ class Version
     private $id;
 
     /**
+     * ATTENTION: Avant la mise en production remettre la contrainte d'unicité
      * @var string Associated product/technology version. e.g., .NET Framework 4.5.
-     * @ORM\Column(type="string", unique=true, length=255)
+     * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
      * @Assert\NotBlank()
      */
@@ -71,29 +72,34 @@ class Version
 
     /**
      * @var string Author of the version (optional)
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
+     *
      * @Assert\Type("string")
      */
     private $author;
 
-    /**
-     * @var Theme Theme associated with this version
-     * @ORM\ManyToOne(targetEntity="Theme", cascade={"persist", "remove"}, inversedBy="versions")
-     * @ORM\JoinColumn(nullable=false)
-     * @Assert\Type("App\Entity\Theme")
-     */
-    private $theme;
 
     /**
-     * @var Collection Subjects tackling this version of the theme
-     * @ORM\OneToMany(targetEntity="Subject", cascade={"persist"}, mappedBy="version")
+     * @var Collection Subjects tackling this version
+     * @ORM\OneToMany(targetEntity="Subject", mappedBy="version")
      * @Assert\Collection()
      */
     private $subjects;
 
+    /**
+     * @var Collection $chatrooms Chatrooms related to the version
+     * @ORM\OneToMany(targetEntity="Chat", mappedBy="version")
+     * @Assert\Collection()
+     */
+    private $chatrooms;
+
+    /**
+     * Version constructor.
+     */
     public function __construct()
     {
         $this->subjects = new ArrayCollection();
+        $this->chatrooms = new ArrayCollection();
     }
 
     /**
@@ -238,27 +244,6 @@ class Version
     }
 
     /**
-     * Get Theme
-     * @return Theme
-     */
-    public function getTheme(): Theme
-    {
-        return $this->theme;
-    }
-
-    /**
-     * Set theme
-     * @param Theme $theme
-     * @return Version
-     */
-    public function setTheme(Theme $theme): self
-    {
-        $this->theme = $theme;
-
-        return $this;
-    }
-
-    /**
      * @return Collection
      */
     public function getSubjects(): Collection
@@ -277,7 +262,7 @@ class Version
             // Add a subject
             $this->subjects->add($subject);
 
-            if(!$subject->getVersion() === $this){
+            if($subject->getVersion() !== $this){
                 //Add a reference to this version in the Subject instance
                 $subject->setVersion($this);
             }
@@ -290,9 +275,9 @@ class Version
     /**
      * Remove a subject tackled in this version of the theme
      * @param Subject $subject
-     * @return void
+     * @return self
      */
-    public function removeSubject(Subject $subject): void
+    public function removeSubject(Subject $subject): self
     {
         if($this->subjects->contains($subject)){
             // Remove a subject
@@ -303,7 +288,55 @@ class Version
                 $subject->setVersion(null);
             }
         }
+
+        return $this;
     }
 
+    /**
+     * @return Collection
+     */
+    public function getChatrooms(): Collection
+    {
+        return $this->chatrooms;
+    }
+
+    /**
+     * Add a chatroom
+     * @param Chat $chatroom
+     * @return Version
+     */
+    public function addChatrooms(Chat $chatroom): self
+    {
+        if(!$this->chatrooms->contains($chatroom)){
+            // Add the chatroom
+            $this->chatrooms->add($chatroom);
+
+            // Add the reference
+            if($chatroom->getVersion() !== $this){
+                $chatroom->setVersion($this);
+            }
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * Remove a chatroom
+     * @param Chat $chatroom
+     * @return Version
+     */
+    public function removeChatrooms(Chat $chatroom): self
+    {
+        if($this->chatrooms->contains($chatroom)){
+            // Remove the chatroom
+            $this->chatrooms->add($chatroom);
+
+            // Remove the reference
+            if($chatroom->getVersion() === $this){
+                $chatroom->setVersion(null);
+            }
+        }
+    }
 
 }

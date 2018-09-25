@@ -54,14 +54,14 @@ class Example
     private $rating;
 
     /**
-     * @var Datetime Date of creation
+     * @var \Datetime Date of creation
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
      */
     private $dateCreated;
 
     /**
-     * @var Datetime Date of the last modification
+     * @var \Datetime Date of the last modification
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
      */
@@ -75,28 +75,23 @@ class Example
     private $pdf;
 
     /**
-     * @var Collection Articles associated to the example
-     *
-     * @ORM\ManyToMany(targetEntity="Article", cascade={"persist"}, inversedBy="associatedExamples")
-     * @ORM\JoinTable(name="mdit_article_examples")
-     * @Assert\Collection()
+     * @var Collection $subjects Subject illustrated in this example
+     * @ORM\ManyToMany(targetEntity="Subject", mappedBy="examples")
+     * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
-    private $associatedArticles;
+    private $subjects;
 
     /**
-     * @var Collection Articles associated to the example
-     *
-     * @ORM\ManyToMany(targetEntity="Grain", cascade={"persist"}, inversedBy="associatedExamples")
-     * @ORM\JoinTable(name="mdit_grain_examples")
-     * @Assert\Collection()
+     * @var Collection $images Images illustrating the example
+     * @ORM\OneToMany(targetEntity="Image", mappedBy="example")
      */
-    private $associatedGrains;
+    private $images;
 
     /**
      * @var Video Video associated to the example
      *
-     * @ORM\OneToOne(targetEntity="Video", mappedBy="associatedExample")
-     * @ORM\JoinColumn(name="video_id", referencedColumnName="id", nullable=true)
+     * @ORM\OneToOne(targetEntity="Video", cascade={"persist","remove"}, inversedBy="associatedExample")
+     * @ORM\JoinColumn(nullable=true)
      * @Assert\Type("App\Entity\Video")
      */
     private $video;
@@ -106,7 +101,7 @@ class Example
      */
     public function __construct()
     {
-        $this->associatedArticles = $this->associatedGrains = new ArrayCollection();
+        $this->subjects = $this->images = new ArrayCollection();
     }
 
 
@@ -233,102 +228,101 @@ class Example
     }
 
     /**
-     * Get articles associated to the example
      * @return Collection
      */
-    public function getAssociatedArticles(): Collection
+    public function getSubjects(): Collection
     {
-        return $this->associatedArticles;
+        return $this->subjects;
     }
 
     /**
-     * Add an associated article
-     *
-     * @param Article $article
-     * @return self
+     * @param Subject $subject
+     * @return Example
      */
-    public function addAssociatedArticle(Article $article): self
+    public function addSubject(Subject $subject): self
     {
-        if(!$this->associatedArticles->contains($article)){
-            // Add an article
-            $this->associatedArticles->add($article);
+        if(!$this->subjects->contains($subject)){
 
-            // Add the reference to this example in the Article instance
-            if($article->getAssociatedExamples()->contains($this)){
+            $this->subjects->add($subject);
 
-                $article->addAssociatedExample($this);
+            if(!$subject->getExamples()->contains($this)){
+                $subject->getExamples()->add($this);
+            }
+
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove a subject
+     * @param Subject $subject
+     * @return Example
+     */
+    public function removeSubject(Subject $subject): self
+    {
+        if($this->subjects->contains($subject)){
+            // Remove
+            $this->subjects->removeElement($subject);
+
+            if($subject->getExamples()->contains($this)){
+                $subject->getExamples()->removeElement($this);
             }
         }
 
         return $this;
-
     }
 
-    /**
-     * Remove an associated article
-     * @param Article $article
-     * @return void
-     */
-    public function removeAssociatedArticle(Article $article): void
-    {
-        if($this->associatedArticles->contains($article)){
-            // Remove the article
-            $this->associatedArticles->removeElement($article);
 
-            // Remove the reference to this example in the Article instance
-            if($article->getAssociatedExamples()->contains($this)){
-
-                $article->getAssociatedExamples()->removeElement($this);
-            }
-        }
-    }
 
     /**
-     * Get Associated grains
-     *
      * @return Collection
      */
-    public function getAssociatedGrains(): Collection
+    public function getImages(): Collection
     {
-        return $this->associatedGrains;
+        return $this->images;
     }
 
     /**
-     * Add an associated grain
-     *
-     * @param Grain $grain
+     * @param Image $image
      * @return Example
      */
-    public function addAssociatedGrain(Grain $grain): self
+    public function addImage(Image $image): self
     {
-        if(!$this->associatedGrains->contains($grain)){
-            // Add an associated grain
-            $this->associatedGrains->add($grain);
+        if(!$this->images->contains($image)){
+            // Add an image
+            $this->images->add($image);
 
-            if($grain->getAssociatedExamples()->contains($this)){
-                // Remove the reference to the example in the Grain instance
-                $grain->getAssociatedExamples()->removeElement($this);
+            // Add a reference
+            if($image->getExample() !== $this){
+                $image->setExample($this);
             }
         }
+
+        return $this;
     }
 
     /**
-     * Remove an associated grain
-     * @param Grain $grain
-     * @return void
+     * Remove an image
+     * @param Image $image
+     * @return Example
      */
-    public function removeAssociatedGrain(Grain $grain): void
+    public function removeImage(Image $image): self
     {
-        if($this->associatedGrains->contains($grain)){
-            // Remove the grain
-            $this->associatedGrains->removeElement($grain);
+        if($this->images->contains($image)){
+            // Remove
+            $this->images->removeElement($image);
 
-            if($grain->getAssociatedExamples->contains($this)){
-                // Remove the reference to the example in the Grain instance
-                $grain->getAssociatedExamples()->removeElement($this);
+            // Remove the reference to this example
+            if($image->getExample() === $this){
+                $image->setExample(null);
             }
         }
+
+        return $this;
     }
+
+
 
 
     /**
@@ -340,11 +334,14 @@ class Example
     }
 
     /**
-     * @param Video $video
+     * @param Video|null $video
+     * @return Example
      */
-    public function setVideo(Video $video): void
+    public function setVideo(?Video $video): self
     {
         $this->video = $video;
+
+        return $this;
     }
 
 

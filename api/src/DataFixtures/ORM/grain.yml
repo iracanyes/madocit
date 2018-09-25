@@ -1,0 +1,10 @@
+App\Entity\Grain:
+    grain{1..15} (extends subject_grain):
+        content: '<fr_FR:realText(200)>'
+        dateCreated: '<dateTimeBetween("-2 years", "now")>'
+        dateModified: '<dateTimeBetween("-1 years", "now")>'
+        datePublished: '<dateTimeBetween("-2 years", "now")>'
+        draft: '<boolean(50)>'
+        rating: '<numberBetween(1,10)>'
+        # Relations
+        images (unique): '1x @image*'

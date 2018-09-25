@@ -6,6 +6,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ApiResource()
@@ -42,7 +44,7 @@ class Image
     /**
      * @var string URL of the image
      * @ORM\Column(type="string", length=255)
-     * @Assert\Image()
+     * @Assert\Type("string")
      */
     private $url;
 
@@ -62,32 +64,40 @@ class Image
 
     /**
      * @var User|null User represented by the image
-     * @ORM\OneToOne(targetEntity="User", mappedBy="image")
+     * @ORM\OneToOne(targetEntity="User", mappedBy="image")     *
      * @Assert\Type("App\Entity\User")
      */
     private $user;
 
     /**
-     * @var Category|null Category illustrated by the image
-     * @ORM\OneToOne(targetEntity="Category",  mappedBy="image")
-     * @Assert\Type("App\Entity\Category")
+     * @var Collection $categories Categories illustrated by this image
+     * @ORM\ManyToMany(targetEntity="Category", mappedBy="images")
+     * @Assert\Collection()
      */
-    private $category;
+    private $categories;
 
     /**
-     * @var Theme|null Theme illustrated by the image
-     * @ORM\OneToOne(targetEntity="Theme",  mappedBy="image")
-     * @Assert\Type("App\Entity\Theme")
-     */
-    private $theme;
-
-    /**
-     * @var Subject Subject illustrated bu the image
+     * @var Subject|null Subject illustrated bu the image
      * @ORM\ManyToOne(targetEntity="Subject", cascade={"persist","remove"}, inversedBy="images")
      * @ORM\JoinColumn(nullable=true)
      * @Assert\Type("App\Entity\Subject")
      */
     private $subject;
+
+    /**
+     * @var Example|null $example Example illustrated by this image
+     * @ORM\ManyToOne(targetEntity="Example", cascade={"persist","remove"}, inversedBy="images" )
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $example;
+
+    /**
+     * Image constructor.
+     */
+    public function __construct()
+    {
+        $this->categories = new ArrayCollection();
+    }
 
     /**
      * @return int
@@ -167,44 +177,55 @@ class Image
 
     /**
      * @param User|null $user
+     * @return self
      */
-    public function setUser(?User $user): void
+    public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
     }
 
 
 
     /**
-     * @return Category|null
+     * @return Collection
      */
-    public function getCategory(): ?Category
+    public function getCategories(): Collection
     {
-        return $this->category;
+        return $this->categories;
     }
 
     /**
-     * @param Category|null $category
+     * @param Category $category
+     * @return Image
      */
-    public function setCategory(?Category $category): void
+    public function addCategory(Category $category): self
     {
-        $this->category = $category;
+        if(!$this->categories->contains($category)){
+            // Add a category
+            $this->categories->add($category);
+
+            if(!$category->getImages()->contains($this)){
+                $category->addImage($this);
+            }
+
+        }
+
+        return $this;
     }
 
     /**
-     * @return Theme|null
+     * Remove a category
+     * @param Category $category
+     * @return Image
      */
-    public function getTheme(): ?Theme
+    public function removeCategory(Category $category): self
     {
-        return $this->theme;
-    }
-
-    /**
-     * @param Theme|null $theme
-     */
-    public function setTheme(?Theme $theme): void
-    {
-        $this->theme = $theme;
+        if($this->categories->contains($category)){
+            // Remove
+            $this->categories->removeElement($category);
+        }
     }
 
     /**
@@ -216,12 +237,36 @@ class Image
     }
 
     /**
-     * @param Subject $subject
+     * @param Subject|null $subject
+     * @return Image
      */
-    public function setSubject(Subject $subject): void
+    public function setSubject(?Subject $subject): self
     {
         $this->subject = $subject;
+
+        return $this;
     }
+
+    /**
+     * @return Example|null
+     */
+    public function getExample(): ?Example
+    {
+        return $this->example;
+    }
+
+    /**
+     * @param Example $example
+     * @return Image
+     */
+    public function setExample(?Example $example): self
+    {
+        $this->example = $example;
+
+        return $this;
+    }
+
+
 
 
 

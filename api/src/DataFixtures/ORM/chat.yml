@@ -1,0 +1,15 @@
+App\Entity\Chat:
+    chat{1..15}:
+        title: '<fr_FR:sentence(7)>'
+        status: '<chatStatus()>'
+        closed: '<boolean(20)>'
+        downvoteCount: '<numberBetween(1,20)>'
+        upvoteCount: '<numberBetween(1,20)>'
+        aggregateRating: '<numberBetween(1,20)>'
+        # Relations
+        #chatEditors: ['@editorsChats*']
+        #chatEditors: '1x @editorsChats*'
+        #messages (unique): '1x @message*'
+        messages (unique): '6x @message*'
+
+

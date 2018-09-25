@@ -1,0 +1,8 @@
+App\Entity\Contribution:
+    contribution{1..55}:
+        title: '<fr_FR:sentence(7)>'
+        content: '<fr_FR:realText(200)>'
+        dateCreated: '<dateTimeBetween("-2 years", "now")>'
+        dateModified: '<dateTimeBetween("-2 years", "now")>'
+        editor: '@editor<current()>'
+        subject: '@subject<current()>'
