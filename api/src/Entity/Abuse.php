@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
+ * An abuse identified in the documentation or chatrooms
+ *
  * @ApiResource()
  * @ORM\Table(name="mdit_abuse")
  * @ORM\Entity(repositoryClass="App\Repository\AbuseRepository")

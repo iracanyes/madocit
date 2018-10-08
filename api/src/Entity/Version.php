@@ -10,7 +10,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     iri="http://schema.org/APIReference",
+ * )
  * @ORM\Table(name="mdit_version")
  * @ORM\Entity(repositoryClass="App\Repository\VersionRepository")
  * @ UniqueEntity("assemblyVersion")
