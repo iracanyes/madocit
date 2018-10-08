@@ -1,6 +1,0 @@
-{
-    "require-dev": {
-        "symfony/phpunit-bridge": "^4.1",
-        "symfony/debug": "^4.1"
-    }
-}
