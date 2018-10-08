@@ -106,7 +106,7 @@ import theme from './reducers/theme/';
 //import routes for themes
 import themeRoutes from './routes/theme';
 
-
+//import homepage from "";
 
 
 const store = createStore(
@@ -116,8 +116,8 @@ const store = createStore(
     form,
     },
     /* Add your reducers here */
-    combineReducers(abuse,{/* ... */ routing, form,}),
-    combineReducers(article,{/* ... */}),
+    combineReducers(abuse,{/* ... */ abuseRoutes, form,}),
+    combineReducers(article,{/* ... */ articleRoutes, form,}),
     combineReducers(category,{/* ... */}),
     combineReducers(chat,{/* ... */}),
     combineReducers(contribution,{/* ... */}),
@@ -143,6 +143,7 @@ ReactDom.render(
     <Router history={history}>
       <Switch>
         <Route path="/" component={Welcome} strict={true} exact={true}/>
+
         { /* Add your routes here */  },
         { abuseRoutes },
         { articleRoutes },
