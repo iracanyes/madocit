@@ -3,18 +3,13 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * An Article from the documentation - This description will be automatically extracted from the PHPDoc to document the API
- *
- * @ApiResource(
- *     iri="http://schema.org/Article",
- * )
+ * @ApiResource()
  * @ORM\Table(name="mdit_article")
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */
@@ -82,7 +77,6 @@ class Article extends Subject
      * @var Collection $hasParts Grain included in this article
      * @ORM\ManyToMany(targetEntity="Grain", cascade={"persist"}, inversedBy="isPartOf")
      * @ORM\JoinTable(name="mdit_article_grains")
-     * @ApiSubresource()
      * @Assert\Collection()
      */
     private $hasParts;
