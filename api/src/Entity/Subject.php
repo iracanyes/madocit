@@ -18,7 +18,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ UniqueEntity("title")
  * Héritage
  * @ORM\InheritanceType("JOINED")
- * @ORM\DiscriminatorColumn(name="subjectType", type="string", length=255)
+ * @ORM\DiscriminatorColumn(name="subject_type", type="string", length=255)
  * @ORM\DiscriminatorMap({"subject" = "Subject", "article" = "Article", "grain" = "Grain"})
  */
 class Subject
@@ -281,24 +281,6 @@ class Subject
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    public function getSubjectType(): ?string
-    {
-        return $this->subjectType;
-    }
-
-    /**
-     * @param string $subjectType
-     * @return Subject
-     */
-    public function setSubjectType(string $subjectType): self
-    {
-        $this->subjectType = $subjectType;
-
-        return $this;
-    }
 
     /**
      * @return Video|nul

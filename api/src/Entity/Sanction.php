@@ -2,14 +2,20 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Table(name="mdit_sanction")
  * @ORM\Entity(repositoryClass="App\Repository\SanctionRepository")
+ * @ApiResource(
+ *     normalizationContext={"groups"={"sanction:output"}},
+ *     denormalizationContext={"groups"={"sanction:input"}}
+ * )
  */
 class Sanction
 {
@@ -27,6 +33,7 @@ class Sanction
      * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
      * @Assert\NotBlank()
+     * @Groups({"sanction:output","moderator:input"})
      */
     private $type;
 
@@ -34,6 +41,7 @@ class Sanction
      * @var \DateTime End date of the sanction
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
+     * @Groups({"sanction:output","moderator:input"})
      */
     private $duration;
 
@@ -42,6 +50,7 @@ class Sanction
      * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
      * @Assert\NotBlank()
+     * @Groups({"sanction:output","moderator:input"})
      */
     private $status;
 
@@ -49,6 +58,7 @@ class Sanction
      * @var \Datetime $dateCreated Date of the message's creation
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
+     * @Groups({"sanction:output","sanction:input"})
      */
     private $dateCreated;
 

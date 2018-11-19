@@ -38,7 +38,7 @@ class EditorsChats
 
     /**
      * @var Chat $chatroom Chat associated to this editor
-     * @ORM\ManyToOne(targetEntity="Chat", cascade={"persist"}, inversedBy="ChatEditors")
+     * @ORM\ManyToOne(targetEntity="Chat", cascade={"persist"}, inversedBy="chatEditors")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\Type("App\Entity\Chat")
      */

@@ -43,7 +43,7 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface
             ->setSize(mt_rand(100000, 9000000))
             ->setUploadDate($this->faker->dateTimeBetween("-2 years", "now"));
         // Relations
-        $video->setSubject($this->getReference(ArticleFixtures::ARTICLE_REFERENCE));
+        $video->setAssociatedSubject($this->getReference(ArticleFixtures::ARTICLE_REFERENCE));
 
         //Image
         $image = $this->createImage();

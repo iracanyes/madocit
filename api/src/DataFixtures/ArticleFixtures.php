@@ -41,8 +41,8 @@ class ArticleFixtures extends Fixture implements DependentFixtureInterface
             ->setDependencies($this->faker->sentence(40));
 
         $article->setProficiencyLevel($this->faker->sentence)
-            ->setIsValid(false)
-            ->setSubjectType("article");
+            ->setIsValid(false);
+            //->setSubjectType("article");
 
         // Article's data
         $article->setArticleBody($this->faker->sentence(80));

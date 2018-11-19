@@ -9,7 +9,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     iri="http://schema.org/Article"
+ * )
  * @ORM\Table(name="mdit_article")
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */

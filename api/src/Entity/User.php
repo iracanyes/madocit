@@ -7,6 +7,10 @@ use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiProperty;
+
 
 /**
  * @ORM\Table(name="mdit_user")
@@ -16,6 +20,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\DiscriminatorColumn(name="userType", type="string")
  * @ORM\DiscriminatorMap({"user" = "User", "editor" = "Editor", "moderator"="Moderator", "admin"="Admin"})
  * @ UniqueEntity("email")
+ * @ApiResource(
+ *     normalizationContext={"groups"={"user:output"}},
+ *     denormalizationContext={"groups"={"user:input"}}
+ * )
  */
 class User implements UserInterface, \Serializable
 {
@@ -34,6 +42,7 @@ class User implements UserInterface, \Serializable
      * @ORM\Column(type="string", length=255)
      * @Assert\Email()
      * @Assert\NotBlank()
+     * @Groups({"user:output","user:input"})
      */
     protected $email;
 
@@ -41,6 +50,7 @@ class User implements UserInterface, \Serializable
      * @var string Encrypted password
      * @ORM\Column(type="string", length=255)
      * @UserPassword()
+     * @Groups({"user:input"})
      */
     protected $password;
 
@@ -60,6 +70,7 @@ class User implements UserInterface, \Serializable
      *     minMessage="The minimumm number of errors on connection is {{ limit }}. \n The number's value is {{ value }} !",
      *     maxMessage="The maximumm number of errors on connection is {{ limit }}. \n The number's value is {{ value }} !"
      * )
+     * @Groups({"write"})
      */
     protected $nbErrorConnection;
 
@@ -67,6 +78,7 @@ class User implements UserInterface, \Serializable
      * @var boolean User is banned
      * @ORM\Column(type="boolean")
      * @Assert\Type("boolean")
+     * @Groups({"user:output","admin:input"})
      */
     protected $banned;
 
@@ -74,6 +86,7 @@ class User implements UserInterface, \Serializable
      * @var boolean User confirmed his signin
      * @ORM\Column(type="boolean")
      * @Assert\Type("boolean")
+     * @Groups({"user:output","user:input"})
      */
     protected $signinConfirmed;
 
@@ -81,6 +94,7 @@ class User implements UserInterface, \Serializable
      * @var \DateTime Date of the registration
      * @ORM\Column(type="datetime")
      * @Assert\DateTime()
+     * @Groups({"user:output","user:input"})
      */
     protected $dateRegistration;
 
@@ -89,12 +103,14 @@ class User implements UserInterface, \Serializable
      * @var string API Token of the user
      * @ORM\Column(type="string", length=255)
      * @Assert\Type("string")
+     * @Groups({"user:output","user:input"})
      */
     protected $apiToken;
 
     /**
      * @var array $roles Role of the user in the platform
      * @ORM\Column(type="json_array")
+     * @Groups({"user:output","user:input"})
      */
     protected $roles;
 
@@ -104,6 +120,7 @@ class User implements UserInterface, \Serializable
      * @ORM\OneToOne(targetEntity="Image", cascade={"persist","remove"}, inversedBy="user")
      * @ORM\JoinColumn(nullable=true)
      * @Assert\Type("App\Entity\Image")
+     * @Groups({"user:output","user:input"})
      */
     protected $image;
 
@@ -198,10 +215,6 @@ class User implements UserInterface, \Serializable
             ) = unserialize($serialized, array('allowed_classes' => false));
     }
 
-    public function getUserType(): ?string
-    {
-        return $this->userType;
-    }
 
     public function setUserType(string $userType): self
     {
