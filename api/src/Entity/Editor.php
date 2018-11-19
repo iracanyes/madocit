@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -11,7 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     iri="http://schema.org/Person",
+ *     normalizationContext={"groups"={"editor:output"}},
+ *     denormalizationContext={"groups"={"editor:input"}}
+ * )
  * @ORM\Table(name="mdit_editor")
  * @ORM\Entity(repositoryClass="App\Repository\EditorRepository")
  * Héritage de cette classe : Chaque modérateur et/ou admin est un éditeur de contenu
@@ -30,10 +36,12 @@ class Editor extends User
      * @ORM\Column(type="integer")
      * @Assert\Type("integer")
      * @Assert\NotBlank()
+     * @Groups({"editor:output","editor:input"})
      */
     protected $id;
 
     /**
+     * @ApiProperty(iri="http://schema.org/Text")
      * @var string Email for contacting the editor (optional)
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Email()
@@ -41,6 +49,8 @@ class Editor extends User
     protected $emailContact;
 
     /**
+     * @ApiProperty(iri="http://schema.org/Text")
+     *
      * ATTENTION: Avant la mise en production remettre la contrainte d'unicité
      * @var string Nickname used in place of the real name
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -55,6 +65,7 @@ class Editor extends User
     protected $nickname;
 
     /**
+     * @ApiProperty(iri="http://schema.org/Text")
      * @var string Family name of the editor
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Type("string")
@@ -68,6 +79,7 @@ class Editor extends User
     protected $familyName;
 
     /**
+     * @ApiProperty(iri="http://schema.org/Text")
      * @var string First name of the editor
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Type("string")
@@ -81,6 +93,7 @@ class Editor extends User
     protected $givenName;
 
     /**
+     * @ApiProperty(iri="http://schema.org/Organization")
      * @var string School or company where the editor is affiliated to
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Type("string")
@@ -94,6 +107,7 @@ class Editor extends User
     protected $affiliation;
 
     /**
+     * @ApiProperty(iri="http://schema.org/EducationalOrganization")
      * @var string Last school of the editor
      * @ORM\Column(type="string", length=255, nullable=true)
      * @Assert\Type("string")
@@ -421,10 +435,6 @@ class Editor extends User
         return $this;
     }
 
-    public function getEditorType(): ?string
-    {
-        return $this->editorType;
-    }
 
     /**
      * @param null|string $editorType

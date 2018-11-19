@@ -84,7 +84,7 @@ class Video
      * @ORM\OneToOne(targetEntity="Subject", cascade={"persist"}, mappedBy="video")     *
      * @Assert\Type("App\Entity\Subject")
      */
-    private $subject;
+    private $associatedSubject;
 
     /**
      * @var Example Example associated to the video
@@ -245,20 +245,25 @@ class Video
     }
 
     /**
-     * @return Subject
+     * @return Subject|null
      */
-    public function getSubject(): Subject
+    public function getAssociatedSubject(): ?Subject
     {
-        return $this->subject;
+        return $this->associatedSubject;
     }
 
     /**
-     * @param Subject $subject
+     * @param Subject $associatedSubject
+     * @return Video
      */
-    public function setSubject(Subject $subject): void
+    public function setAssociatedSubject(Subject $associatedSubject): self
     {
-        $this->subject = $subject;
+        $this->associatedSubject = $associatedSubject;
+
+        return $this;
     }
+
+
 
 
 

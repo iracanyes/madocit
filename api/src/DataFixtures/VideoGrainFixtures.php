@@ -42,7 +42,7 @@ class VideoGrainFixtures extends Fixture implements DependentFixtureInterface
             ->setSize(mt_rand(100000, 9000000))
             ->setUploadDate($this->faker->dateTimeBetween("-2 years", "now"));
         // Relations
-        $video->setSubject($this->getReference(GrainFixtures::GRAIN_REFERENCE));
+        $video->setAssociatedSubject($this->getReference(GrainFixtures::GRAIN_REFERENCE));
 
         //Image
         $image = $this->createImage();

@@ -40,8 +40,8 @@ class GrainFixtures extends Fixture implements DependentFixtureInterface
         $grain->setDescription($this->faker->sentence(100));
          $grain->setDependencies($this->faker->sentence(40))
             ->setProficiencyLevel($this->faker->sentence)
-            ->setIsValid(false)
-            ->setSubjectType($this->faker->words(4,true));
+            ->setIsValid(false);
+            //->setSubjectType("grain");
 
         // Grain's data
         $grain->setContent($this->faker->sentence(20))

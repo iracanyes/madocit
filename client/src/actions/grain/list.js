@@ -22,6 +22,7 @@ export function list(page = '/grains') {
       .then(data => {
         dispatch(loading(false));
         dispatch(success(data));
+        console.log(data);
       })
       .catch(e => {
         dispatch(loading(false));

@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDom from 'react-dom';
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { reducer as form } from 'redux-form';
@@ -106,35 +106,66 @@ import theme from './reducers/theme/';
 //import routes for themes
 import themeRoutes from './routes/theme';
 
+/* redux dev tools : https://github.com/zalmoxisus/redux-devtools-extension#usage*/
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 
-
+/*
 const store = createStore(
   combineReducers(
     {
     routing,
     form,
     },
-    /* Add your reducers here */
-    combineReducers(abuse,{/* ... */ routing, form,}),
-    combineReducers(article,{/* ... */}),
-    combineReducers(category,{/* ... */}),
-    combineReducers(chat,{/* ... */}),
-    combineReducers(contribution,{/* ... */}),
-    combineReducers(editor,{/* ... */}),
-    combineReducers(example,{/* ... */}),
-    combineReducers(grain,{/* ... */}),
-    combineReducers(image,{/* ... */}),
-    combineReducers(note,{/* ... */}),
-    combineReducers(subject,{/* ... */}),
-    combineReducers(theme,{/* ... */}),
-    combineReducers(version,{/* ... */}),
-    combineReducers(video,{/* ... */}),),
+    // Add your reducers here
+    combineReducers(abuse,{ }),
+    combineReducers(article,{}),
+    combineReducers(category,{}),
+    combineReducers(chat,{}),
+    combineReducers(contribution,{}),
+    combineReducers(editor,{}),
+    combineReducers(example,{}),
+    combineReducers(grain,{}),
+    combineReducers(image,{}),
+    combineReducers(note,{}),
+    combineReducers(subject,{}),
+    combineReducers(theme,{}),
+    combineReducers(version,{}),
+    combineReducers(video,{}),),
     // Add the reducer
-    combineReducers(message,{/* ... */}),
+    combineReducers(message,{}),
 
     applyMiddleware(thunk),
   );
+*/
+const store = createStore(
+    combineReducers(
+        {
+            routing,
+            form,
+            abuse,
+            article,
+            category,
+            chat,
+            contribution,
+            editor,
+            example,
+            grain,
+            image,
+            message,
+            note,
+            subject,
+            theme,
+            version,
+            video
+
+        }
+    ),
+    composeEnhancers(
+        applyMiddleware(thunk)
+    )
+
+);
 
 const history = syncHistoryWithStore(createBrowserHistory(), store);
 

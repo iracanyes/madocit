@@ -56,7 +56,7 @@ class List extends Component {
           </tr>
         </thead>
         <tbody>
-        {this.props.data['hydra:member'] && this.props.data['hydra:member'].map(item =>
+        {this.props.data['hydra:member'] && this.props.data['hydra:member'][0].map(item =>
           <tr key={item['@id']}>
             <th scope="row"><Link to={`show/${encodeURIComponent(item['@id'])}`}>{item['@id']}</Link></th>
             <td>{item['title'] ? itemToLinks(item['title']) : ''}</td>

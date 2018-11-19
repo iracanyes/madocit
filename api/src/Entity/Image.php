@@ -92,6 +92,13 @@ class Image
     private $example;
 
     /**
+     * @var Video|null $video Video illustrated by this image
+     * @ORM\OneToOne(targetEntity="Video", mappedBy="thumbnail")
+     * @Assert\Type("App\Entity\Video")
+     */
+    private $video;
+
+    /**
      * Image constructor.
      */
     public function __construct()
@@ -262,6 +269,25 @@ class Image
     public function setExample(?Example $example): self
     {
         $this->example = $example;
+
+        return $this;
+    }
+
+    /**
+     * @return Video|null
+     */
+    public function getVideo(): ?Video
+    {
+        return $this->video;
+    }
+
+    /**
+     * @param Video|null $video
+     * @return Image
+     */
+    public function setVideo(?Video $video): self
+    {
+        $this->video = $video;
 
         return $this;
     }

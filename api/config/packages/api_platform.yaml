@@ -9,7 +9,10 @@ parameters:
 
 api_platform:
     mapping:
-        paths: ['%kernel.project_dir%/src/Entity']
+        paths:
+            - '%kernel.project_dir%/src/Entity'
+            # On ajoute le chemin vers le fichier de configurations des annotations d'entité
+            - '%kernel.project_dir%/config/api_platform'
     title: '%env(APP_NAME)%'
     version: '%env(APP_VERSION)%'
     # Enable the Varnish integration

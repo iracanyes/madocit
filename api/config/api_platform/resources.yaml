@@ -8,10 +8,20 @@ App\Entity\Abuse:
         get:
             method: 'GET'
             path: '/abuse/{id}'
-
+App\Entity\User:
+    shortName: 'User'
+    description: 'User of this application'
+    attributes:
+        access_control: 'hasRole("ROLE_MEMBER")'
 App\Entity\Article:
+    shortName: 'Article'    # Optional
+    description: 'Article from the documentation'    # Optional
+    iri: 'https://schema.org/Article'    # Optional
+    attributes:
+        access_control: 'hasRole("ROLE_EDITOR")'
     # Prefix de route
     routePrefix: '/docs'
+
     # Configuration des relations
     properties:
         subresource:
@@ -54,9 +64,13 @@ App\Entity\Grain:
         # Le nom est important, il sera automatiquement défini à
         # $resources_$subresources_get_subresource
         # Les ressources regroupés
-        api_article_grain_get_subresource:
-            method: 'GET' # Rien de plus à ajouter si on veut le controller par défaut
-            normalization_context: {groups: ['grains']}
+        # ATTENTION: La collection de la subresource ne sera plus accessible que par la ressource parent
+        #api_article_grain_get_subresource:
+        #    method: 'GET' # Rien de plus à ajouter si on veut le controller par défaut
+        #    normalization_context: {groups: ['grains']}
+        get:
+            method: 'GET'
+            path: '/grains'
     itemOperations:
         get:
             method: 'GET'

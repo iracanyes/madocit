@@ -12,6 +12,7 @@ export function success(data) {
   return {type: 'ARTICLE_LIST_SUCCESS', data};
 }
 
+// Les requêtes sont effectuées sur l'URL /articles
 export function list(page = '/articles') {
   return (dispatch) => {
     dispatch(loading(true));
@@ -22,6 +23,7 @@ export function list(page = '/articles') {
       .then(data => {
         dispatch(loading(false));
         dispatch(success(data));
+        console.log(data);
       })
       .catch(e => {
         dispatch(loading(false));

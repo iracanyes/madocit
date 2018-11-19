@@ -27,23 +27,15 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    # Faker Provider : Sanction Type
-    App\DataFixtures\Faker\Provider\SanctionTypeProvider:
-        tags: ['nelmio_alice.faker.provider']
-    data_fixtures.provider.sanctionType:
-        alias: App\DataFixtures\Faker\Provider\SanctionTypeProvider
+    # Service de construction de contexte pour la sérialisation/désérialisation de l'objet User
+    App\Serializer\UserContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: ['@App\Serializer\UserContextBuilder.inner']
+        autoconfigure: false
 
-
-    # Faker Provider : Sanction Status
-    App\DataFixtures\Faker\Provider\SanctionStatusProvider:
-        tags: ['nelmio_alice.faker.provider']
-    data_fixtures.provider.sanctionStatus:
-        alias: App\DataFixtures\Faker\Provider\SanctionStatusProvider
-
-    # Faker Provider : Chat status
-    App\DataFixtures\Faker\Provider\ChatStatusProvider:
-        tags: ['nelmio_alice.faker.provider']
-    data_fixtures.provider.chatStatus:
-        alias: App\DataFixtures\Faker\Provider\ChatStatusProvider
+    App\Serializer\SanctionContextBuilder:
+        decorates: 'api_platform.serializer.context_builder'
+        arguments: ['@App\Serializer\SanctionContextBuilder.inner']
+        autoconfigure: false
 
 
