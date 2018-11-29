@@ -1,0 +1,430 @@
+@charset "UTF-8";
+/**
+ * Nom: Iracanyes
+ * Description: Page principal du style
+ *
+ */
+/***** importation ******/
+/* Composants */
+/**
+ * Nom: Iracanyes
+ * Description: Style des parallax
+ *
+ */
+/*********** Parallax ***********/
+div.parallax {
+  background-image: url("../img/parallax1.jpg");
+  height: 100%;
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-cover: cover;
+  background-size: 100%;
+}
+
+.parallax-plus-box {
+  position: relative;
+}
+.parallax-plus-box div.card {
+  width: 80%;
+  position: absolute;
+  bottom: 75px;
+  left: 80px;
+}
+
+.parallax-welcome {
+  height: 100%;
+}
+
+.parallax-main {
+  height: 400px !important;
+}
+
+.parallax1 {
+  background-image: url("../img/parallax1.jpg");
+}
+
+.parallax2 {
+  background-image: url("../img/parallax2.jpg");
+}
+
+.parallax3 {
+  background-image: url("../img/parallax3.jpg");
+}
+
+.parallax-article-1 {
+  height: 400px;
+  overflow: hidden;
+  margin-bottom: 50px;
+}
+.parallax-article-1 img {
+  height: 100% !important;
+  width: 100% !important;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+/*
+ * Description: OWL Carousel
+ *
+ */
+/* All carousel */
+div.owl-carousel div.owl-nav {
+  display: none;
+}
+
+/* Carousel with rows */
+div.owl-rows div.card {
+  border: none;
+}
+div.owl-rows div.card div.col-sm-4 {
+  text-align: center;
+  font-size: 16px;
+}
+div.owl-rows div.card div.col-sm-4 img {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto;
+}
+
+/* Pages */
+/**
+ * Nom:
+ * Description: Style Global
+ */
+/************************** Style général *************************************/
+body, html {
+  height: 100%;
+}
+
+body {
+  font-family: "Kanit", "Dosis", "Lato", Arial, sans-serif;
+  box-sizing: border-box;
+}
+
+/* Sticky menu */
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+}
+
+/*********** Owl Carousel *********/
+.section-owl-carousel {
+  position: relative;
+}
+.section-owl-carousel .container-fluid {
+  padding: 60px;
+  position: relative;
+  max-width: 1230px;
+}
+.section-owl-carousel .thumbnail {
+  margin: 0 15px;
+}
+.section-owl-carousel .customNavigation {
+  transform: translateY(-50%);
+  top: calc(50% - 37px);
+  position: absolute;
+  width: 100%;
+  left: 0;
+}
+.section-owl-carousel .customNavigation > span {
+  transform: translateY(-50%);
+  top: 50%;
+  position: absolute;
+}
+.section-owl-carousel .pager-left {
+  left: calc(0% + 15px);
+}
+.section-owl-carousel .pager-right {
+  right: calc(0% + 15px);
+}
+.section-owl-carousel .next, .section-owl-carousel .prev {
+  font-size: 28px;
+  color: #ccc;
+}
+
+/************** HEADER ****************/
+header {
+  margin-bottom: 75px;
+}
+header nav#navbar-primary {
+  justify-content: space-evenly;
+  /* Search Form */
+}
+header nav#navbar-primary a.navbar-brand {
+  font-size: 1.75em;
+}
+header nav#navbar-primary div#navbarMainDropdown ul.navbar-nav {
+  flex-direction: row;
+}
+header nav#navbar-primary div#navbarMainDropdown ul.navbar-nav li.nav-item {
+  margin: 5px 20px;
+}
+header nav#navbar-primary div#navbarMainDropdown ul.navbar-nav li.nav-item i {
+  font-size: 14px;
+  margin-right: 10px;
+}
+header nav#navbar-primary div#navbarMainDropdown ul.navbar-nav li.nav-item i.fa-mail-bulk::before {
+  content: "";
+  color: white;
+}
+header nav#navbar-primary form.form-inline button.btn-outline-primary {
+  color: white;
+  border-color: white;
+}
+
+/************** END HEADER ****************/
+/************** FOOTER *****************/
+footer {
+  padding: 0 30px;
+  /** Footer section 1 **/
+  /** Footer section 2 **/
+}
+footer div.col-sm-4 {
+  padding: 0;
+}
+footer div.footer-section-1 h4 {
+  margin-left: 25px;
+}
+footer div.footer-section-1 nav.navbar ul.navbar-nav div.btn-group button.btn {
+  width: 150px;
+  border-color: unset;
+}
+footer div.footer-section-2 {
+  justify-content: end;
+}
+/************** ASIDE **********************/
+aside.menu-left {
+  /* CARD MEMBER */
+  /* MENU LEFT */
+}
+aside.menu-left div.card-member {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0, 0, 0, 0.125);
+  border-radius: 0.25rem;
+  margin-bottom: 1.5rem !important;
+}
+aside.menu-left div.card-member div.card-header-background {
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0;
+  background-color: rgba(0, 0, 0, 0.03);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+  height: 150px;
+  background-size: cover;
+}
+aside.menu-left div.card-member div.rounded-circle {
+  flex: 1 1 auto;
+  padding: 1.25rem;
+  text-align: center !important;
+  /* User Avatar */
+  /* USER ACTIVITY */
+}
+aside.menu-left div.card-member div.rounded-circle a {
+  text-align: center !important;
+  text-decoration: none;
+}
+aside.menu-left div.card-member div.rounded-circle a img.md-rounded-avatar {
+  max-width: 100px;
+  margin-top: -70px;
+  margin-bottom: 5px;
+  border: 3px solid #fff;
+  border-radius: 100%;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  vertical-align: middle;
+}
+aside.menu-left div.card-member div.rounded-circle ul.user-favorites {
+  list-style: none;
+  padding: 0;
+}
+aside.menu-left div.card-member div.rounded-circle ul.user-favorites li {
+  display: inline-block;
+  padding: 0 10px;
+  font-size: 12px;
+}
+aside.menu-left div.card-member div.rounded-circle ul.user-favorites li a h6 {
+  margin-bottom: 0 !important;
+}
+aside.menu-left div.card-member div.rounded-circle ul.user-favorites li a:hover {
+  text-decoration: none;
+}
+aside.menu-left div.card-member div.rounded-circle ul.user-favorites li:nth-of-type(1) {
+  border-right: 1px solid #d4dbe0;
+}
+aside.menu-left div.menu ul.nav {
+  overflow-y: auto;
+}
+aside.menu-left div.menu ul.nav li.nav-item a.nav-link i {
+  margin-right: 10px;
+}
+
+/*** MAIN - GLOBAL STYLE ****/
+main {
+  overflow: hidden;
+  margin-bottom: 60px;
+  /* Avatar rounded */
+}
+main img.xs-rounded-avatar {
+  width: 70px;
+  margin: 10px 15px;
+}
+main img.sm-rounded-avatar {
+  width: 100px;
+  margin: 10px 15px;
+}
+main section#main-content {
+  /* Carousel - Categories */
+  /* Home Parallax 3 - Inscription */
+}
+main section#main-content section.category-cards div.container-fluid {
+  /* Titre */
+}
+main section#main-content section.category-cards div.container-fluid h3 {
+  text-align: center;
+}
+main section#main-content div.parallax3 {
+  height: 600px !important;
+}
+main section#main-content div.parallax3 div.col-lg-4 {
+  margin: 5px;
+  padding: 0;
+  width: 31% !important;
+  max-width: 31%;
+}
+main section#main-content section.recent-grains, main section#main-content section.recent-articles {
+  padding: 25px 15px;
+}
+main section#main-content section.recent-grains h3, main section#main-content section.recent-articles h3 {
+  padding-bottom: 20px;
+  text-align: center;
+}
+
+/*** END MAIN - GLOBAL STYLE ****/
+/************** PAGE ACCUEIL ****************/
+/*** WELCOME BANNER ***/
+div.parallax-welcome {
+  overflow: hidden;
+}
+div.parallax-welcome div#carouselWelcomeFade {
+  height: inherit;
+}
+div.parallax-welcome div#carouselWelcomeFade div.carousel-inner {
+  height: inherit;
+}
+div.parallax-welcome div#carouselWelcomeFade div.carousel-inner div.carousel-item.active {
+  height: inherit;
+}
+div.parallax-welcome div#carouselWelcomeFade div.carousel-inner div.carousel-item.active img {
+  height: inherit;
+}
+div.parallax-welcome div#carouselWelcomeFade div.carousel-inner div.carousel-item.active div.card {
+  top: -400px;
+  left: 400px;
+  background-color: transparent;
+  border: none;
+}
+div.parallax-welcome div#carouselWelcomeFade div.carousel-inner div.carousel-item.active div.card div.card-body {
+  font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Nanum Gothic", Dotum, sans-serif;
+  font-weight: bold;
+}
+div.parallax-welcome div#carouselWelcomeFade div.carousel-inner div.carousel-item.active div.card div.card-body h5.card-title {
+  font-family: "Cantarell";
+  font-size: 2.75em;
+  font-weight: bold;
+}
+div.parallax-welcome div#carouselWelcomeFade div.carousel-inner div.carousel-item.active div.card div.card-body h6.card-subtitle {
+  font-size: 1.75em;
+}
+div.parallax-welcome div#carouselWelcomeFade div.carousel-inner div.carousel-item.active div.card div.card-body p.card-text {
+  font-weight: bold;
+}
+div.parallax-welcome div#carouselWelcomeFade div.carousel-inner div.carousel-item.active div.card div.card-body a.card-link {
+  color: white;
+}
+
+/*** END WELCOME BANNER ***/
+/**
+ * Nom:
+ * Description: Page Article
+ * Date: 8/9/2018
+ */
+/************** PAGE ARTICLE *************************/
+/* PAGE ARTICLE - HEADER */
+header.header-article {
+  margin-bottom: unset;
+}
+
+/* PAGE ARTICLE - PARALLAX */
+div.parallax-article-1 {
+  text-align: center;
+}
+div.parallax-article-1 div.card {
+  width: 60%;
+  position: absolute;
+  bottom: 75px;
+  left: 20%;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+div.parallax-article-1 div.card div.card-body {
+  background-color: inherit;
+}
+div.parallax-article-1 div.card div.card-body h1.card-title {
+  background-color: rgba(239, 239, 239, 0.1);
+}
+
+/* PAGE ARTICLE - MAIN  */
+main#page-article {
+  /* PAGE ARTICLE - ASIDE RIGHT */
+  /* END PAGE ARTICLE - ASIDE RIGHT */
+  /* PAGE ARTICLE - MAIN-CONTENT */
+  /* END PAGE ARTICLE - MAIN-CONTENT */
+}
+main#page-article aside.aside-right div.card-author div.card-body {
+  padding: 10px;
+}
+main#page-article aside.aside-right div.card-author div.card-body img.sm-rounded-avatar {
+  width: 100px;
+  margin: 10px 15px;
+}
+main#page-article section#main-content div.container div.row div.col-lg-12 {
+  /* ARTICLE TAGS */
+  /* ARTICLES NOTES */
+}
+main#page-article section#main-content div.container div.row div.col-lg-12 div.article-tags {
+  margin-bottom: 20px;
+}
+/***************** END PAGE ARTICLE ******************/
+/***************** PAGE SIGN-UP ******************/
+main#page-signup {
+  padding-top: 30px;
+}
+
+/***************** END PAGE SIGN-UP ******************/
+/***************** PAGE LOGIN ******************/
+main#page-login {
+  padding-top: 30px;
+  /* PAGE LOGIN - SECTION MAIN-CONTENT */
+  /* END PAGE LOGIN - SECTION MAIN-CONTENT */
+}
+main#page-login section#main-content div#form-login div.card {
+  border: none;
+}
+main#page-login section#main-content div#form-login div.card form.form-signin button[type=submit] {
+  margin: 0 auto;
+}
+
+/***************** END PAGE LOGIN **************/
+
+/*# sourceMappingURL=main.css.map */
