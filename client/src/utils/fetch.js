@@ -11,6 +11,9 @@ export default function (url, options = {}) {
     options.headers.set('Content-Type', jsonLdMimeType);
   }
 
+  console.log('API_PATH ==> ' + API_PATH);
+  console.log('API_HOST ==> ' + API_HOST);
+  console.log('URL ==> '+ url);
   const link = url.includes(API_PATH) ? API_HOST + url : API_HOST + API_PATH + url;
 
   return fetch(link, options).then(response => {
