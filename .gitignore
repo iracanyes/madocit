@@ -3,7 +3,8 @@
 
 /shared
 /docs/
-
+# Git Ignore
+.gitignore
 # Variables d'environnement
 /api/.env
 /admin/.env
@@ -12,5 +13,13 @@
 
 # fichiers locaux
 /api/.web-server-pid
-/client/.idea
+
+###> security ###
+/api/config/packages/doctrine.yaml
+###< security ###
+
+/client.save/
+*.save
+/.idea/
+
 

@@ -36,12 +36,21 @@ final class CategoryCollectionDataProvider implements CollectionDataProviderInte
         $dataCateg = $this->entityManager->getRepository(Category::class)
             ->myFindAllWithImage();
 
-        $dataImage = $this->entityManager->getRepository(Image::class)
-            ->findAll();
+
+        $objets = array();
+        $n= 0;
+
+        foreach ($dataCateg as $value){
+
+            $images[$n++] = $value->getImages()[0];
+        }
 
         yield $dataCateg;
 
-        yield $dataImage;
+
+        yield $images;
+
+
     }
 
 

@@ -1,15 +1,20 @@
+/**
+ * Author: iracanyes
+ * Date: 12/4/18
+ * Description:
+ */
 import React from 'react';
-import ReactDom from 'react-dom';
+import ReactDOM from 'react-dom';
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { reducer as form } from 'redux-form';
-import { Router, Route, Switch } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
-import { syncHistoryWithStore, routerReducer as routing } from 'react-router-redux';
+import { ConnectedRouter, connectRouter, routerMiddleware } from 'connected-react-router';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
-import registerServiceWorker from './registerServiceWorker';
+import * as serviceWorker from './serviceWorker';
 
 // Import your reducers and routes here
 import Welcome from './Welcome';
@@ -111,70 +116,63 @@ import themeRoutes from './routes/theme';
 /* redux dev tools : https://github.com/zalmoxisus/redux-devtools-extension#usage*/
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-
+const history = createBrowserHistory();
 const store = createStore(
-    combineReducers(
-        {
-            routing,
-            form,
-            abuse,
-            article,
-            category,
-            chat,
-            contribution,
-            editor,
-            example,
-            grain,
-            image,
-            message,
-            note,
-            subject,
-            theme,
-            version,
-            video
-
-        }
-    ),
+    combineReducers({
+        router: connectRouter(history),
+        form,
+        abuse,
+        article,
+        category,
+        chat,
+        contribution,
+        editor,
+        example,
+        grain,
+        image,
+        message,
+        note,
+        subject,
+        theme,
+        version,
+        video
+    }),
     composeEnhancers(
-        applyMiddleware(thunk)
+        applyMiddleware(routerMiddleware(history), thunk)
     )
 
 );
 
-
-
-const history = syncHistoryWithStore(createBrowserHistory(), store);
-
-ReactDom.render(
-  <Provider store={store}>
-    <Router history={history}>
-      <Switch>
-        <Route path="/" component={Welcome} strict={true} exact={true}/>
-        <Route path={"/homepage"} component={Homepage}/>
-        { /* Add your routes here */  },
-        { abuseRoutes },
-        { articleRoutes },
-        { categoryRoutes },
-        { chatRoutes },
-        { contributionRoutes },
-        { editorRoutes },
-        { exampleRoutes },
-        { grainRoutes },
-        { imageRoutes },
-        { noteRoutes },
-        { subjectRoutes },
-        { themeRoutes },
-        { versionRoutes },
-        { videoRoutes },
-          { messageRoutes }
-        <Route render={() => <h1>Not Found</h1>}/>
-      </Switch>
-    </Router>
-  </Provider>,
-  document.getElementById('root')
+ReactDOM.render(
+    <Provider store={store}>
+        <ConnectedRouter history={history}>
+            <Switch>
+                <Route path="/" component={Welcome} strict={true} exact={true}/>
+                <Route path={"/homepage"} component={Homepage}/>
+                { abuseRoutes },
+                { articleRoutes },
+                { categoryRoutes },
+                { chatRoutes },
+                { contributionRoutes },
+                { editorRoutes },
+                { exampleRoutes },
+                { grainRoutes },
+                { imageRoutes },
+                { noteRoutes },
+                { subjectRoutes },
+                { themeRoutes },
+                { versionRoutes },
+                { videoRoutes },
+                { messageRoutes }
+                {/* Replace bookRooutes with the name of the resource type */}
+                <Route render={() => <h1>Not Found</h1>} />
+            </Switch>
+        </ConnectedRouter>
+    </Provider>,
+    document.getElementById('root')
 );
 
-ReactDom.render(<MainMenu/>, document.getElementsByTagName("header")[0]);
-
-
-registerServiceWorker();
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: http://bit.ly/CRA-PWA
+serviceWorker.unregister();
