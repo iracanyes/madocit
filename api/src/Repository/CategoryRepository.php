@@ -36,6 +36,18 @@ class CategoryRepository extends ServiceEntityRepository
     }
     */
 
+    public function myFindAllWithImage()
+    {
+        return $this->createQueryBuilder('c')
+            ->leftJoin('c.images', 'i')
+            ->addSelect('i')
+            ->orderBy('c.dateCreated','DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+
+    }
+
     /*
     public function findOneBySomeField($value): ?Category
     {

@@ -8,11 +8,7 @@ App\Entity\Abuse:
         get:
             method: 'GET'
             path: '/abuse/{id}'
-App\Entity\User:
-    shortName: 'User'
-    description: 'User of this application'
-    attributes:
-        access_control: 'hasRole("ROLE_MEMBER")'
+
 App\Entity\Article:
     shortName: 'Article'    # Optional
     description: 'Article from the documentation'    # Optional
@@ -59,6 +55,16 @@ App\Entity\Article:
             requirements:
               id: '\d+'
 
+App\Entity\Category:
+    # Configuration des relations
+    properties:
+        images:
+            # On crée un accés à subressource images
+            # une route API de type GET "/categories/{id}/images" est crée pour accéder à ces images
+            subresource:
+                resourceclass: 'App\Entity\Image'
+                collection: true
+
 App\Entity\Grain:
     collectionOperations:
         # Le nom est important, il sera automatiquement défini à
@@ -82,3 +88,9 @@ App\Entity\Grain:
             path: 'grain/{id}/update'
             requirements:
                 id: '\d+'
+
+App\Entity\User:
+    shortName: 'User'
+    description: 'User of this application'
+    attributes:
+        access_control: 'hasRole("ROLE_MEMBER")'

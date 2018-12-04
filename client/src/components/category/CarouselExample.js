@@ -4,15 +4,15 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { list, reset } from '../../actions/category/list';
 import { success } from '../../actions/category/delete';
-import { itemToLinks } from '../../utils/helpers';
+//import { itemToLinks } from '../../utils/helpers';
 
-// Carousel
+/* Carousel */
 import {
   Carousel,
   CarouselItem,
   CarouselControl,
   CarouselIndicators,
-  CarouselCaption
+  CarouselCaption,
 } from 'reactstrap';
 
 class CarouselExample extends Component {
