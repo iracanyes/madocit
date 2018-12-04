@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -96,7 +97,7 @@ class Category
      * @var Collection $images Images illustrating the category
      * @ORM\ManyToMany(targetEntity="Image", cascade={"persist"}, inversedBy="categories")
      * @ORM\JoinTable(name="mdit_categories_images")
-     *
+     * @ApiSubresource()
      * @Assert\Collection()
      */
     private $images;

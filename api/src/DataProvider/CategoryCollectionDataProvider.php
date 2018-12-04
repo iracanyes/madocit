@@ -8,6 +8,7 @@ use ApiPlatform\Core\DataProvider\RestrictedDataProviderInterface;
 use ApiPlatform\Core\Exception\ResourceClassNotSupportedException;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Category;
+use App\Entity\Image;
 
 final class CategoryCollectionDataProvider implements CollectionDataProviderInterface, RestrictedDataProviderInterface
 {
@@ -30,13 +31,20 @@ final class CategoryCollectionDataProvider implements CollectionDataProviderInte
         return Category::class === $resourceClass;
     }
 
-    public function getCollection(string $resourceClass, string $operationName = null): \Generator
+    public function getCollection(string $resourceClass, string $operationName = null)
     {
-        $data = $this->entityManager->getRepository(Category::class)
+        $dataCateg = $this->entityManager->getRepository(Category::class)
+            ->myFindAllWithImage();
+
+        $dataImage = $this->entityManager->getRepository(Image::class)
             ->findAll();
 
-        yield $data;
+        yield $dataCateg;
+
+        yield $dataImage;
     }
+
+
 
 }
 ?>
