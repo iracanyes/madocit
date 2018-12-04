@@ -11,6 +11,20 @@ Refer to the [Getting Started Guide](https://api-platform.com/docs/distribution)
    ```
    $ git clone https://github.com/iracanyes/madocit.git
    ```
+
+    1.1 Modification du fichier de configuration doctrine
+
+        api/config/packages/doctrine.yaml.dist
+
+    Il faut ajouter le nom d'utilisateur et le mot de passe qui seront 
+    utilisé à la création de l'instance docker mysql    
+        env(MYSQL_DATABASE): 'dbname'
+        env(MYSQL_HOST): 'db'
+        env(MYSQL_USER): "username"
+        env(MYSQL_PASSWORD): "password"
+        env(MYSQL_PORT): '3306'  
+        
+     1.2 Placer sauvegarder le fichier sous le nom "doctrine.yaml"
 2. Création de l'environnement de développement
 
    2.1 Installation de docker voir sur la documentation sur le site officielle :
