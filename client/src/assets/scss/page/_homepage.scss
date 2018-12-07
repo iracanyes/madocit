@@ -1,0 +1,58 @@
+/************** PAGE ACCUEIL ****************/
+
+/*** WELCOME BANNER ***/
+div.parallax-welcome{
+
+  overflow: hidden;
+  div#carouselWelcomeFade{
+    height: inherit;
+
+    div.carousel-inner{
+      height: inherit;
+
+      div.carousel-item.active{
+        height: inherit;
+
+        img{
+          height: inherit;
+        }
+
+        div.card{
+          top: -400px;
+          left: 400px;
+          background-color: transparent;
+          border:none;
+
+          div.card-body{
+            font-family: "Apple SD Gothic Neo", "Malgun Gothic", "Nanum Gothic", Dotum, sans-serif;
+            font-weight: bold;
+
+            h5.card-title{
+
+              font-family: "Cantarell";
+              font-size: 2.75em;
+              font-weight: bold;
+
+            }
+
+            h6.card-subtitle{
+              font-size: 1.75em;
+            }
+
+            p.card-text{
+              font-weight: bold;
+            }
+
+            a.card-link{
+              color: white;
+            }
+
+
+          }
+        }
+      }
+    }
+  }
+}
+
+/*** END WELCOME BANNER ***/

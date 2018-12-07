@@ -1,0 +1,87 @@
+/**
+ * Nom:
+ * Description: Page Article
+ * Date: 8/9/2018
+ */
+
+/************** PAGE ARTICLE *************************/
+
+/* PAGE ARTICLE - HEADER */
+header.header-article{
+  margin-bottom: unset;
+}
+
+/* PAGE ARTICLE - PARALLAX */
+div.parallax-article-1{
+
+  text-align: center;
+
+
+  div.card{
+    width: 60%;
+    position: absolute;
+    bottom: 75px;
+    left: 20%;
+    background-color: rgba(255,255,255,0.1);
+
+    div.card-body{
+      background-color: inherit;
+
+      h1.card-title{
+        background-color: rgba(239,239,239,0.1);
+      }
+    }
+
+
+
+  }
+}
+
+/* PAGE ARTICLE - MAIN  */
+main#page-article{
+  /* PAGE ARTICLE - ASIDE RIGHT */
+  aside.aside-right{
+    div.card-author{
+
+      div.card-body{
+        padding: 10px;
+
+        img.sm-rounded-avatar{
+          width: 100px;
+          margin: 10px 15px;
+        }
+      }
+
+    }
+  }
+  /* END PAGE ARTICLE - ASIDE RIGHT */
+
+  /* PAGE ARTICLE - MAIN-CONTENT */
+  section#main-content{
+    div.container{
+      div.row{
+        div.col-lg-12{
+
+          /* ARTICLE TAGS */
+          div.article-tags{
+            margin-bottom: 20px;
+          }
+
+          /* ARTICLES NOTES */
+          div.pagination-notes{
+            div.media{
+              img.md-rounded-avatar{
+
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /* END PAGE ARTICLE - MAIN-CONTENT */
+
+}
+
+/***************** END PAGE ARTICLE ******************/

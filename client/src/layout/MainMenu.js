@@ -4,6 +4,7 @@
  * Description:
  */
 import React, {Component, Fragment} from "react";
+import { push } from 'connected-react-router';
 
 export default class MainMenu extends Component
 {
@@ -22,7 +23,7 @@ export default class MainMenu extends Component
                 <div className="col-lg-7 collapse navbar-collapse" id="navbarMainDropdown">
                     <ul className="navbar-nav">
                         <li className="nav-item active">
-                            <a className="nav-link" href="index.html"><i className="fa fa-fw fa-home"></i>Accueil<span
+                            <a className="nav-link" href={"home"} onClick={()=> this.props.push("/home")}><i className="fa fa-fw fa-home"></i>Accueil<span
                                 className="sr-only">(current)</span></a>
                         </li>
                         <li className="nav-item dropdown">

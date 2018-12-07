@@ -19,7 +19,7 @@ import {
   CarouselCaption,
 } from 'reactstrap';
 
-class CarouselExample extends Component {
+class CarouselCategories extends Component {
   static propTypes = {
     error: PropTypes.string,
     loading: PropTypes.bool.isRequired,
@@ -175,6 +175,10 @@ class CarouselExample extends Component {
 
     const items = this.props.data['hydra:member'] && this.createCarouselItems();
 
+    const styleCarouselInner = {
+        margin: "0 40px"
+    };
+
     return <Fragment>
         <div>
 
@@ -192,6 +196,7 @@ class CarouselExample extends Component {
                   activeIndex={activeIndex}
                   next={this.next}
                   previous={this.previous}
+                  style={styleCarouselInner}
               >
 
 
@@ -242,4 +247,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CarouselExample);
+export default connect(mapStateToProps, mapDispatchToProps)(CarouselCategories);

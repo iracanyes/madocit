@@ -37,7 +37,7 @@ Refer to the [Getting Started Guide](https://api-platform.com/docs/distribution)
    $ docker-compose up -d
    ```
    <p class='alert-danger'>
-    REMARQUE: Si un environnement de développement est déjà présent sur la machine local. Il faudra modifier les paramètres des ports pour les container `db`(port:3306) et `client`(port:80) dans le fichier d'environnement `./.env` situé dans le répertoire racine du projet.
+    REMARQUE: Si un environnement de développement est déjà présent sur la machine local. Il faudra modifier les paramètres des ports pour les container MySQL `db`(port:3306) et Apache `client`(port:80) dans le fichier d'environnement `./.env` situé dans le répertoire racine du projet.
    </p>
    ```
    

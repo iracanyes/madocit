@@ -1,0 +1,24 @@
+/***************** PAGE LOGIN ******************/
+
+main#page-login{
+  padding-top: 30px;
+
+  /* PAGE LOGIN - SECTION MAIN-CONTENT */
+  section#main-content{
+    div#form-login{
+      div.card{
+        border: none;
+
+        form.form-signin{
+          button[type="submit"]{
+            margin: 0 auto;
+          }
+        }
+      }
+    }
+  }
+
+  /* END PAGE LOGIN - SECTION MAIN-CONTENT */
+}
+
+/***************** END PAGE LOGIN **************/

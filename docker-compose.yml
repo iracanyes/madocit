@@ -30,6 +30,7 @@ services:
     - ./api/.env
     volumes:
       - ./api/public:/srv/api/public:ro
+    # Port d'accés au container API (8080) via le port interne d'accés à l'API (80).
     ports:
       - "8080:80"
 
@@ -45,6 +46,7 @@ services:
     # Comment out this volume in production
     volumes:
       - ./api/docker/varnish/conf:/etc/varnish:ro
+    # Port d'accés au container Cache-Proxy (8081) via le port interne d'accés au Cache-Proxy (80)
     ports:
       - "8081:80"
 
@@ -84,6 +86,8 @@ services:
       #- ./docker/db/data:/var/lib/mysql/data:rw
       - ./shared/mysql/db/data:/var/lib/mysql:rw
       - ./api/docker/db/conf.d/default.conf:/etc/mysql/conf.d/myConf.cnf
+    # Port d'accés au container MySQL (3306) via le port interne d'accès à l'instance MySQL (3306)
+    # Attention le port d'accés au container MySQL devra être modifié si une instance sur la machine locale utilise le même port 3306
     ports:
       - "3306:3306"
 
@@ -110,6 +114,8 @@ services:
     volumes:
       - ./client:/usr/src/client:rw,cached
       - /usr/src/client/node_modules
+    # Port d'accés local au container Client (80) via le port interne d'accés au Client React 3000
+    # Attention le port d'accés local doit être modifié si une instance local utilise le même port
     ports:
       - "80:3000"
 

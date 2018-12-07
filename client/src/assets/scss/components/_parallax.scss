@@ -1,0 +1,70 @@
+/**
+ * Nom: Iracanyes
+ * Description: Style des parallax
+ *
+ */
+
+/*********** Parallax ***********/
+div.parallax{
+  // image
+  background-image: url("../img/parallax1.jpg") ;
+
+  // taille
+  height: 100%;
+
+  // Scrolling effect
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-cover: cover;
+  background-size: 100%;
+
+
+}
+
+.parallax-plus-box{
+  position: relative;
+
+  div.card{
+    width: 80%;
+    position: absolute;
+    bottom: 75px;
+    left: 80px;
+  }
+}
+
+.parallax-welcome{
+  height: 100%;
+}
+
+.parallax-main{
+  height: 400px !important;
+}
+
+.parallax1{
+  background-image: url("../img/parallax1.jpg");
+}
+
+.parallax2{
+  background-image: url("../img/parallax2.jpg");
+}
+
+.parallax3{
+  background-image: url("../img/parallax3.jpg");
+}
+
+// Parallax Article Home
+.parallax-article-1{
+  height: 400px;
+  overflow: hidden;
+  margin-bottom: 50px;
+  img{
+    height: 100% !important;
+    width: 100% !important;
+    max-height: 100%;
+    max-width: 100%;
+  }
+}
+
+
+

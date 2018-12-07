@@ -1,0 +1,23 @@
+/**
+ * Nom: Iracanyes
+ * Description: Page principal du style
+ *
+ */
+
+/***** importation ******/
+/* Composants */
+@import "components/parallax";
+@import "components/_reactstrap-carousel";
+@import "components/owl-carousel";
+
+/* Pages */
+@import "page/global";
+@import "page/homepage";
+@import "page/article";
+@import "page/signup";
+@import "page/login";
+
+
+
+
+

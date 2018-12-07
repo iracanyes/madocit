@@ -64,6 +64,30 @@ div.parallax {
   max-width: 100%;
 }
 
+/**
+ * Nom: Iracanyes
+ * Description: Style des Carousels du composant Reactstrap
+ *
+ */
+/*********** Homepage ***********/
+div.carousel-inner {
+  margin: 50px 0 40px 0;
+}
+div.carousel-inner h4 {
+  font-size: 1.25rem;
+}
+
+ol.carousel-indicators {
+  bottom: -20%;
+}
+ol.carousel-indicators li {
+  background-color: #007BFF;
+  height: 5px;
+}
+ol.carousel-indicators .active {
+  background-color: #ffc700;
+}
+
 /*
  * Description: OWL Carousel
  *

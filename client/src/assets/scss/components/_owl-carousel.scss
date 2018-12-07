@@ -1,0 +1,33 @@
+/*
+ * Description: OWL Carousel
+ *
+ */
+
+/* All carousel */
+div.owl-carousel{
+  div.owl-nav{
+    display: none;
+  }
+}
+
+/* Carousel with rows */
+div.owl-rows{
+
+  div.card {
+    border: none;
+
+    div.col-sm-4{
+      text-align: center;
+      font-size: 16px;
+
+      img{
+        width: 70px;
+        height: 70px;
+        margin: 0 auto;
+      }
+    }
+
+  }
+
+
+}

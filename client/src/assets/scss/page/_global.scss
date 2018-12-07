@@ -1,0 +1,314 @@
+/**
+ * Nom:
+ * Description: Style Global
+ */
+/************************** Style général *************************************/
+body, html{
+  height:100%;
+}
+
+body{
+  font-family: "Kanit","Dosis", "Lato", Arial,sans-serif;
+  box-sizing: border-box;
+}
+
+
+/* Sticky menu */
+.sticky{
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10000;
+}
+
+/*********** Owl Carousel *********/
+
+.section-owl-carousel {
+  position: relative;
+  .container-fluid {
+    padding: 60px;
+    position: relative;
+    max-width: 1230px;
+
+    div.owl-carousel{
+      //z-index: 10 !important;
+    }
+  }
+  .thumbnail {
+    margin: 0 15px;
+  }
+  .customNavigation {
+    transform: translateY(-50%);
+    top: calc(50% - 37px);
+    position: absolute;
+    width: 100%;
+    left: 0;
+  }
+  .customNavigation>span {
+    transform: translateY(-50%);
+    top: 50%;
+    position: absolute;
+  }
+  .pager-left {
+    left: calc(0% + 15px);
+  }
+  .pager-right {
+    right: calc(0% + 15px);
+  }
+  .next, .prev {
+    font-size: 28px;
+    color: #ccc;
+  }
+}
+
+
+/************** HEADER ****************/
+
+header{
+  margin-bottom: 75px;
+
+  nav#navbar-primary{
+    justify-content: space-evenly;
+
+    // Brand
+    a.navbar-brand{
+      font-size: 1.75em;
+    }
+
+    // Main menu
+    div#navbarMainDropdown{
+
+      ul.navbar-nav{
+        flex-direction: row;
+
+        li.nav-item{
+          margin: 5px 20px;
+
+          i{
+            font-size: 14px;
+            margin-right: 10px;
+          }
+
+          i.fa-mail-bulk::before{
+            content: "\f674";
+            color: white;
+          }
+        }
+      }
+    }
+
+    /* Search Form */
+    form.form-inline{
+
+      button.btn-outline-primary{
+        color: white;
+        border-color: white;
+      }
+    }
+  }
+
+}
+/************** END HEADER ****************/
+
+/************** FOOTER *****************/
+footer{
+  padding: 0 30px;
+
+  div.col-sm-4{
+    padding: 0;
+  }
+
+  /** Footer section 1 **/
+  div.footer-section-1{
+    h4{
+      margin-left: 25px;
+    }
+
+    nav.navbar{
+      ul.navbar-nav{
+        div.btn-group{
+          button.btn{
+            width: 150px;
+            border-color: unset;
+          }
+        }
+      }
+    }
+  }
+
+  /** Footer section 2 **/
+  div.footer-section-2{
+    justify-content: end;
+  }
+
+  p.copyright{
+    //position: absolute;
+    //right: 30px;
+  }
+}
+
+/************** ASIDE **********************/
+
+aside.menu-left{
+
+  /* CARD MEMBER */
+  div.card-member{
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    margin-bottom: 1.5rem !important;
+
+    div.card-header-background{
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 0;
+      background-color: rgba(0, 0, 0, 0.03);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+
+      height: 150px;
+      background-size: cover;
+    }
+
+    div.rounded-circle{
+      flex: 1 1 auto;
+      padding: 1.25rem;
+      text-align: center !important;
+
+      /* User Avatar */
+      a{
+        text-align: center !important;
+        text-decoration: none;
+
+        img.md-rounded-avatar{
+          max-width: 100px;
+          margin-top: -70px;
+          margin-bottom: 5px;
+          border: 3px solid #fff;
+          border-radius: 100%;
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+
+          vertical-align: middle;
+        }
+      }
+
+      /* USER ACTIVITY */
+      ul.user-favorites{
+        list-style: none;
+        padding: 0;
+
+        li{
+          display: inline-block;
+          padding: 0 10px;
+          font-size: 12px;
+
+          a {
+
+            h6{
+              margin-bottom: 0 !important;
+            }
+          }
+
+          a:hover{
+            text-decoration: none;
+          }
+        }
+
+        li:nth-of-type(1){
+          border-right: 1px solid #d4dbe0;
+        }
+      }
+
+    }
+  }
+  /* MENU LEFT */
+  div.menu{
+    ul.nav{
+      overflow-y: auto;
+
+      li.nav-item{
+        a.nav-link{
+          i{
+            margin-right: 10px;
+          }
+        }
+
+      }
+
+
+    }
+  }
+}
+
+
+/*** MAIN - GLOBAL STYLE ****/
+
+main{
+  overflow: hidden;
+  margin-bottom: 60px;
+
+  /* Avatar rounded */
+  img.xs-rounded-avatar{
+    width: 70px;
+    margin: 10px 15px;
+  }
+
+  img.sm-rounded-avatar{
+    width: 100px;
+    margin: 10px 15px;
+  }
+
+  section#main-content{
+
+    /* Carousel - Categories */
+    section.category-cards{
+
+      div.container-fluid{
+
+        /* Titre */
+        h3{
+          text-align: center;
+        }
+
+      }
+    }
+
+
+    /* Home Parallax 3 - Inscription */
+    div.parallax3{
+      height: 600px !important;
+
+      div.col-lg-4{
+        margin: 5px;
+        padding: 0;
+        width: 31% !important;
+        max-width: 31%;
+      }
+    }
+
+
+
+    section.recent-grains, section.recent-articles{
+      padding: 25px 15px;
+
+      h3{
+        padding-bottom: 20px;
+        text-align: center;
+
+      }
+    }
+  }
+
+
+}
+
+/*** END MAIN - GLOBAL STYLE ****/

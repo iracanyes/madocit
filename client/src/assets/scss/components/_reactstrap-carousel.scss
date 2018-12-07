@@ -1,0 +1,32 @@
+/**
+ * Nom: Iracanyes
+ * Description: Style des Carousels du composant Reactstrap
+ *
+ */
+@import 'parameters';
+
+/*********** Homepage ***********/
+div.carousel-inner{
+  margin: 50px 0 40px 0;
+
+  h4{
+    font-size: 1.25rem;
+  }
+
+
+}
+
+ol.carousel-indicators{
+  bottom: -20%;
+
+  li{
+    background-color: $primary-color;
+    height: 5px;
+
+
+  }
+
+  .active{
+    background-color: $secondary-color;
+  }
+}
