@@ -20,6 +20,7 @@ import * as serviceWorker from './serviceWorker';
 import Welcome from './Welcome';
 import Homepage from './layout/Homepage';
 import MainMenu from './layout/MainMenu';
+import MainMenu2 from './layout/MainMenu2';
 
 // Import reducers and routes of the application
 // import reducers for articles
@@ -112,6 +113,7 @@ import theme from './reducers/theme/';
 
 //import routes for themes
 import themeRoutes from './routes/theme';
+import AsideMenu from "./layout/AsideMenu";
 
 /* redux dev tools : https://github.com/zalmoxisus/redux-devtools-extension#usage*/
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -175,6 +177,11 @@ ReactDOM.render(
 ReactDOM.render(
     <MainMenu/>,
     document.getElementsByTagName("header")[0]
+);
+
+ReactDOM.render(
+    <AsideMenu/>,
+    document.getElementById('aside-left')
 );
 
 // If you want your app to work offline and load faster, you can change

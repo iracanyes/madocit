@@ -171,7 +171,7 @@ body {
 
 /************** HEADER ****************/
 header {
-  margin-bottom: 75px;
+  margin-bottom: 30px;
 }
 header nav#navbar-primary {
   justify-content: space-evenly;
@@ -180,19 +180,22 @@ header nav#navbar-primary {
 header nav#navbar-primary a.navbar-brand {
   font-size: 1.75em;
 }
-header nav#navbar-primary div#navbarMainDropdown ul.navbar-nav {
+header nav#navbar-primary div.navbar-collapse ul.navbar-nav {
   flex-direction: row;
 }
-header nav#navbar-primary div#navbarMainDropdown ul.navbar-nav li.nav-item {
+header nav#navbar-primary div.navbar-collapse ul.navbar-nav li.nav-item {
   margin: 5px 20px;
 }
-header nav#navbar-primary div#navbarMainDropdown ul.navbar-nav li.nav-item i {
+header nav#navbar-primary div.navbar-collapse ul.navbar-nav li.nav-item i {
   font-size: 14px;
   margin-right: 10px;
 }
-header nav#navbar-primary div#navbarMainDropdown ul.navbar-nav li.nav-item i.fa-mail-bulk::before {
+header nav#navbar-primary div.navbar-collapse ul.navbar-nav li.nav-item i.fa-mail-bulk::before {
   content: "";
   color: white;
+}
+header nav#navbar-primary div.navbar-collapse ul.navbar-nav li.nav-item div.dropdown-menu button.dropdown-item a.nav-link {
+  color: #007BFF;
 }
 header nav#navbar-primary form.form-inline button.btn-outline-primary {
   color: white;
@@ -219,12 +222,33 @@ footer div.footer-section-1 nav.navbar ul.navbar-nav div.btn-group button.btn {
 footer div.footer-section-2 {
   justify-content: end;
 }
+/*************** MAIN ***********************/
+main {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
 /************** ASIDE **********************/
-aside.menu-left {
+aside#aside-left {
+  -ms-flex: 0 0 16.666667%;
+  flex: 0 0 16.666667%;
+  max-width: 16.666667%;
+  float: left !important;
+  -ms-flex-direction: column !important;
+  flex-direction: column !important;
+  position: relative;
+  width: 100%;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+  background-color: #fffed7;
   /* CARD MEMBER */
   /* MENU LEFT */
 }
-aside.menu-left div.card-member {
+aside#aside-left div.card-member {
   position: relative;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -241,7 +265,7 @@ aside.menu-left div.card-member {
   border-radius: 0.25rem;
   margin-bottom: 1.5rem !important;
 }
-aside.menu-left div.card-member div.card-header-background {
+aside#aside-left div.card-member div.card-header-background {
   padding: 0.75rem 1.25rem;
   margin-bottom: 0;
   background-color: rgba(0, 0, 0, 0.03);
@@ -249,18 +273,18 @@ aside.menu-left div.card-member div.card-header-background {
   height: 150px;
   background-size: cover;
 }
-aside.menu-left div.card-member div.rounded-circle {
+aside#aside-left div.card-member div.rounded-circle {
   flex: 1 1 auto;
   padding: 1.25rem;
   text-align: center !important;
   /* User Avatar */
   /* USER ACTIVITY */
 }
-aside.menu-left div.card-member div.rounded-circle a {
+aside#aside-left div.card-member div.rounded-circle a {
   text-align: center !important;
   text-decoration: none;
 }
-aside.menu-left div.card-member div.rounded-circle a img.md-rounded-avatar {
+aside#aside-left div.card-member div.rounded-circle a img.md-rounded-avatar {
   max-width: 100px;
   margin-top: -70px;
   margin-bottom: 5px;
@@ -269,28 +293,28 @@ aside.menu-left div.card-member div.rounded-circle a img.md-rounded-avatar {
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   vertical-align: middle;
 }
-aside.menu-left div.card-member div.rounded-circle ul.user-favorites {
+aside#aside-left div.card-member div.rounded-circle ul.user-favorites {
   list-style: none;
   padding: 0;
 }
-aside.menu-left div.card-member div.rounded-circle ul.user-favorites li {
+aside#aside-left div.card-member div.rounded-circle ul.user-favorites li {
   display: inline-block;
   padding: 0 10px;
   font-size: 12px;
 }
-aside.menu-left div.card-member div.rounded-circle ul.user-favorites li a h6 {
+aside#aside-left div.card-member div.rounded-circle ul.user-favorites li a h6 {
   margin-bottom: 0 !important;
 }
-aside.menu-left div.card-member div.rounded-circle ul.user-favorites li a:hover {
+aside#aside-left div.card-member div.rounded-circle ul.user-favorites li a:hover {
   text-decoration: none;
 }
-aside.menu-left div.card-member div.rounded-circle ul.user-favorites li:nth-of-type(1) {
+aside#aside-left div.card-member div.rounded-circle ul.user-favorites li:nth-of-type(1) {
   border-right: 1px solid #d4dbe0;
 }
-aside.menu-left div.menu ul.nav {
+aside#aside-left div.menu ul.nav {
   overflow-y: auto;
 }
-aside.menu-left div.menu ul.nav li.nav-item a.nav-link i {
+aside#aside-left div.menu ul.nav li.nav-item a.nav-link i {
   margin-right: 10px;
 }
 
