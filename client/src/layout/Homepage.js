@@ -18,7 +18,7 @@ export default class Homepage extends Component
 {
     render(){
         return <Fragment>
-            <section id="main-content" className="col-lg-7 float-left">
+            <section id="main-content" className="float-left">
                 {/* Carousel - Categories  */}
                 <section className="category-cards bg-white pt60 pb60">
                     <div className="container-fluid">

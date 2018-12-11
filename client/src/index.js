@@ -20,7 +20,8 @@ import * as serviceWorker from './serviceWorker';
 import Welcome from './Welcome';
 import Homepage from './layout/Homepage';
 import MainMenu from './layout/MainMenu';
-import MainMenu2 from './layout/MainMenu2';
+import SidebarLeftMenu from './layout/SidebarLeftMenu';
+import SidebarRight from './layout/SidebarRight';
 
 // Import reducers and routes of the application
 // import reducers for articles
@@ -113,7 +114,6 @@ import theme from './reducers/theme/';
 
 //import routes for themes
 import themeRoutes from './routes/theme';
-import AsideMenu from "./layout/AsideMenu";
 
 /* redux dev tools : https://github.com/zalmoxisus/redux-devtools-extension#usage*/
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
@@ -149,8 +149,8 @@ ReactDOM.render(
     <Provider store={store}>
         <ConnectedRouter history={history}>
             <Switch>
-                <Route path="/" component={Welcome} strict={true} exact={true}/>
-                <Route path={"/homepage"} component={Homepage}/>
+                <Route path="/dev" component={Welcome} strict={true} exact={true}/>
+                <Route path={"/"} component={Homepage} strict={true} exact={true}/>
                 { abuseRoutes },
                 { articleRoutes },
                 { categoryRoutes },
@@ -175,13 +175,31 @@ ReactDOM.render(
 );
 
 ReactDOM.render(
-    <MainMenu/>,
+    <Provider store={store}>
+        <ConnectedRouter history={history}>
+            <Switch>
+                <MainMenu/>
+            </Switch>
+        </ConnectedRouter>
+    </Provider>
+    ,
     document.getElementsByTagName("header")[0]
 );
 
 ReactDOM.render(
-    <AsideMenu/>,
+    <SidebarLeftMenu/>,
     document.getElementById('aside-left')
+);
+
+ReactDOM.render(
+    <Provider store={store}>
+        <ConnectedRouter history={history}>
+            <Switch>
+                <SidebarRight/>
+            </Switch>
+        </ConnectedRouter>
+    </Provider>,
+    document.getElementById('aside-right')
 );
 
 // If you want your app to work offline and load faster, you can change

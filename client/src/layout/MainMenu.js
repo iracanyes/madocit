@@ -5,6 +5,7 @@
  */
 import React, {Component, Fragment} from "react";
 import { push } from 'connected-react-router';
+import { connect } from 'react-redux';
 import {
     Collapse,
     Navbar,
@@ -25,7 +26,7 @@ import {
 } from 'reactstrap';
 
 
-export default class MainMenu extends Component
+class MainMenu extends Component
 {
     constructor(props)
     {
@@ -51,12 +52,7 @@ export default class MainMenu extends Component
                 {/* Navbar brand*/}
                 <NavbarBrand href="/" className="col-lg-3">MaDocIt</NavbarBrand>
 
-                {/*
-                <form className="form-inline col-lg-5">
-                    <input className="form-control mr-sm-2 col-lg-9" type="search" placeholder="Recherche" aria-label="Search"/>
-                    <button className="btn btn-outline-primary my-2 my-sm-0" type="submit"><i className="fa fa-search"></i></button>
-                </form>
-                */}
+
                 <Form inline className="col-lg-5">
                     <Input className="form-control mr-sm-2 col-lg-9" type='search' aria-labe='Search' placeholder="Recherche"/>
                     <Button outline color="primary" className={"my-2 my-sm-0"}><i className="fa fa-search" ></i></Button>
@@ -149,3 +145,9 @@ export default class MainMenu extends Component
         </Fragment>
     }
 }
+
+const mapStateToProps = state => ({
+    search: state.router.location.search
+});
+
+export default connect(mapStateToProps)(MainMenu);
