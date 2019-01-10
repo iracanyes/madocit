@@ -75,12 +75,13 @@ services:
     image: mysql:8.0
     restart: always
     environment:
-      - ${MYSQL_ROOT_PASSWORD}
-      - ${MYSQL_ROOT_HOST}
-      - ${MYSQL_USER}
-      - ${MYSQL_PASSWORD}
-      - ${MYSQL_DATABASE}
-      - ${MYSQL_PORT}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_ROOT_HOST: ${MYSQL_ROOT_HOST}
+      MYSQL_HOST: ${MYSQL_HOST}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PORT: ${MYSQL_PORT}
     env_file:
       - ./.env
     volumes:
@@ -98,6 +99,13 @@ services:
   # Formely PHPMyAdmin
   adminer:
     image: adminer:4.6
+    depends_on:
+      - db
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      PMA_ARBITRARY: 1
     restart: always
     ports:
       - "8083:80"
