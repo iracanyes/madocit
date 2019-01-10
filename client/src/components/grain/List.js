@@ -39,6 +39,7 @@ class List extends Component {
 
       <p><Link to="create" className="btn btn-primary">Create</Link></p>
 
+      {/*
         <table className="table table-responsive table-striped table-hover">
         <thead>
           <tr>
@@ -85,7 +86,194 @@ class List extends Component {
         )}
         </tbody>
       </table>
+      */}
+      <section id="carousel2-articles" className="col-lg-12 float-left">
 
+        {/* Posts récentes  */}
+        <section className="recent-grains">
+          <h3>Grains de documentations récentes</h3>
+          <div className="card-columns">
+            <div className="card">
+              <img className="card-img-top" src="assets/img/parallax2.jpg" alt="Card image cap"/>
+              <div className="card-body">
+                <h5 className="card-title">Card title that wraps to a new line</h5>
+                <p className="card-text">This is a longer card with supporting text below as a natural lead-in to
+                  additional content. This content is a little bit longer.</p>
+              </div>
+            </div>
+            <div className="card p-3">
+              <blockquote className="blockquote mb-0 card-body">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                <footer className="blockquote-footer">
+                  <small className="text-muted">
+                    Someone famous in <cite title="Source Title">Source Title</cite>
+                  </small>
+                </footer>
+              </blockquote>
+            </div>
+            <div className="card">
+              <img className="card-img-top" src="assets/img/parallax1.jpg" alt="Card image cap"/>
+              <div className="card-body">
+                <h5 className="card-title">Card title</h5>
+                <p className="card-text">This card has supporting text below as a natural lead-in to additional
+                  content.</p>
+                <p className="card-text">
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </p>
+              </div>
+            </div>
+            <div className="card bg-primary text-white text-center p-3">
+              <blockquote className="blockquote mb-0">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat.</p>
+                <footer className="blockquote-footer">
+                  <small>
+                    Someone famous in <cite title="Source Title">Source Title</cite>
+                  </small>
+                </footer>
+              </blockquote>
+            </div>
+            <div className="card text-center">
+              <div className="card-body">
+                <h5 className="card-title">Card title</h5>
+                <p className="card-text">This card has a regular title and short paragraphy of text below it.</p>
+                <p className="card-text">
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </p>
+              </div>
+            </div>
+            <div className="card">
+              <img className="card-img" src=".../100px260/" alt="Card image"/>
+            </div>
+            <div className="card p-3 text-right">
+              <blockquote className="blockquote mb-0">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                <footer className="blockquote-footer">
+                  <small className="text-muted">
+                    Someone famous in <cite title="Source Title">Source Title</cite>
+                  </small>
+                </footer>
+              </blockquote>
+            </div>
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">Card title</h5>
+                <p className="card-text">This is another card with title and supporting text below. This card has some
+                  additional content to make it slightly taller overall.</p>
+                <p className="card-text">
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </p>
+              </div>
+            </div>
+          </div>
+          <ul className="pagination">
+            <li className="page-item"><a className="page-link" href="#">Précédent</a></li>
+            <li className="page-item"><a className="page-link" href="#">1</a></li>
+            <li className="page-item active"><a className="page-link" href="#">2</a></li>
+            <li className="page-item"><a className="page-link" href="#">3</a></li>
+            <li className="page-item"><a className="page-link" href="#">Suivant</a></li>
+          </ul>
+        </section>
+
+        {/* Parallax image 1 */}
+        <div className="parallax parallax-main parallax1 parallax-plus-box">
+
+          <div className="card">
+            <h5 className="card-header">Featured</h5>
+            <div className="card-body">
+              <h5 className="card-title">Special title treatment</h5>
+              <p className="card-text">With supporting text below as a natural lead-in to additional content.</p>
+              <a href="#" className="btn btn-primary">Go somewhere</a>
+            </div>
+          </div>
+        </div>
+
+        {/* Posts récentes  */}
+        <section className="recent-articles">
+          <h3>Actualités récentes</h3>
+          <div className="card-columns">
+            <div className="card">
+              <img className="card-img-top" src="assets/img/parallax2.jpg" alt="Card image cap"/>
+              <div className="card-body">
+                <h5 className="card-title">Card title that wraps to a new line</h5>
+                <p className="card-text">This is a longer card with supporting text below as a natural lead-in to
+                  additional content. This content is a little bit longer.</p>
+              </div>
+            </div>
+            <div className="card p-3">
+              <blockquote className="blockquote mb-0 card-body">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                <footer className="blockquote-footer">
+                  <small className="text-muted">
+                    Someone famous in <cite title="Source Title">Source Title</cite>
+                  </small>
+                </footer>
+              </blockquote>
+            </div>
+            <div className="card">
+              <img className="card-img-top" src="assets/img/parallax1.jpg" alt="Card image cap"/>
+              <div className="card-body">
+                <h5 className="card-title">Card title</h5>
+                <p className="card-text">This card has supporting text below as a natural lead-in to additional
+                  content.</p>
+                <p className="card-text">
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </p>
+              </div>
+            </div>
+            <div className="card bg-primary text-white text-center p-3">
+              <blockquote className="blockquote mb-0">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat.</p>
+                <footer className="blockquote-footer">
+                  <small>
+                    Someone famous in <cite title="Source Title">Source Title</cite>
+                  </small>
+                </footer>
+              </blockquote>
+            </div>
+            <div className="card text-center">
+              <div className="card-body">
+                <h5 className="card-title">Card title</h5>
+                <p className="card-text">This card has a regular title and short paragraphy of text below it.</p>
+                <p className="card-text">
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </p>
+              </div>
+            </div>
+            <div className="card">
+              <img className="card-img" src=".../100px260/" alt="Card image"/>
+            </div>
+            <div className="card p-3 text-right">
+              <blockquote className="blockquote mb-0">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+                <footer className="blockquote-footer">
+                  <small className="text-muted">
+                    Someone famous in <cite title="Source Title">Source Title</cite>
+                  </small>
+                </footer>
+              </blockquote>
+            </div>
+            <div className="card">
+              <div className="card-body">
+                <h5 className="card-title">Card title</h5>
+                <p className="card-text">This is another card with title and supporting text below. This card has some
+                  additional content to make it slightly taller overall.</p>
+                <p className="card-text">
+                  <small className="text-muted">Last updated 3 mins ago</small>
+                </p>
+              </div>
+            </div>
+          </div>
+          <ul className="pagination">
+            <li className="page-item"><a className="page-link" href="#">Précédent</a></li>
+            <li className="page-item"><a className="page-link" href="#">1</a></li>
+            <li className="page-item active"><a className="page-link" href="#">2</a></li>
+            <li className="page-item"><a className="page-link" href="#">3</a></li>
+            <li className="page-item"><a className="page-link" href="#">Suivant</a></li>
+          </ul>
+        </section>
+
+
+      </section>
       {this.pagination()}
     </div>;
   }

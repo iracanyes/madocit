@@ -5,7 +5,7 @@
  */
 @import 'parameters';
 
-/*********** Homepage ***********/
+/*********** Carousel Homepage : Global ***********/
 div.carousel-inner{
   margin: 50px 0 40px 0;
 
@@ -18,6 +18,7 @@ div.carousel-inner{
 
 ol.carousel-indicators{
   bottom: -20%;
+  margin: 0 auto;
 
   li{
     background-color: $primary-color;
@@ -29,4 +30,84 @@ ol.carousel-indicators{
   .active{
     background-color: $secondary-color;
   }
+}
+
+/*---------- Carousel Homepages : Categories -------------*/
+section.category-cards{
+  margin-bottom: 30px;
+
+  div.carousel-item{
+    div.col-sm-4{
+      img{
+        width: 90px;
+        margin: 0 auto;
+        display: block;
+        border-radius: 25% 20% 0% 25%;
+      }
+
+      h4{
+        text-align: center;
+      }
+    }
+  }
+}
+
+/*----------- Carousel Homapage : Articles --------------*/
+section.carousel-articles{
+  margin: 20px 0 60px 0;
+
+  h2{
+    text-align: center;
+  }
+
+  div.carousel-inner{
+    margin: 30px 0 0 0;
+    div.carousel-item{
+      height: 100%;
+
+      img.card-img{
+        width: 30%;
+      }
+
+      /* Alignement : en ligne */
+      div.card{
+        flex-direction: row;
+      }
+    }
+  }
+
+  ol.carousel-indicators{
+    margin: 0 auto;
+  }
+
+}
+
+/*----------- Carousel Homapage : Articles --------------*/
+section.carousel-grains{
+  margin: 20px 0 60px 0;
+
+  h2{
+    text-align: center;
+  }
+
+  div.carousel-inner{
+    margin: 30px 0 0 0;
+    div.carousel-item{
+      height: 100%;
+
+      img.card-img{
+        width: 30%;
+      }
+
+      /* Alignement : en ligne */
+      div.card{
+        flex-direction: row;
+      }
+    }
+  }
+
+  ol.carousel-indicators{
+    margin: 0 auto;
+  }
+
 }

@@ -1,27 +1,29 @@
+/helm/api/charts
 
 ###> symfony/framework-bundle ###
-.env
+/.env.local
+/.env.*.local
 /public/bundles/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
-
-/helm/api/charts
-/helm/api/requirements.lock
 
 ###> friendsofphp/php-cs-fixer ###
 .php_cs
 .php_cs.cache
 ###< friendsofphp/php-cs-fixer ###
 
-###> symfony/web-server-bundle ###
-/.web-server-pid
-###< symfony/web-server-bundle ###
+###> Custom ####
+/client.save/
+*.save
+/.idea/
+
+###< Custom ####
+
 
 ###> security ###
 /api/config/packages/doctrine.yaml
 ###< security ###
-
-/client.save/
-*.save
-/.idea/
+###> symfony/web-server-bundle ###
+/.web-server-pid
+###< symfony/web-server-bundle ###

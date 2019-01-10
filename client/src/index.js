@@ -14,14 +14,13 @@ import createBrowserHistory from 'history/createBrowserHistory';
 import { ConnectedRouter, connectRouter, routerMiddleware } from 'connected-react-router';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'font-awesome/css/font-awesome.css';
+import './assets/css/main.css';
 import * as serviceWorker from './serviceWorker';
 
 // Import your reducers and routes here
 import Welcome from './Welcome';
 import Homepage from './layout/Homepage';
-import MainMenu from './layout/MainMenu';
-import SidebarLeftMenu from './layout/SidebarLeftMenu';
-import SidebarRight from './layout/SidebarRight';
+
 
 // Import reducers and routes of the application
 // import reducers for articles
@@ -174,33 +173,6 @@ ReactDOM.render(
     document.getElementById('root')
 );
 
-ReactDOM.render(
-    <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <Switch>
-                <MainMenu/>
-            </Switch>
-        </ConnectedRouter>
-    </Provider>
-    ,
-    document.getElementsByTagName("header")[0]
-);
-
-ReactDOM.render(
-    <SidebarLeftMenu/>,
-    document.getElementById('aside-left')
-);
-
-ReactDOM.render(
-    <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <Switch>
-                <SidebarRight/>
-            </Switch>
-        </ConnectedRouter>
-    </Provider>,
-    document.getElementById('aside-right')
-);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

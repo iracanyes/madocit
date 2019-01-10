@@ -7,7 +7,8 @@
 /*********** Parallax ***********/
 div.parallax{
   // image
-  background-image: url("../img/parallax1.jpg") ;
+  background-image: url("../img/create-photo.jpeg") ;
+  background-size: cover;
 
   // taille
   height: 100%;
@@ -17,7 +18,7 @@ div.parallax{
   background-position: center;
   background-repeat: no-repeat;
   background-cover: cover;
-  background-size: 100%;
+  background-size: 72%;
 
 
 }

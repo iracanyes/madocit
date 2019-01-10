@@ -4,10 +4,7 @@ dependencies:
 #  version: 0.8.1
 #  repository: https://kubernetes-charts.storage.googleapis.com/
 #  condition: postgresql.enabled
-
-# MySQL
 - name: mysql
   version: latest
   repository: https://kubernetes-charts.storage.googleapis.com/
-  # Cette condition se trouve dans madocit/api/helm/api/values.yml
   condition: mysql.enabled

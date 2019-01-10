@@ -4,8 +4,8 @@
  * Description:
  */
 import React, {Component, Fragment} from "react";
-import { push } from 'connected-react-router';
-import { connect } from 'react-redux';
+import {ConnectedRouter, push} from 'connected-react-router';
+import {connect, Provider} from 'react-redux';
 import {
     Collapse,
     Navbar,
@@ -24,6 +24,8 @@ import {
     Label,
     Input
 } from 'reactstrap';
+import ReactDOM from "react-dom";
+import {Switch} from "react-router-dom";
 
 
 class MainMenu extends Component
@@ -54,7 +56,7 @@ class MainMenu extends Component
 
 
                 <Form inline className="col-lg-5">
-                    <Input className="form-control mr-sm-2 col-lg-9" type='search' aria-labe='Search' placeholder="Recherche"/>
+                    <Input className="form-control mr-sm-2 col-lg-9" type='search' aria-label='Search' placeholder="Recherche"/>
                     <Button outline color="primary" className={"my-2 my-sm-0"}><i className="fa fa-search" ></i></Button>
                 </Form>
 
@@ -149,5 +151,11 @@ class MainMenu extends Component
 const mapStateToProps = state => ({
     search: state.router.location.search
 });
+
+ReactDOM.render(
+    <MainMenu/>,
+    document.getElementsByTagName("header")[0]
+);
+
 
 export default connect(mapStateToProps)(MainMenu);

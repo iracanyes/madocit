@@ -19,6 +19,19 @@ class ArticleRepository extends ServiceEntityRepository
         parent::__construct($registry, Article::class);
     }
 
+
+    public function findAllWithEditorImage()
+    {
+        return $this->createQueryBuilder('a')
+            ->leftJoin('a.author', 'e')
+            ->addSelect('e.nickname')
+            ->leftJoin('a.images', 'i')
+            ->addSelect('i')
+            ->orderBy('a.dateCreated', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+    }
 //    /**
 //     * @return Article[] Returns an array of Article objects
 //     */

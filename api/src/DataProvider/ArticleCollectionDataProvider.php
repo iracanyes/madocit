@@ -44,4 +44,5 @@ final class ArticleCollectionDataProvider implements CollectionDataProviderInter
     }
 
 }
+
 ?>

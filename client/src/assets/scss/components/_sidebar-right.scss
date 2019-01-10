@@ -1,0 +1,124 @@
+/**
+ * Name: Iracanyes
+ * Description: Sidebar right
+ */
+aside#aside-right{
+  flex: 0 0 16.666667%;
+  max-width: 16.666667%;
+  float: right;
+
+  /* ACCORDION SIDEBAR RIGHT */
+  #accordionAsideRight{
+    .card{
+      border-left: 2px solid $secondary-color;
+      border-top: 2px solid $secondary-color;
+      border-bottom: none;
+      border-right: none;
+
+      div.card-header{
+        color: black;
+        background-color: white;
+        border-bottom: none;
+        border-left: 1px solid $secondary-color;
+        border-top: none;
+
+        .card-title{
+          border: none;
+
+          button.btn-secondary{
+            border: none;
+            color: black;
+
+          }
+
+          button.btn-secondary:hover{
+            background-color: unset;
+            text-decoration: none;
+            border: unset;
+          }
+        }
+
+      }
+    }
+  }
+
+  /* CARD MEMBER */
+  div.card-member{
+    position: relative;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, 0.125);
+    border-radius: 0.25rem;
+    margin-bottom: 1.5rem !important;
+
+    div.card-header{
+      padding: 0.75rem 1.25rem;
+      margin-bottom: 0;
+      background-color: rgba(0, 0, 0, 0.03);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+
+      height: 150px;
+      background-size: cover;
+    }
+
+    div.rounded-circle{
+      flex: 1 1 auto;
+      padding: 1.25rem;
+      text-align: center !important;
+
+      /* User Avatar */
+      a{
+        text-align: center !important;
+        text-decoration: none;
+
+        img.md-rounded-avatar{
+          max-width: 100px;
+          margin-top: -70px;
+          margin-bottom: 5px;
+          border: 3px solid #fff;
+          border-radius: 100%;
+          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+
+          vertical-align: middle;
+        }
+      }
+
+      /* USER ACTIVITY */
+      ul.user-favorites{
+        list-style: none;
+        padding: 0;
+
+        li{
+          display: inline-block;
+          padding: 0 10px;
+          font-size: 12px;
+
+          a {
+
+            h6{
+              margin-bottom: 0 !important;
+            }
+          }
+
+          a:hover{
+            text-decoration: none;
+          }
+        }
+
+        li:nth-of-type(1){
+          border-right: 1px solid #d4dbe0;
+        }
+      }
+
+    }
+  }
+}

@@ -8,13 +8,13 @@ secret: ChangeMe
 corsAllowOrigin: http://madocit.be
 
 php:
-  repository: gcr.io/test-api-platform/php
+  repository: quay.io/api-platform/php
   tag: latest
   pullPolicy: Always
   replicaCount: 1
 
 nginx:
-  repository: gcr.io/test-api-platform/nginx
+  repository: quay.io/api-platform/nginx
   tag: latest
   pullPolicy: Always
   replicaCount: 1
@@ -22,7 +22,7 @@ nginx:
 varnish:
   enabled: true
   #url: https://example.com
-  repository: gcr.io/test-api-platform/varnish
+  repository: quay.io/api-platform/varnish
   tag: latest
   pullPolicy: Always
   replicaCount: 1
@@ -40,6 +40,7 @@ ingress:
 # Changement de DB : PostGreSQL => MySQL
 #postgresql:
 #  enabled: true
+#  imageTag: 10-alpine
 #  # If bringing your own PostgreSQL, the full uri to use
 #  #url: pgsql://api-platform:!ChangeMe!@example.com/api?serverVersion=10.1
 #  postgresUser: api-platform
@@ -63,6 +64,7 @@ mysql:
   # ref: https://kubernetes.io/docs/user-guide/persistent-volumes
   #  persistence:
   #    enabled: false
+
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

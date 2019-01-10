@@ -4,6 +4,7 @@
  * Description: Sidebar Menu
  */
 import React, { Component, Fragment } from 'react';
+import ReactDOM from 'react-dom';
 import { push } from 'connected-react-router';
 import {
     Nav,
@@ -25,13 +26,13 @@ export default class SidebarLeftMenu extends Component
             <div className="menu">
                 <Nav vertical>
                     <UncontrolledDropdown nav inNavbar>
-                        <DropdownToggle nav caret outline>
+                        <DropdownToggle nav caret >
                             <span style={{fontSize: "14px", color: "Dodgerblue"}}>
                               <i className="fas fa-user-circle"></i>
                             </span>
                             Profile
                         </DropdownToggle>
-                        <DropdownMenu bottom outline>
+                        <DropdownMenu>
                             <DropdownItem >
                                 <span style={{fontSize: "14px", color: "Dodgerblue"}}>
                                   <i className="fas fa-sign-in-alt"></i>
@@ -57,46 +58,49 @@ export default class SidebarLeftMenu extends Component
                         </DropdownMenu>
                     </UncontrolledDropdown>
                     <UncontrolledDropdown nav inNavbar>
-                        <DropdownToggle nav caret outline>
+                        <DropdownToggle nav caret >
                             <span style={{fontSize: "14px", color: "Dodgerblue"}}>
                               <i className="fas fa-edit"></i>
                             </span>
                             Documentation
                         </DropdownToggle>
-                        <DropdownMenu bottom>
-                            <UncontrolledDropdown nav inNavbar>
-                                <DropdownToggle nav caret outline>
-                                    Profile
-                                </DropdownToggle>
-                                <DropdownMenu right outline>
-                                    <DropdownItem>
-                                        Login
-                                    </DropdownItem>
-                                    <DropdownItem>
-                                        Sign/out
-                                    </DropdownItem>
-                                    <DropdownItem divider/>
-                                    <DropdownItem>
-                                        Activité
-                                    </DropdownItem>
-                                    <DropdownItem>
+                        <DropdownMenu>
+                            <ul>
+                                <UncontrolledDropdown nav inNavbar>
+                                    <DropdownToggle nav caret >
+                                        Profile
+                                    </DropdownToggle>
+                                    <DropdownMenu right>
+                                        <DropdownItem>
+                                            Login
+                                        </DropdownItem>
+                                        <DropdownItem>
+                                            Sign/out
+                                        </DropdownItem>
+                                        <DropdownItem divider/>
+                                        <DropdownItem>
+                                            Activité
+                                        </DropdownItem>
+                                        <DropdownItem>
 
-                                    </DropdownItem>
-                                </DropdownMenu>
-                            </UncontrolledDropdown>
-                            <DropdownItem>
-                                <NavLink href={"#"} outline>Créer</NavLink>
-                            </DropdownItem>
-                            <DropdownItem>
-                                <NavLink href={"#"} outline>Mettre à jour</NavLink>
-                            </DropdownItem>
-                            <DropdownItem divider/>
-                            <DropdownItem>
-                                <NavLink href={"#"} outline>Vos publications</NavLink>
-                            </DropdownItem>
-                            <DropdownItem>
-                                <NavLink href={"#"} outline>Supprimer</NavLink>
-                            </DropdownItem>
+                                        </DropdownItem>
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
+                                <DropdownItem>
+                                    <NavLink href={"#"} >Créer</NavLink>
+                                </DropdownItem>
+                                <DropdownItem>
+                                    <NavLink href={"#"}>Mettre à jour</NavLink>
+                                </DropdownItem>
+                                <DropdownItem divider/>
+                                <DropdownItem>
+                                    <NavLink href={"#"} >Vos publications</NavLink>
+                                </DropdownItem>
+                                <DropdownItem>
+                                    <NavLink href={"#"}>Supprimer</NavLink>
+                                </DropdownItem>
+                            </ul>
+
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </Nav>
@@ -150,3 +154,8 @@ export default class SidebarLeftMenu extends Component
         </Fragment>
     }
 }
+
+ReactDOM.render(
+    <SidebarLeftMenu/>,
+    document.getElementById('aside-left')
+);

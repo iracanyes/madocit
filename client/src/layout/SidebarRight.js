@@ -4,7 +4,8 @@
  * Description: SIDEBAR RIGHT
  */
 import React, {Component, Fragment} from 'react';
-import { push } from 'connected-react-router';
+import ReactDOM from "react-dom";
+import {ConnectedRouter, push} from 'connected-react-router';
 import {
     Card,
     CardText,
@@ -14,6 +15,8 @@ import {
     Button,
     UncontrolledCollapse
 } from 'reactstrap';
+import {Provider} from "react-redux";
+import {Switch} from "react-router-dom";
 
 
 export default class SidebarRight extends Component{
@@ -22,7 +25,7 @@ export default class SidebarRight extends Component{
         return (
             <Fragment>
                 <div className="accordion" id="accordionAsideRight">
-                    <Card>
+                    <Card className={"border-light"}>
                         <CardHeader id={"headingThree"}>
                             <CardTitle className={"mb-0"}>
                                 <Button className={"btn-link collapsed"}
@@ -90,7 +93,7 @@ export default class SidebarRight extends Component{
                             </CardBody>
                         </UncontrolledCollapse>
                     </Card>
-                    <Card>
+                    <Card className={"border-light"}>
                         <CardHeader id={'headingTwo'}>
                             <CardTitle className={"mb-0"}>
                                 <Button className={"btn-link collapsed"}
@@ -128,8 +131,8 @@ export default class SidebarRight extends Component{
                             </CardBody>
                         </UncontrolledCollapse>
                     </Card>
-                    <Card className='card-author'>
-                        <CardHeader id="headingOne">
+                    <Card className='card-author border-light'>
+                        <CardHeader id="headingOne" className={"card-header"}>
                             <CardTitle className={"mb-0"}>
                                 <Button className={"btn-link"}
                                         data-toggle={"collapse"}
@@ -157,7 +160,7 @@ export default class SidebarRight extends Component{
                             </CardBody>
                         </UncontrolledCollapse>
                     </Card>
-                    <Card>
+                    <Card className={"border-light"}>
                         <CardHeader id={"headingFour"}>
                             <CardTitle className={"mb-0"}>
                                 <Button className={"btn-link collapsed"}
@@ -207,3 +210,8 @@ export default class SidebarRight extends Component{
         );
     }
 }
+
+ReactDOM.render(
+     <SidebarRight/>,
+    document.getElementById('aside-right')
+);

@@ -5,6 +5,7 @@
 
 /* All carousel */
 div.owl-carousel{
+  display: block !important;
   div.owl-nav{
     display: none;
   }

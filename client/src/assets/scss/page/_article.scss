@@ -41,6 +41,7 @@ div.parallax-article-1{
 main#page-article{
   /* PAGE ARTICLE - ASIDE RIGHT */
   aside.aside-right{
+
     div.card-author{
 
       div.card-body{
@@ -85,3 +86,14 @@ main#page-article{
 }
 
 /***************** END PAGE ARTICLE ******************/
+
+/***************** PAGE ARTICLE Listing ******************/
+section.carousel3-articles{
+  div.card-deck{
+    div.card{
+      flex: 1 1 30%;
+      margin-bottom: 20px;
+    }
+  }
+}
+/***************** END PAGE ARTICLE Listing ******************/

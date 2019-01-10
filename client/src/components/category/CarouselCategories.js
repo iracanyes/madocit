@@ -7,7 +7,7 @@ import { success } from '../../actions/category/delete';
 //import { itemToLinks } from '../../utils/helpers';
 
 import 'bootstrap/dist/css/bootstrap.css';
-import '../../assets/css/main.css';
+
 
 /* Carousel */
 import {
@@ -127,17 +127,15 @@ class CarouselCategories extends Component {
 
                       categ.push(
                           <div key={'categ' + k} className="col-sm-4 m-10">
-                              <img src={images[(i * 6 + j * 2 + k)].url} alt={images[(i * 6 + j * 2 + k)].alt}
-                                   style={styleImage}/>
-                              <h4 style={styleTitle}>{categories[(i * 6 + j * 2 + k)].name}</h4>
+                              <img src={images[(i * 6 + j * 2 + k)].url} alt={images[(i * 6 + j * 2 + k)].alt} />
+                              <h4>{categories[(i * 6 + j * 2 + k)].name}</h4>
                           </div>
                       );
                   }else{
                       categ.push(
                           <div key={'categ' + k} className="col-sm-4 m-10">
-                              <img src={'https://lorempixel.com/1200/900/?14437'} alt={'No Categories'}
-                                   style={styleImage}/>
-                              <h4 style={styleTitle}>...</h4>
+                              <img src={'https://lorempixel.com/1200/900/?14437'} alt={'No Categories'} />
+                              <h4>...</h4>
                           </div>
                       )
                   }

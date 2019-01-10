@@ -3,6 +3,9 @@
  * Description: Style Global
  */
 @import '../components/_parameters.scss';
+@import "../components/sidebar-left";
+@import "../components/sidebar-right";
+
 /************************** Style général *************************************/
 body, html{
   height:100%;
@@ -11,8 +14,16 @@ body, html{
 body{
   font-family: "Kanit","Dosis", "Lato", Arial,sans-serif;
   box-sizing: border-box;
+  //background-image: url("../img/background-cement-concrete.jpg");
+  background-image: url("../img/parallax-gris.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 2300px;
 }
 
+div.welcome{
+  height: 100%;
+  width: 100%;
+}
 
 /* Sticky menu */
 .sticky{
@@ -158,10 +169,6 @@ footer{
 
 
 /*************** MAIN ***********************/
-main{
-
-}
-
 
 
 /*** MAIN - GLOBAL STYLE ****/
@@ -177,184 +184,19 @@ main{
 
   /************** ASIDE **********************/
 
-  aside#aside-left{
-    -ms-flex: 0 0 16.666667%;
-    flex: 0 0 16.666667%;
-    max-width: 16.666667%;
-    float: left !important;
-    -ms-flex-direction: column !important;
-    flex-direction: column !important;
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
-    background-color: #fffed7;
-
-
-    /* MENU LEFT */
-    div.menu{
-      ul.nav{
-        overflow-y: auto;
-
-        li.nav-item{
-
-          .show{
-            display: contents !important;
-          }
 
 
 
-          a.nav-link{
-            i{
-              margin-right: 10px;
-            }
-          }
-
-          div.dropdown-menu{
-            span{
-              margin-right: 10px;
-
-
-            }
-
-            a{
-              color: $primary-color;
-              display: block;
-              width: 100%;
-              padding: 0.25rem 1.5rem;
-              clear: both;
-              font-weight: 400;
-              text-align: inherit;
-              white-space: nowrap;
-              background-color: transparent;
-              border: 0;
-            }
-
-            a.dropdown-toggle{
-              margin: 0.25rem 1.5rem;
-            }
-
-            div.dropdown-menu{
-              .dropdown-item{
-                color: $primary-color !important;
-                display: block;
-                width: 100%;
-                padding: 0.25rem 1.5rem !important;
-                clear: both;
-                font-weight: 400;
-                text-align: inherit;
-                white-space: nowrap;
-                background-color: transparent;
-                border: 0;
-                margin: 0.25rem 2rem;
-              }
-
-              .dropdown-item:hover{
-                color: $primary-color !important;
-              }
-            }
-          }
-
-        }
-
-
-      }
-    }
-  }
-
-  aside#aside-right{
-    flex: 0 0 16.666667%;
-    max-width: 16.666667%;
-    float: right;
-
-    /* CARD MEMBER */
-    div.card-member{
-      position: relative;
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-orient: vertical;
-      -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-      flex-direction: column;
-      min-width: 0;
-      word-wrap: break-word;
-      background-color: #fff;
-      background-clip: border-box;
-      border: 1px solid rgba(0, 0, 0, 0.125);
-      border-radius: 0.25rem;
-      margin-bottom: 1.5rem !important;
-
-      div.card-header-background{
-        padding: 0.75rem 1.25rem;
-        margin-bottom: 0;
-        background-color: rgba(0, 0, 0, 0.03);
-        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
-
-        height: 150px;
-        background-size: cover;
-      }
-
-      div.rounded-circle{
-        flex: 1 1 auto;
-        padding: 1.25rem;
-        text-align: center !important;
-
-        /* User Avatar */
-        a{
-          text-align: center !important;
-          text-decoration: none;
-
-          img.md-rounded-avatar{
-            max-width: 100px;
-            margin-top: -70px;
-            margin-bottom: 5px;
-            border: 3px solid #fff;
-            border-radius: 100%;
-            box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-
-            vertical-align: middle;
-          }
-        }
-
-        /* USER ACTIVITY */
-        ul.user-favorites{
-          list-style: none;
-          padding: 0;
-
-          li{
-            display: inline-block;
-            padding: 0 10px;
-            font-size: 12px;
-
-            a {
-
-              h6{
-                margin-bottom: 0 !important;
-              }
-            }
-
-            a:hover{
-              text-decoration: none;
-            }
-          }
-
-          li:nth-of-type(1){
-            border-right: 1px solid #d4dbe0;
-          }
-        }
-
-      }
-    }
-  }
 
   /************** ROOT **********************/
 
   div#root{
     //flex: 0 0 50%;
-    max-width: 66.67%;
+    max-width: 66.667%;
+    flex: 0 0 66.667%;
+    width: 100%;
     float:left;
+    padding: 0 10px;
 
   }
 
@@ -370,6 +212,7 @@ main{
   }
 
   section#main-content{
+    width: 100%;
 
     /* Carousel - Categories */
     section.category-cards{
