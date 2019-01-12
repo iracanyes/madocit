@@ -97,7 +97,8 @@ class AdminFixtures extends Fixture implements DependentFixtureInterface
         $this->addReference(self::ADMIN_REFERENCE, $admin);
 
     }
-    
+
+
 
     public function createImage(){
         $image = new Image();
