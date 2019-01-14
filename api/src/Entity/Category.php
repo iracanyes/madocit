@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Annotation\ApiSubresource;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -12,7 +14,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"category:output","article:output","moderator:validation"}},
+ *     denormalizationContext={"groups"={"category:input","article:input","moderator:validation"}}
+ * )
  * @ORM\Table(name="mdit_category")
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  * Contraintes d'unicité des noms de catégorie

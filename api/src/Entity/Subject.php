@@ -11,7 +11,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     normalizationContext={"groups"={"article:output"}},
+ *     denormalizationContext={"groups"={"article:input"}}
+ * )
  * @ORM\Table(name="mdit_subject")
  * @ORM\Entity(repositoryClass="App\Repository\SubjectRepository")
  * Validation de la contrainte d'unicité des titres des sujets

@@ -6,6 +6,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "api-platform/api-pack": "^1.1",
+        "doctrine/annotations": "^1.6",
         "doctrine/dbal": "^2.7",
         "doctrine/doctrine-bundle": "^1.9",
         "doctrine/orm": "^2.6",

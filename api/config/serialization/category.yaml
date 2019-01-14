@@ -1,0 +1,90 @@
+App\Entity\Category:
+    attributes:
+        normalization_context:
+            groups:
+                - 'category:output'
+                - 'article:output'
+                - 'moderator:output'
+        denormalization_context:
+            groups:
+                - 'category:input'
+                - 'article:input'
+                - 'moderator:input'
+        name:
+            groups:
+                - 'category:output'
+                - 'article:output'
+                - 'moderator:output'
+                - 'category:input'
+                - 'article:input'
+                - 'moderator:input'
+        resume:
+            groups:
+                - 'category:output'
+                - 'article:output'
+                - 'moderator:output'
+                - 'category:input'
+                - 'article:input'
+                - 'moderator:input'
+        description:
+            groups:
+                - 'category:output'
+                - 'article:output'
+                - 'moderator:output'
+                - 'category:input'
+                - 'article:input'
+                - 'moderator:input'
+        isValid:
+            groups:
+                - 'category:output'
+                - 'article:output'
+                - 'moderator:output'
+                - 'category:input'
+                - 'article:input'
+                - 'moderator:input'
+        dateCreated:
+            groups:
+                - 'category:output'
+                - 'article:output'
+                - 'moderator:output'
+                - 'category:input'
+                - 'article:input'
+                - 'moderator:input'
+        parentCategory:
+            groups:
+                - 'category:output'
+                - 'article:output'
+                - 'moderator:output'
+                - 'category:input'
+                - 'article:input'
+                - 'moderator:input'
+        subCategories:
+            groups:
+                - 'category:output'
+                - 'article:output'
+                - 'moderator:output'
+                - 'category:input'
+                - 'article:input'
+                - 'moderator:input'
+        subjects:
+            groups:
+                - 'category:output'
+                - 'moderator:output'
+                - 'category:input'
+                - 'moderator:input'
+        video:
+            groups:
+                - 'category:output'
+                - 'article:output'
+                - 'moderator:output'
+                - 'category:input'
+                - 'article:input'
+                - 'moderator:input'
+        chatrooms:
+            groups:
+                - 'category:output'
+                - 'article:output'
+                - 'moderator:output'
+                - 'category:input'
+                - 'article:input'
+                - 'moderator:input'

@@ -1,0 +1,20 @@
+App\Entity\Article:
+    attributes:
+        normalization_context:
+            groups: ['article:output']
+        denormalization_context:
+            groups: ['article:input']
+        articleBody:
+            groups: ['article:output','article:input']
+        aggregateRating:
+            groups: ['article:output','article:input']
+        coursePrerequisites:
+            groups: ['article:output','article:input']
+        pdf:
+            groups: ['article:output','article:input']
+        dateCreated:
+            groups: ['article:output','article:input']
+        datePublished:
+            groups: ['article:output','article:input']
+        dateModified:
+            groups: ['article:output','article:input']

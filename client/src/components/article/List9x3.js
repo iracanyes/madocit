@@ -41,13 +41,14 @@ class List extends Component {
           {this.props.data["hydra:member"] && this.props.data["hydra:member"][0].map(item =>
 
             <div className="card">
-              <img className="card-img-top" src="..." alt="Card image cap"/>
+              <img className="card-img-top" src={item[0]["images"][0]["url"]} alt="Card image cap"/>
               <div className="card-body">
-                <h5 className="card-title">{item["title"]}</h5>
-                <p className="card-text">{item['description']}</p>
+                <h5 className="card-title">{item[0]["title"]}</h5>
+                <p className="card-text">{item[0]['description']}</p>
               </div>
               <div className="card-footer">
-                <small className="text-muted">{item['dateModified']}</small>
+                <small className="text-muted">{new Date(item[0]['dateModified']).toLocaleDateString('fr-BE')}</small>
+                <small className={"text-muted float-right"}>Par {item['nickname']}</small>
               </div>
             </div>
           )}

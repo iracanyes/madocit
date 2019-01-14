@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -10,7 +12,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * @ApiResource()
+ * @ApiResource(
+ *     iri="https://schema.org/image",
+ *     normalizationContext={"groups"={"article:output", "user:output"}},
+ *     denormalizationContext={"groups"={"article:input", "user:input"}}
+ * )
  * @ORM\Table(name="mdit_image")
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  * Validation des contraintes d'unicité des URL

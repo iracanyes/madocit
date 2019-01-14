@@ -1,0 +1,66 @@
+App\Entity\Image:
+    attributes:
+        normalization_context:
+            groups: ['article:output', 'user:output','category:output']
+
+        denormalization_context:
+            groups:
+                - 'article:input'
+                - 'user:input'
+                - 'category:input'
+        place:
+            groups:
+                - 'article:output'
+                - 'article:input'
+                - 'user:output'
+                - 'user:input'
+                - 'category:output'
+                - 'category:input'
+        title:
+            groups:
+                - 'article:output'
+                - 'article:input'
+                - 'user:output'
+                - 'user:input'
+                - 'category:output'
+                - 'category:input'
+        url:
+            groups:
+                - 'article:output'
+                - 'article:input'
+                - 'user:output'
+                - 'user:input'
+                - 'category:output'
+                - 'category:input'
+        alt:
+            groups:
+                - 'article:output'
+                - 'article:input'
+                - 'user:output'
+                - 'user:input'
+                - 'category:output'
+                - 'category:input'
+        size:
+            groups:
+                - 'article:output'
+                - 'article:input'
+                - 'user:output'
+                - 'user:input'
+                - 'category:output'
+                - 'category:input'
+        datePublished:
+            groups:
+                - 'article:output'
+                - 'article:input'
+                - 'user:output'
+                - 'user:input'
+                - 'category:output'
+                - 'category:input'
+        dateModified:
+            groups:
+                - 'article:output'
+                - 'article:input'
+                - 'user:output'
+                - 'user:input'
+                - 'category:output'
+                - 'category:input'

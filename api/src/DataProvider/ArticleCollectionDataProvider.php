@@ -34,7 +34,7 @@ final class ArticleCollectionDataProvider implements CollectionDataProviderInter
     {
 
         $data = $this->entityManager->getRepository(Article::class)
-            ->findAll();
+            ->findAllWithEditorImage();
 
         yield $data;
 

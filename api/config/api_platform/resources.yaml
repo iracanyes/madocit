@@ -1,5 +1,7 @@
 # Configuration de l'API par ressource:
 App\Entity\Abuse:
+    shortName: 'Abuse'
+    description: 'Abuse in the documentation or in the chat'
     collectionOperations:
         get:
             method: 'GET'
@@ -43,6 +45,8 @@ App\Entity\Article:
             #schemes: ['https']
             #options:
             #   my_option: my_values
+            normalization_context:
+                groups: ['publication']
     itemOperations:
         get:
             method: 'GET'
@@ -56,6 +60,13 @@ App\Entity\Article:
               id: '\d+'
 
 App\Entity\Category:
+    shortName: 'Category'
+    description: 'Category of the documentation'
+    attributes:
+        normalization_context:
+            groups: ['article:output']
+        denormalization_context:
+            groups: ['article:input']
     # Configuration des relations
     properties:
         images:
@@ -65,7 +76,23 @@ App\Entity\Category:
                 resourceclass: 'App\Entity\Image'
                 collection: true
 
+App\Entity\Editor:
+    shortName: 'Editor'
+    description: 'Editor of the documentation'
+    attributes:
+        normalization_context:
+            groups: ['publication']
+        denormalization_context:
+            groups: ['redaction']
+
 App\Entity\Grain:
+    shortName: 'Grain'
+    description: 'Small part of an article'
+    attributes:
+        normalization_context:
+            groups: ['publication']
+        denormalization_context:
+            groups: ['redaction']
     collectionOperations:
         # Le nom est important, il sera automatiquement défini à
         # $resources_$subresources_get_subresource
@@ -88,6 +115,15 @@ App\Entity\Grain:
             path: 'grain/{id}/update'
             requirements:
                 id: '\d+'
+
+App\Entity\Image:
+    shortName: 'Image'
+    description: 'Image of the documentation and editors'
+    attributes:
+        normalization_context:
+            groups: ['publication']
+        denormalization_context:
+            groups: ['redaction']
 
 App\Entity\User:
     shortName: 'User'

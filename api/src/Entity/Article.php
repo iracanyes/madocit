@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -10,7 +12,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource(
- *     iri="http://schema.org/Article"
+ *     iri="http://schema.org/Article",
+ *     normalizationContext={"groups"={"article:output"}},
+ *     denormalizationContext={"groups"={"article:input"}}
  * )
  * @ORM\Table(name="mdit_article")
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")

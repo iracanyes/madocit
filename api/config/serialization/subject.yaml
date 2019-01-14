@@ -1,0 +1,22 @@
+App\Entity\Subject:
+    attributes:
+      normalization_context:
+          groups: ['article:output', 'grain:output']
+      denormalization_context:
+          groups: ['article:input', 'grain:input','article:output', 'grain:output']
+      title:
+          groups: ['article:input', 'grain:input','article:output', 'grain:output']
+      description:
+          groups: ['article:input', 'grain:input','article:output', 'grain:output']
+      dependencies:
+          groups: ['article:input', 'grain:input','article:output', 'grain:output']
+      proficiencyLevel:
+          groups: ['article:input', 'grain:input','article:output', 'grain:output']
+      isValid:
+          groups: ['article:input', 'grain:input','article:output', 'grain:output']
+      categories:
+          groups: ['article:input', 'grain:input','article:output', 'grain:output']
+      themes:
+          groups: ['article:input', 'grain:input','article:output', 'grain:output']
+      images:
+          groups: ['article:input', 'grain:input','article:output', 'grain:output']
