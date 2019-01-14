@@ -25,19 +25,26 @@ aside#aside-right{
         .card-title{
           border: none;
 
-          button.btn-secondary{
+          button.btn-link{
             border: none;
-            color: black;
+            background: none;
+            color: $primary-color;
 
           }
 
-          button.btn-secondary:hover{
+          button.btn-link:hover{
             background-color: unset;
             text-decoration: none;
             border: unset;
           }
         }
 
+
+
+      }
+
+      div.card-header:hover{
+        background-color: #eee;
       }
     }
   }

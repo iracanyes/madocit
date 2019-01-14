@@ -28,7 +28,7 @@ export default class SidebarRight extends Component{
                     <Card className={"border-light"}>
                         <CardHeader id={"headingThree"}>
                             <CardTitle className={"mb-0"}>
-                                <Button className={"btn-link collapsed"}
+                                <Button className={"btn-link btn-light collapsed"}
                                         data-toggle={"collapse"}
                                         aria-expanded={'false'}
                                         id={"collapseThree"}
@@ -96,7 +96,7 @@ export default class SidebarRight extends Component{
                     <Card className={"border-light"}>
                         <CardHeader id={'headingTwo'}>
                             <CardTitle className={"mb-0"}>
-                                <Button className={"btn-link collapsed"}
+                                <Button className={"btn-link btn-light collapsed"}
                                         data-toggle={'collapse'}
                                         aria-expanded={"false"}
                                         id={"collapseTwo"}
@@ -134,7 +134,7 @@ export default class SidebarRight extends Component{
                     <Card className='card-author border-light'>
                         <CardHeader id="headingOne" className={"card-header"}>
                             <CardTitle className={"mb-0"}>
-                                <Button className={"btn-link"}
+                                <Button className={"btn-link btn-light"}
                                         data-toggle={"collapse"}
                                         id={"collapseOne"}
                                         aria-expanded={"true"}
@@ -163,7 +163,7 @@ export default class SidebarRight extends Component{
                     <Card className={"border-light"}>
                         <CardHeader id={"headingFour"}>
                             <CardTitle className={"mb-0"}>
-                                <Button className={"btn-link collapsed"}
+                                <Button className={"btn-link btn-light collapsed"}
                                         data-toggle={'collapse'}
                                         aria-expanded={"false"}
                                         id={"collapseFour"}

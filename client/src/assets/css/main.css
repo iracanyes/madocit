@@ -280,14 +280,18 @@ aside#aside-right #accordionAsideRight .card div.card-header {
 aside#aside-right #accordionAsideRight .card div.card-header .card-title {
   border: none;
 }
-aside#aside-right #accordionAsideRight .card div.card-header .card-title button.btn-secondary {
+aside#aside-right #accordionAsideRight .card div.card-header .card-title button.btn-link {
   border: none;
-  color: black;
+  background: none;
+  color: #007BFF;
 }
-aside#aside-right #accordionAsideRight .card div.card-header .card-title button.btn-secondary:hover {
+aside#aside-right #accordionAsideRight .card div.card-header .card-title button.btn-link:hover {
   background-color: unset;
   text-decoration: none;
   border: unset;
+}
+aside#aside-right #accordionAsideRight .card div.card-header:hover {
+  background-color: #eee;
 }
 aside#aside-right div.card-member {
   position: relative;
@@ -620,7 +624,14 @@ main#page-article section#main-content div.container div.row div.col-lg-12 div.a
 }
 /***************** END PAGE ARTICLE ******************/
 /***************** PAGE ARTICLE Listing ******************/
-section.carousel3-articles div.card-deck div.card {
+div.article-list-page h1 {
+  text-align: center;
+}
+div.article-list-page section.carousel3-articles {
+  height: 600px;
+  overflow-y: scroll;
+}
+div.article-list-page section.carousel3-articles div.card-deck div.card {
   flex: 1 1 30%;
   margin-bottom: 20px;
 }

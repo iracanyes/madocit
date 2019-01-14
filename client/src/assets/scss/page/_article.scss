@@ -88,12 +88,23 @@ main#page-article{
 /***************** END PAGE ARTICLE ******************/
 
 /***************** PAGE ARTICLE Listing ******************/
-section.carousel3-articles{
-  div.card-deck{
-    div.card{
-      flex: 1 1 30%;
-      margin-bottom: 20px;
+
+
+div.article-list-page{
+  h1{
+    text-align: center;
+  }
+
+  section.carousel3-articles{
+    height: 600px;
+    overflow-y: scroll;
+    div.card-deck{
+      div.card{
+        flex: 1 1 30%;
+        margin-bottom: 20px;
+      }
     }
   }
+
 }
 /***************** END PAGE ARTICLE Listing ******************/

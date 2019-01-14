@@ -29,8 +29,8 @@ class List extends Component {
   }
 
   render() {
-    return <div>
-      <h1>Articles</h1>
+    return <div className={"article-list-page"}>
+      <h1>Documentation : Articles</h1>
 
       {this.props.loading && <div className="alert alert-info">Loading...</div>}
       {this.props.deletedItem && <div className="alert alert-success">{this.props.deletedItem['@id']} deleted.</div>}
