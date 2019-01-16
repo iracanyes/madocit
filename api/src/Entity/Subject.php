@@ -12,8 +12,8 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
- *     normalizationContext={"groups"={"article:output"}},
- *     denormalizationContext={"groups"={"article:input"}}
+ *     normalizationContext={"groups"={"article:output","grain:output"}},
+ *     denormalizationContext={"groups"={"article:input","grain:input"}}
  * )
  * @ORM\Table(name="mdit_subject")
  * @ORM\Entity(repositoryClass="App\Repository\SubjectRepository")
@@ -73,14 +73,14 @@ class Subject
 
     /**
      * @var Collection $categories Categories in which this subject belongs
-     * @ORM\ManyToMany(targetEntity="Category", mappedBy="subjects")
+     * @ORM\ManyToMany(targetEntity="Category", mappedBy="subjects", fetch="EXTRA_LAZY")
      * @Assert\Collection()
      */
     protected $categories;
 
     /**
      * @var Collection $themes Theme that are evoked in the subject
-     * @ORM\ManyToMany(targetEntity="Theme", cascade={"persist"}, inversedBy="subjects")
+     * @ORM\ManyToMany(targetEntity="Theme", cascade={"persist"}, inversedBy="subjects", fetch="LAZY")
      * @ORM\JoinTable(name="mdit_themes_subjects")
      * @Assert\Collection()
      *
@@ -91,7 +91,7 @@ class Subject
     /**
      * @var Editor $editor Editor who create this subject
      *
-     * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="subjectsCreated")
+     * @ORM\ManyToOne(targetEntity="Editor", cascade={"persist"}, inversedBy="subjectsCreated", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      * @Assert\NotBlank()
      */
@@ -99,7 +99,7 @@ class Subject
 
     /**
      * @var Collection $privileges Privileges on this subject
-     * @ORM\OneToMany(targetEntity="Privilege", mappedBy="subject")
+     * @ORM\OneToMany(targetEntity="Privilege", mappedBy="subject", fetch="EAGER")
      */
     protected $privileges;
 
@@ -108,14 +108,14 @@ class Subject
     /**
      * @var Collection Notes on the subject
      *
-     * @ORM\OneToMany(targetEntity="Note", cascade={"persist"}, mappedBy="subject")
+     * @ORM\OneToMany(targetEntity="Note", cascade={"persist"}, mappedBy="subject", fetch="EAGER")
      * @Assert\Collection()
      */
     protected $notes;
 
     /**
      * @var Collection $examples Examples explaining this subject
-     * @ORM\ManyToMany(targetEntity="Example", cascade={"persist"}, inversedBy="subjects")
+     * @ORM\ManyToMany(targetEntity="Example", cascade={"persist"}, inversedBy="subjects", fetch="EAGER")
      * @ORM\JoinTable(name="mdit_subjects_examples")
      * @Assert\Type("Doctrine\Common\Collections\Collection")
      */
@@ -125,7 +125,7 @@ class Subject
     /**
      * @var Collection Contributions suggested on this subject
      *
-     * @ORM\OneToMany(targetEntity="Contribution", mappedBy="subject")
+     * @ORM\OneToMany(targetEntity="Contribution", mappedBy="subject", fetch="EAGER")
      * @Assert\Collection()
      */
     protected $contributionsSuggested;
@@ -134,7 +134,7 @@ class Subject
     /**
      * @var Collection Chatroom of this subject
      *
-     * @ORM\OneToMany(targetEntity="Chat", mappedBy="subject")
+     * @ORM\OneToMany(targetEntity="Chat", mappedBy="subject", fetch="EAGER")
      * @Assert\Collection()
      */
     protected $chatrooms;
@@ -142,7 +142,7 @@ class Subject
     /**
      * @var Collection $versions Subject's versions
      *
-     * @ORM\ManyToMany(targetEntity="Version", cascade={"persist"}, inversedBy="subjects")
+     * @ORM\ManyToMany(targetEntity="Version", cascade={"persist"}, inversedBy="subjects", fetch="EAGER")
      * @ORM\JoinTable(name="mdit_subjects_versions")
      * @Assert\Type("App\Entity\Version")
      */
@@ -150,14 +150,14 @@ class Subject
 
     /**
      * @var Collection Images illustrating the subject
-     * @ORM\OneToMany(targetEntity="Image", mappedBy="subject")
+     * @ORM\OneToMany(targetEntity="Image", mappedBy="subject", fetch="EAGER")
      * @Assert\Collection()
      */
     protected $images;
 
     /**
      * @var Video|null $video
-     * @ORM\OneToOne(targetEntity="Video", cascade={"persist","remove"}, inversedBy="associatedSubject")
+     * @ORM\OneToOne(targetEntity="Video", cascade={"persist","remove"}, inversedBy="associatedSubject", fetch="EAGER")
      * @ORM\JoinColumn(name="video_id", referencedColumnName="id", nullable=true)
      * @Assert\Type("App\Entity\Video")
      */

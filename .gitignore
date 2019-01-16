@@ -1,24 +1,35 @@
 /docker-compose.override.yaml
 /docker-compose.override.yml
 
-/shared
-/docs/
+
 # Git Ignore
 .gitignore
-# Variables d'environnement
+
+###> Variables d'environnement ###
 /api/.env
 /admin/.env
 /client/.env
 .env
+###> Variables d'environnement ###
 
-# fichiers locaux
+###> fichiers locaux ###
 /api/.web-server-pid
+/.idea/
+###< fichiers locaux ###
 
 ###> security ###
 /api/config/packages/doctrine.yaml
+/bin/
+/shared
 ###< security ###
 
+###> Backup files ###
 /client.save/
 *.save
-/.idea/
+/docs/
+###< Backup files ###
+
+
+
+
 

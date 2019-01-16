@@ -17,7 +17,10 @@ class List extends Component {
   };
 
   componentDidMount() {
-    this.props.list(this.props.match.params.page && decodeURIComponent(this.props.match.params.page));
+    if(!this.props.loading){
+      this.props.list(this.props.match.params.page && decodeURIComponent(this.props.match.params.page));
+    }
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -29,14 +32,47 @@ class List extends Component {
   }
 
   render() {
-    return <div>
-      <h1>Articles</h1>
+    return <div className={"article-list-page"}>
+      <h1>Documentation : Articles</h1>
 
       {this.props.loading && <div className="alert alert-info">Loading...</div>}
       {this.props.deletedItem && <div className="alert alert-success">{this.props.deletedItem['@id']} deleted.</div>}
       {this.props.error && <div className="alert alert-danger">{this.props.error}</div>}
 
-      <p><Link to="create" className="btn btn-primary">Create</Link></p>
+      <section className="carousel3-articles col-lg-12">
+        <div className="card-deck">
+          {this.props.data["hydra:member"] && this.props.data["hydra:member"][0].map(item =>
+
+            <div className="card">
+              <img className="card-img-top" src={item[0]["images"][0]["url"]} alt="Card image cap"/>
+              <div className="card-body">
+                <h5 className="card-title">{item[0]["title"]}</h5>
+                <p className="card-text">{item[0]['description']}</p>
+              </div>
+              <div className="card-footer">
+                <small className="text-muted">{new Date(item[0]['dateModified']).toLocaleDateString('fr-BE')}</small>
+                <small className={"text-muted float-right"}>Par {item['nickname']}</small>
+              </div>
+            </div>
+          )}
+        </div>
+        {this.pagination()}
+        {/*
+        <ul className="pagination">
+          <li className="page-item"><a className="page-link" href="#">Précédent</a></li>
+          <li className="page-item"><a className="page-link" href="#">1</a></li>
+          <li className="page-item active"><a className="page-link" href="#">2</a></li>
+          <li className="page-item"><a className="page-link" href="#">3</a></li>
+          <li className="page-item"><a className="page-link" href="#">Suivant</a></li>
+        </ul>
+        */}
+      </section>
+
+
+
+
+
+      {/*
 
         <table className="table table-responsive table-striped table-hover">
         <thead>
@@ -87,6 +123,7 @@ class List extends Component {
       </table>
 
       {this.pagination()}
+      */}
     </div>;
   }
 
@@ -97,10 +134,13 @@ class List extends Component {
     const {'hydra:first': first, 'hydra:previous': previous,'hydra:next': next, 'hydra:last': last} = view;
 
     return <nav aria-label="Page navigation">
+      <ul className="pagination">
         <Link to='.' className={`btn btn-primary${previous ? '' : ' disabled'}`}><span aria-hidden="true">&lArr;</span> First</Link>
         <Link to={!previous || previous === first ? '.' : encodeURIComponent(previous)} className={`btn btn-primary${previous ? '' : ' disabled'}`}><span aria-hidden="true">&larr;</span> Previous</Link>
         <Link to={next ? encodeURIComponent(next) : '#'} className={`btn btn-primary${next ? '' : ' disabled'}`}>Next <span aria-hidden="true">&rarr;</span></Link>
         <Link to={last ? encodeURIComponent(last) : '#'} className={`btn btn-primary${next ? '' : ' disabled'}`}>Last <span aria-hidden="true">&rArr;</span></Link>
+      </ul>
+
     </nav>;
   }
 }

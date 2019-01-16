@@ -64,3 +64,23 @@ App\Entity\Image:
                 - 'user:input'
                 - 'category:output'
                 - 'category:input'
+        user:
+            groups:
+                - 'user:output'
+                - 'user:input'
+        categories:
+            groups:
+                - 'category:output'
+                - 'category:input'
+        subject:
+            groups:
+                - 'article:output'
+                - 'article:input'
+        example:
+            groups:
+                - 'example:output'
+                - 'example:input'
+        video:
+            groups:
+                - 'video:output'
+                - 'video:input'

@@ -1,0 +1,14 @@
+App\Entity\User:
+    attributes:
+        normalization_context:
+            groups:
+                - 'user:output'
+                - 'editor:output'
+                - 'moderator:output'
+                - 'admin:output'
+        denormalization_context:
+            groups:
+              - 'user:input'
+              - 'editor:input'
+              - 'moderator:input'
+              - 'admin:input'

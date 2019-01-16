@@ -53,7 +53,6 @@ App\Entity\Category:
         parentCategory:
             groups:
                 - 'category:output'
-                - 'article:output'
                 - 'moderator:output'
                 - 'category:input'
                 - 'article:input'
@@ -61,7 +60,6 @@ App\Entity\Category:
         subCategories:
             groups:
                 - 'category:output'
-                - 'article:output'
                 - 'moderator:output'
                 - 'category:input'
                 - 'article:input'
@@ -72,6 +70,12 @@ App\Entity\Category:
                 - 'moderator:output'
                 - 'category:input'
                 - 'moderator:input'
+        images:
+            groups:
+              - 'category:output'
+              - 'category:input'
+              - 'article:output'
+              - 'article:input'
         video:
             groups:
                 - 'category:output'

@@ -1,0 +1,36 @@
+App\Entity\Grain:
+    attributes:
+        normalization_context:
+            groups:
+                - 'grain:output'
+        denormalization_context:
+            groups:
+                - 'grain:input'
+        content:
+            groups:
+                - 'grain:output'
+                - 'grain:input'
+        dateCreated:
+            groups:
+                - 'grain:output'
+                - 'grain:input'
+        dateModified:
+            groups:
+                - 'grain:output'
+                - 'grain:input'
+        datePublished:
+            groups:
+                - 'grain:output'
+                - 'grain:input'
+        draft:
+            groups:
+                - 'grain:output'
+                - 'grain:input'
+        rating:
+            groups:
+                - 'grain:output'
+                - 'grain:input'
+        isPartOf:
+            groups:
+                - 'grain:output'
+                - 'grain:input'

@@ -168,7 +168,6 @@ class Editor extends User
     protected $groupsMember;
 
 
-
     /**
      * @var Collection $subjectsCreated Subjects created by the editor
      * @ORM\OneToMany(targetEntity="Subject", cascade={"persist","remove"}, mappedBy="author")
@@ -204,7 +203,6 @@ class Editor extends User
      * @Assert\Collection()
      */
     protected $messagesWritten;
-
 
     /**
      * Notes

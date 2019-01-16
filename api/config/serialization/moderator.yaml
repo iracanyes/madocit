@@ -1,0 +1,8 @@
+App\Entity\Moderator:
+    attributes:
+        normalization_context:
+            groups:
+                - 'moderator:output'
+        denormalization_context:
+            groups:
+                - 'moderator:input'
