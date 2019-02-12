@@ -108,13 +108,13 @@ class CarouselRecent extends Component {
               className={""}
           >
             <Card>
-              <CardImg  width={"100%"} src={"http://lorempixel.com/1200/980"}/>
+              <CardImg  width={"100%"} src={value[0]['images'][0]['']}/>
               <CardBody>
                 <CardTitle>
-                  {value['title']}
+                  {value[0]['title']}
                 </CardTitle>
                 <CardBody>
-                  {value['articleBody'].slice(0, 250)}
+                  {value[0]['articleBody'].slice(0, 250)}
                 </CardBody>
               </CardBody>
             </Card>

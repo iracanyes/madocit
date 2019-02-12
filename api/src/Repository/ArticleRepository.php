@@ -28,6 +28,7 @@ class ArticleRepository extends ServiceEntityRepository
             ->leftJoin('a.images', 'i')
             ->addSelect('i')
             ->orderBy('a.dateCreated', 'DESC')
+            ->setMaxResults(20)
             ->getQuery()
             ->getResult();
 

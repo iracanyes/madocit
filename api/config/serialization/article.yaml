@@ -4,19 +4,7 @@ App\Entity\Article:
             groups: ['article:output']
         denormalization_context:
             groups: ['article:input']
-        articleBody:
-            groups: ['article:output','article:input', 'grain:output','grain:input']
-        aggregateRating:
-            groups: ['article:output','article:input', 'grain:output','grain:input']
-        coursePrerequisites:
-            groups: ['article:output','article:input', 'grain:output','grain:input']
-        pdf:
-            groups: ['article:output','article:input', 'grain:output','grain:input']
-        dateCreated:
-            groups: ['article:output','article:input', 'grain:output','grain:input']
-        datePublished:
-            groups: ['article:output','article:input', 'grain:output','grain:input']
-        dateModified:
-            groups: ['article:output','article:input', 'grain:output','grain:input']
         hasParts:
-            groups: ['article:output','article:input', 'grain:output','grain:input']
+            groups:
+                - 'article:output'
+

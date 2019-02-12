@@ -11,11 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ApiResource(
- *     iri="http://schema.org/Article",
- *     normalizationContext={"groups"={"article:output"}},
- *     denormalizationContext={"groups"={"article:input"}}
- * )
+ * @ApiResource()
  * @ORM\Table(name="mdit_article")
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
  */

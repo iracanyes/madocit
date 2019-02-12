@@ -9,9 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
- *     iri="http://schema.org/VideoObject",
- *     normalizationContext={"groups"={"video:output"}},
- *     denormalizationContext={"groups"={"video:input"}}
+ *     iri="http://schema.org/VideoObject"
  * )
  * @ORM\Table(name="mdit_video")
  * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")

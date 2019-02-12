@@ -12,11 +12,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 
 /**
- * @ApiResource(
- *     iri="https://schema.org/image",
- *     normalizationContext={"groups"={"article:output", "user:output"}},
- *     denormalizationContext={"groups"={"article:input", "user:input"}}
- * )
+ * @ApiResource()
  * @ORM\Table(name="mdit_image")
  * @ORM\Entity(repositoryClass="App\Repository\ImageRepository")
  * Validation des contraintes d'unicité des URL

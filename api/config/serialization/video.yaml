@@ -1,9 +1,8 @@
-App\Entity\Category:
+App\Entity\Video:
     attributes:
         normalization_context:
             groups:
-                - 'category:output'
+                - 'video:output'
         denormalization_context:
             groups:
-                - 'category:input'
-
+                - 'video:input'

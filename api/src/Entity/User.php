@@ -20,10 +20,7 @@ use ApiPlatform\Core\Annotation\ApiProperty;
  * @ORM\DiscriminatorColumn(name="userType", type="string")
  * @ORM\DiscriminatorMap({"user" = "User", "editor" = "Editor", "moderator"="Moderator", "admin"="Admin"})
  * @ UniqueEntity("email")
- * @ApiResource(
- *     normalizationContext={"groups"={"user:output"}},
- *     denormalizationContext={"groups"={"user:input"}}
- * )
+ * @ApiResource()
  */
 class User implements UserInterface, \Serializable
 {

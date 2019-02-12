@@ -1,14 +1,18 @@
 # the different stages of this Dockerfile are meant to be built into separate images
 # https://docs.docker.com/compose/compose-file/#target
 
-ARG PHP_VERSION=7.2
+ARG PHP_VERSION=7.3
 ARG NGINX_VERSION=1.15
 ARG VARNISH_VERSION=6.0
 
 FROM php:${PHP_VERSION}-fpm-alpine AS api_platform_php
 
+RUN echo http://dl-4.alpinelinux.org/alpine/v3.9/main > /etc/apk/repositories; \
+    echo http://dl-4.alpinelinux.org/alpine/v3.9/community >> /etc/apk/repositories
+
 # persistent / runtime deps
-RUN apk add --no-cache \
+RUN apk update \
+ && apk add --no-cache \
 		acl \
 		file \
 		gettext \

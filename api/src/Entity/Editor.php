@@ -14,9 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource(
- *     iri="http://schema.org/Person",
- *     normalizationContext={"groups"={"editor:output"}},
- *     denormalizationContext={"groups"={"editor:input"}}
+ *     iri="http://schema.org/Person"
  * )
  * @ORM\Table(name="mdit_editor")
  * @ORM\Entity(repositoryClass="App\Repository\EditorRepository")

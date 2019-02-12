@@ -1,45 +1,12 @@
 App\Entity\Subject:
     attributes:
-      normalization_context:
-          groups: ['article:output', 'grain:output']
-      denormalization_context:
-          groups: ['article:input', 'grain:input']
-      title:
-          groups: ['article:input', 'grain:input','article:output', 'grain:output']
-      description:
-          groups: ['article:input', 'grain:input','article:output', 'grain:output']
-      dependencies:
-          groups: ['article:input', 'grain:input','article:output', 'grain:output']
-      proficiencyLevel:
-          groups: ['article:input', 'grain:input','article:output', 'grain:output']
-      isValid:
-          groups: ['article:input', 'grain:input','article:output', 'grain:output']
-      categories:
-          groups: ['article:input', 'grain:input','article:output', 'grain:output']
-      themes:
-          groups: ['article:input', 'grain:input','article:output', 'grain:output']
-      images:
-          groups: ['article:input', 'grain:input','article:output', 'grain:output']
-      author:
-          groups: ['article:output', 'grain:output']
-      privileges:
-          groups:
-            - 'editor:output'
-            - 'editor:input'
-      notes:
-          groups:
-            - 'article:output'
-            - 'grain:output'
-            - 'note:output'
-            - 'editor:output'
-            - 'note:input'
-            - 'article:input'
-            - 'grain:input'
-      examples:
-          groups:
-            - 'article:output'
-            - 'grain:output'
-            - 'example:output'
-            - 'article:input'
-            - 'grain:input'
-            - 'example:input'
+        normalization_context:
+            groups: ['subject:output']
+        denormalization_context:
+            groups: ['subject:input']
+        images:
+            groups: ['article:output']
+            #max_depth: 1
+        video:
+            groups: ['subject:output']
+            #max_depth: 1

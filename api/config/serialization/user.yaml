@@ -3,12 +3,6 @@ App\Entity\User:
         normalization_context:
             groups:
                 - 'user:output'
-                - 'editor:output'
-                - 'moderator:output'
-                - 'admin:output'
         denormalization_context:
             groups:
-              - 'user:input'
-              - 'editor:input'
-              - 'moderator:input'
-              - 'admin:input'
+                - 'user:input'

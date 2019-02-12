@@ -1,86 +1,19 @@
 App\Entity\Image:
     attributes:
         normalization_context:
-            groups: ['article:output', 'user:output','category:output']
-
+            groups: ['image:output','subject:output']
         denormalization_context:
             groups:
-                - 'article:input'
-                - 'user:input'
-                - 'category:input'
-        place:
-            groups:
-                - 'article:output'
-                - 'article:input'
-                - 'user:output'
-                - 'user:input'
-                - 'category:output'
-                - 'category:input'
-        title:
-            groups:
-                - 'article:output'
-                - 'article:input'
-                - 'user:output'
-                - 'user:input'
-                - 'category:output'
-                - 'category:input'
+                - 'image:input'
         url:
             groups:
+                - 'subject:output'
                 - 'article:output'
-                - 'article:input'
-                - 'user:output'
-                - 'user:input'
-                - 'category:output'
-                - 'category:input'
+        title:
+            groups:
+                - 'subject:output'
+                - 'article:output'
         alt:
             groups:
+                - 'subject:output'
                 - 'article:output'
-                - 'article:input'
-                - 'user:output'
-                - 'user:input'
-                - 'category:output'
-                - 'category:input'
-        size:
-            groups:
-                - 'article:output'
-                - 'article:input'
-                - 'user:output'
-                - 'user:input'
-                - 'category:output'
-                - 'category:input'
-        datePublished:
-            groups:
-                - 'article:output'
-                - 'article:input'
-                - 'user:output'
-                - 'user:input'
-                - 'category:output'
-                - 'category:input'
-        dateModified:
-            groups:
-                - 'article:output'
-                - 'article:input'
-                - 'user:output'
-                - 'user:input'
-                - 'category:output'
-                - 'category:input'
-        user:
-            groups:
-                - 'user:output'
-                - 'user:input'
-        categories:
-            groups:
-                - 'category:output'
-                - 'category:input'
-        subject:
-            groups:
-                - 'article:output'
-                - 'article:input'
-        example:
-            groups:
-                - 'example:output'
-                - 'example:input'
-        video:
-            groups:
-                - 'video:output'
-                - 'video:input'

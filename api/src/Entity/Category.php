@@ -14,10 +14,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 
 /**
- * @ApiResource(
- *     normalizationContext={"groups"={"category:output","article:output","moderator:validation"}},
- *     denormalizationContext={"groups"={"category:input","article:input","moderator:validation"}}
- * )
+ * @ApiResource()
  * @ORM\Table(name="mdit_category")
  * @ORM\Entity(repositoryClass="App\Repository\CategoryRepository")
  * Contraintes d'unicité des noms de catégorie

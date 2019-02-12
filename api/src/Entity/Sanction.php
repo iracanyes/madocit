@@ -12,10 +12,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * @ORM\Table(name="mdit_sanction")
  * @ORM\Entity(repositoryClass="App\Repository\SanctionRepository")
- * @ApiResource(
- *     normalizationContext={"groups"={"sanction:output"}},
- *     denormalizationContext={"groups"={"sanction:input"}}
- * )
+ * @ApiResource()
  */
 class Sanction
 {

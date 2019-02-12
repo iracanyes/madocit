@@ -148,6 +148,8 @@ services:
     # Don't use this proxy in prod
     build:
       context: ./h2-proxy
+      args:
+        cert_pass: ${CERT_PASS}
     depends_on:
       - client
       - admin

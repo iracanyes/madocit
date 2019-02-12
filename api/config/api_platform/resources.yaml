@@ -22,9 +22,10 @@ App\Entity\Article:
 
     # Configuration des relations
     properties:
-        subresource:
-            resourceClass: 'App\Entity\Grain'
-            collection: true
+        hasParts:
+            subresource:
+                resourceClass: 'App\Entity\Grain'
+                collection: true
     # Configuration Opérations
     collectionOperations:
         get:
@@ -45,8 +46,8 @@ App\Entity\Article:
             #schemes: ['https']
             #options:
             #   my_option: my_values
-            normalization_context:
-                groups: ['publication']
+            #normalization_context:
+            #    groups: ['subject:output']
     itemOperations:
         get:
             method: 'GET'
@@ -63,10 +64,11 @@ App\Entity\Category:
     shortName: 'Category'
     description: 'Category of the documentation'
     attributes:
-        normalization_context:
-            groups: ['article:output']
-        denormalization_context:
-            groups: ['article:input']
+        # Pour la configuration de la normalisation des données voir dans le répertoire 'api/config/serialization'
+        #normalization_context:
+        #    groups: ['subject:output']
+        #denormalization_context:
+        #    groups: ['subject:input']
     # Configuration des relations
     properties:
         images:
@@ -89,10 +91,10 @@ App\Entity\Grain:
     shortName: 'Grain'
     description: 'Small part of an article'
     attributes:
-        normalization_context:
-            groups: ['publication']
-        denormalization_context:
-            groups: ['redaction']
+        #normalization_context:
+        #    groups: ['subject:output']
+        #denormalization_context:
+        #    groups: ['subject:input']
     collectionOperations:
         # Le nom est important, il sera automatiquement défini à
         # $resources_$subresources_get_subresource
@@ -119,14 +121,11 @@ App\Entity\Grain:
 App\Entity\Image:
     shortName: 'Image'
     description: 'Image of the documentation and editors'
+    iri: 'https://schema.org/image'
     attributes:
-        normalization_context:
-            groups: ['publication']
-        denormalization_context:
-            groups: ['redaction']
 
 App\Entity\User:
     shortName: 'User'
     description: 'User of this application'
     attributes:
-        access_control: 'hasRole("ROLE_MEMBER")'
+        access_control: 'hasRole("ROLE_ADMIN")'

@@ -2,35 +2,33 @@ App\Entity\Grain:
     attributes:
         normalization_context:
             groups:
-                - 'grain:output'
+                - 'subject:output'
+                - 'article:output'
         denormalization_context:
             groups:
-                - 'grain:input'
+                - 'subject:input'
         content:
             groups:
-                - 'grain:output'
-                - 'grain:input'
+                - 'subject:output'
+                - 'subject:input'
+                - 'article:output'
         dateCreated:
             groups:
-                - 'grain:output'
-                - 'grain:input'
+                - 'subject:output'
+                - 'subject:input'
         dateModified:
             groups:
-                - 'grain:output'
-                - 'grain:input'
+                - 'subject:output'
+                - 'subject:input'
         datePublished:
             groups:
-                - 'grain:output'
-                - 'grain:input'
+                - 'subject:output'
+                - 'subject:input'
         draft:
             groups:
-                - 'grain:output'
-                - 'grain:input'
+                - 'subject:output'
+                - 'subject:input'
         rating:
             groups:
-                - 'grain:output'
-                - 'grain:input'
-        isPartOf:
-            groups:
-                - 'grain:output'
-                - 'grain:input'
+                - 'subject:output'
+                - 'subject:input'
